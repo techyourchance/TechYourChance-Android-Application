@@ -1,0 +1,26 @@
+<resources>
+    <dimen name="toolbar_height">54dp</dimen>
+    <dimen name="toolbar_button_size">54dp</dimen>
+    <dimen name="toolbar_icon_size">24dp</dimen>
+
+    <dimen name="debug_drawer_width">280dp</dimen>
+
+    <dimen name="padding_screen_horizontal_standard">50dp</dimen>
+
+    <dimen name="edit_text_height_standard">50dp</dimen>
+    <dimen name="edit_text_padding">15dp</dimen>
+    <dimen name="edit_text_corner_radius">5dp</dimen>
+
+    <dimen name="dialog_content_padding_top_no_image">50dp</dimen>
+    <dimen name="dialog_content_padding_top_with_image">30dp</dimen>
+    <dimen name="dialog_content_padding_bottom">40dp</dimen>
+    <dimen name="dialog_content_padding_horizontal">30dp</dimen>
+    <dimen name="dialog_image_size">80dp</dimen>
+
+    <dimen name="checkbox_size_standard">26dp</dimen>
+
+    <dimen name="button_corner_radius">10dp</dimen>
+
+    <dimen name="home_recycler_item_height">80dp</dimen>
+
+</resources>

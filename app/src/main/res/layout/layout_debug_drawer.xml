@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+
+        <FrameLayout
+            android:id="@+id/viewGroupExample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginEnd="5dp"
+                android:textSize="16sp"
+                android:text="Example checkbox"/>
+            <CheckBox
+                android:id="@+id/checkExample"
+                android:layout_width="@dimen/checkbox_size_standard"
+                android:layout_height="@dimen/checkbox_size_standard"
+                android:layout_gravity="center_vertical|end"
+                android:buttonTint="@color/black"
+                />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_dark"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

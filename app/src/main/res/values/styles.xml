@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="buttonStyle">@style/ButtonStandard</item>
+        <item name="android:textViewStyle">@style/TextViewStandard</item>
+        <item name="editTextStyle">@style/EditTextStandard</item>
+    </style>
+
+    <style name="TextViewStandard" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="TextViewDialogTitle" parent="TextViewStandard">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextViewDialogMessage" parent="TextViewStandard">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="EditTextStandard" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bg_edit_text</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_height">@dimen/edit_text_height_standard</item>
+        <item name="android:padding">@dimen/edit_text_padding</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="ButtonStandard" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/bg_button_standard</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

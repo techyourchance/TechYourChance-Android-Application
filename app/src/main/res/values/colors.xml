@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white" type="color">#FFFFFF</color>
+    <color name="black" type="color">#000000</color>
+    <color name="red" type="color">#FF8484</color>
+    <color name="gray_dark" type="color">#292929</color>
+    <color name="gray" type="color">#8D949C</color>
+    <color name="gray_light" type="color">#E5E5E5</color>
+    <color name="gray_blue" type="color">#DAE4F1</color>
+    <color name="yellow" type="color">#E2FFA2</color>
+    <color name="green" type="color">#BAFFA2</color>
+    <color name="blue" type="color">#22CAFF</color>
+    <color name="inactive" type="color">#666666</color>
+    <color name="transparent" type="color">#00FFFFFF</color>
+
+    <color name="main" type="color">@color/blue</color>
+
+    <color name="text_default" type="color">@color/gray_dark</color>
+
+    <color name="edit_text_border" type="color">@color/gray_dark</color>
+
+    <color name="button" type="color">@color/gray_light</color>
+    <color name="button_border" type="color">@color/gray_dark</color>
+
+</resources>

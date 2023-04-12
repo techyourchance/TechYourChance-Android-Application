@@ -1,0 +1,35 @@
+# release signing config files
+release.properties
+release.keystore
+
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+*.cxx
+app/.cxx/*
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Android Studio
+.idea
+.gradle
+build/
+captures/
+*.iml

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">App Template</string>
+
+    <string name="from_home_destination_stackoverflow">StackOverflow browser</string>
+
+    <string name="server_error_dialog_message">Communication with the server failed</string>
+    <string name="server_error_dialog_button_caption">OK</string>
+</resources>

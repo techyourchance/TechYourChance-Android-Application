@@ -1,0 +1,39 @@
+* text eol=lf
+
+**/raw/* binary
+
+*.aar  binary
+*.jar  binary
+
+*.bin  binary
+*.priv binary
+*.pub  binary
+
+*.7z   binary
+*.avi  binary
+*.bz   binary
+*.eot  binary
+*.flv  binary
+*.gif  binary
+*.gz   binary
+*.jpg  binary
+*.m4a  binary
+*.m4v  binary
+*.mov  binary
+*.mp3  binary
+*.mp4  binary
+*.ogg  binary
+*.ogv  binary
+*.pdf  binary
+*.png  binary
+*.rar  binary
+*.swf  binary
+*.tar  binary
+*.tgz  binary
+*.ttf  binary
+*.wav  binary
+*.webm binary
+*.wmv  binary
+*.woff binary
+*.xz   binary
+*.zip  binary
