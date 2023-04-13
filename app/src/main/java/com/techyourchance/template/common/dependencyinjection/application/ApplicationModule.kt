@@ -3,6 +3,7 @@ package com.techyourchance.template.common.dependencyinjection.application
 import android.app.Application
 import android.content.ContentResolver
 import android.content.res.Resources
+import androidx.biometric.BiometricManager
 import com.techyourchance.template.common.Constants
 import com.techyourchance.template.common.eventbus.EventBusPoster
 import com.techyourchance.template.common.eventbus.EventBusSubscriber
@@ -95,6 +96,11 @@ class ApplicationModule(private val application: Application) {
     @ApplicationScope
     fun stackOverflowApi(retrofit: Retrofit): StackoverflowApi {
         return retrofit.create(StackoverflowApi::class.java)
+    }
+
+    @Provides
+    fun biometricManager(application: Application): BiometricManager {
+        return BiometricManager.from(application)
     }
 
 }

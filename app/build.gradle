@@ -65,5 +65,7 @@ dependencies {
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    // biometric auth
+    implementation "androidx.biometric:biometric-ktx:1.2.0-alpha05"
 
 }

@@ -118,12 +118,12 @@ abstract class BaseDialog : DialogFragment() {
         params.width = if (customTargetWidth) {
             targetWidth
         } else {
-            resources.getDimensionPixelSize(getDefaultWidth())
+            getDefaultWidth()
         };
         params.height = if (customTargetHeight) {
             targetHeight
         } else {
-            resources.getDimensionPixelSize(getDefaultHeight())
+            getDefaultHeight()
         }
         dialog!!.window!!.attributes = params as android.view.WindowManager.LayoutParams;
     }

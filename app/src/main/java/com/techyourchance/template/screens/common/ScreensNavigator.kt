@@ -9,6 +9,7 @@ import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.techyourchance.template.common.Observable
+import com.techyourchance.template.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.template.screens.common.activities.BaseActivity
 import com.techyourchance.template.screens.common.fragments.DummyRootFragment
 import com.techyourchance.template.screens.home.HomeFragment
@@ -74,7 +75,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.Home -> toFragment(HomeFragment.newInstance())
                 is ScreenSpec.StackOverflowQuestionsList -> toFragment(QuestionsListFragment.newInstance())
                 is ScreenSpec.StackOverflowQuestionDetails -> toFragment(QuestionDetailsFragment.newInstance(screenSpec))
-                else -> throw RuntimeException("unsupported screen: $screenSpec")
+                is ScreenSpec.BiometricLock -> toFragment(BiometricAuthFragment.newInstance())
             }
         }
     }

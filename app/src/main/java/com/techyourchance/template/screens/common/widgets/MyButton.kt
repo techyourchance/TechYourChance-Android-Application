@@ -13,12 +13,8 @@ class MyButton: AppCompatButton {
     private var lastPerformedClickMillis = 0L
 
     override fun setEnabled(enabled: Boolean) {
-        alpha = if (enabled) 1f else Constants.ALPHA_DISABLED
+        alpha = if (enabled) 1f else ALPHA_DISABLED
         super.setEnabled(enabled)
-    }
-
-    override fun setOnClickListener(listener: OnClickListener?) {
-        super.setOnClickListener(listener)
     }
 
     override fun performClick(): Boolean {
@@ -33,5 +29,6 @@ class MyButton: AppCompatButton {
 
     companion object {
         private const val DEBOUNCE_TIMEOUT_MS = 200L
+        private const val ALPHA_DISABLED = 0.6f
     }
 }

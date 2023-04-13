@@ -3,6 +3,8 @@ package com.techyourchance.template.screens.common.mvcviews
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.techyourchance.template.common.imageloader.ImageLoader
+import com.techyourchance.template.screens.biometricauth.BiometricAuthViewMvc
+import com.techyourchance.template.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.template.screens.home.HomeViewMvc
 import com.techyourchance.template.screens.home.HomeViewMvcImpl
 import com.techyourchance.template.screens.questiondetails.QuestionDetailsViewMvc
@@ -21,15 +23,19 @@ class ViewMvcFactory @Inject constructor(
     private val imageLoader get() = imageLoaderProvider.get()
 
 
-    fun newHomeViewMvc(parent: ViewGroup?): HomeViewMvc {
-        return HomeViewMvcImpl(inflater, parent)
+    fun newHomeViewMvc(container: ViewGroup?): HomeViewMvc {
+        return HomeViewMvcImpl(inflater, container)
     }
 
-    fun newQuestionsListViewMvc(parent: ViewGroup?): QuestionsListViewMvc {
-        return QuestionsListViewMvcImpl(inflater, parent)
+    fun newQuestionsListViewMvc(container: ViewGroup?): QuestionsListViewMvc {
+        return QuestionsListViewMvcImpl(inflater, container)
     }
 
-    fun newQuestionDetailsViewMvc(parent: ViewGroup?): QuestionDetailsViewMvc {
-        return QuestionDetailsViewMvcImpl(inflater, parent)
+    fun newQuestionDetailsViewMvc(container: ViewGroup?): QuestionDetailsViewMvc {
+        return QuestionDetailsViewMvcImpl(inflater, container)
+    }
+
+    fun newBiometricLockViewMvc(container: ViewGroup?): BiometricAuthViewMvc {
+        return BiometricAuthViewMvcImpl(inflater, container)
     }
 }

@@ -28,6 +28,8 @@ class HomeViewMvcImpl(
         destinationsRecycler.adapter = destinationsAdapter
 
         toolbar = findViewById(R.id.toolbar)
+
+        toolbar.setTitle(getString(R.string.app_name))
     }
 
     override fun bindDestinations(destinations: List<FromHomeDestination>) {

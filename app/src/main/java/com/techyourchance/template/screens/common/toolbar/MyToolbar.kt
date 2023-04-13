@@ -5,10 +5,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import androidx.appcompat.widget.Toolbar
+import android.widget.TextView
+import androidx.core.view.isVisible
 import com.techyourchance.template.R
 
-class MyToolbar : Toolbar {
+class MyToolbar : FrameLayout {
 
     interface NavigateUpListener {
         fun onNavigationUpClicked()
@@ -16,7 +17,9 @@ class MyToolbar : Toolbar {
 
     private var navigateUpListener: () -> Unit = {}
 
-    private lateinit var navigateUp: FrameLayout
+    private lateinit var viewNavigateUp: View
+    private lateinit var txtTitle: TextView
+
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -31,14 +34,21 @@ class MyToolbar : Toolbar {
     }
 
     private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_my_toolbar, this, true)
-        setContentInsetsRelative(0, 0)
-        navigateUp = view.findViewById(R.id.navigate_up)
-        navigateUp.setOnClickListener { navigateUpListener.invoke() }
+        val view = LayoutInflater.from(context).inflate(R.layout.layout_my_toolbar, this, true).apply {
+            viewNavigateUp = findViewById(R.id.navigate_up)
+            txtTitle = findViewById(R.id.txtToolbarTitle)
+        }
+
+        viewNavigateUp.setOnClickListener { navigateUpListener.invoke() }
     }
 
     fun setNavigateUpListener(navigateUpListener: () -> Unit) {
         this.navigateUpListener = navigateUpListener
-        navigateUp.visibility = View.VISIBLE
+        viewNavigateUp.isVisible = true
+    }
+
+    fun setTitle(title: String) {
+        txtTitle.text = title
+        txtTitle.isVisible = true
     }
 }

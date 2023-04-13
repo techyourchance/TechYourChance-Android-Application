@@ -1,8 +1,23 @@
 <resources>
-    <string name="app_name">App Template</string>
+    <string name="app_name">TechYourChance</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
 
     <string name="from_home_destination_stackoverflow">StackOverflow browser</string>
+    <string name="from_home_destination_biometric_auth">Biometric authentication</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
+
+    <string name="biometric_auth_authenticate">Authenticate</string>
+    <string name="biometric_auth_enrollment_cancel">Biometric enrollment cancelled</string>
+    <string name="biometric_auth_not_supported">Biometric authentication not supported</string>
+    <string name="biometric_auth_title">Biometric authentication</string>
+    <string name="biometric_auth_description">Please authenticate</string>
+    <string name="biometric_auth_cancel">Biometric auth cancelled</string>
+    <string name="biometric_auth_error">Biometric auth failed: %1$s (error code %2$d)</string>
+    <string name="biometric_auth_success">Biometric auth succeeded</string>
+
 </resources>

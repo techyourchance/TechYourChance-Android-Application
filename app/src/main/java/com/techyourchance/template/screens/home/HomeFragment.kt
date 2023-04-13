@@ -10,7 +10,6 @@ import com.techyourchance.template.screens.common.ScreensNavigator
 import com.techyourchance.template.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.template.screens.common.fragments.BaseFragment
 import com.techyourchance.template.screens.common.mvcviews.ViewMvcFactory
-import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
@@ -39,7 +38,11 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
             FromHomeDestination(
                 getString(R.string.from_home_destination_stackoverflow),
                 ScreenSpec.StackOverflowQuestionsList
-            )
+            ),
+            FromHomeDestination(
+                getString(R.string.from_home_destination_biometric_auth),
+                ScreenSpec.BiometricLock
+            ),
         )
     }
 

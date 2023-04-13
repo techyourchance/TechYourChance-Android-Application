@@ -1,5 +1,6 @@
 package com.techyourchance.template.common.dependencyinjection.controller
 
+import com.techyourchance.template.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.template.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.template.screens.common.dialogs.info.InfoDialog
 import com.techyourchance.template.screens.common.dialogs.prompt.PromptDialog
@@ -21,6 +22,7 @@ interface ControllerComponent {
     fun inject(fragment: DebugDrawerFragment)
     fun inject(fragment: QuestionsListFragment)
     fun inject(fragment: QuestionDetailsFragment)
+    fun inject(fragment: BiometricAuthFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

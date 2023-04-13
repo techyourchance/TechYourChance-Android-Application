@@ -43,7 +43,6 @@ class QuestionDetailsFragment : BaseFragment(), QuestionDetailsViewMvc.Listener 
 
     override fun onStop() {
         super.onStop()
-        coroutineScope.coroutineContext.cancelChildren()
         viewMvc.unregisterListener(this)
     }
 

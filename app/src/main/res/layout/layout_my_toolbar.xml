@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/toolbar_height"
+    android:background="@color/colorPrimary"
+    >
 
     <FrameLayout
         android:id="@+id/navigate_up"
@@ -22,12 +24,14 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/txtToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

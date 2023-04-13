@@ -55,8 +55,8 @@ class DialogsNavigator(
         return dialogHelper.getDialogId(dialog)
     }
 
-    private fun getString(@StringRes stringId: Int): String {
-        return context.getString(stringId)
+    private fun getString(@StringRes id: Int, vararg formatArgs: Any): String {
+        return context.getString(id, *formatArgs)
     }
 
     private fun showPromptDialog(
@@ -94,6 +94,46 @@ class DialogsNavigator(
     fun showServerErrorDialog(id: String?) {
         showInfoDialog(
             getString(R.string.server_error_dialog_message),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
+
+    fun showBiometricAuthNotSupportedInfoDialog(id: String?) {
+        showInfoDialog(
+            getString(R.string.biometric_auth_not_supported),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
+
+    fun showBiometricAuthSuccessDialog(id: String?) {
+        showInfoDialog(
+            getString(R.string.biometric_auth_success),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
+
+    fun showBiometricAuthCancelDialog(id: String?) {
+        showInfoDialog(
+            getString(R.string.biometric_auth_cancel),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
+
+    fun showBiometricAuthErrorDialog(id: String?, errorCode: Int, errorMessage: String) {
+        showInfoDialog(
+            getString(R.string.biometric_auth_error, errorMessage, errorCode),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
+
+    fun showBiometricEnrollmentCancelledDialog(id: String?) {
+        showInfoDialog(
+            getString(R.string.biometric_auth_enrollment_cancel),
             getString(R.string.server_error_dialog_button_caption),
             id
         )
