@@ -10,9 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
 import com.techyourchance.template.R
-import com.techyourchance.template.common.logs.MyLogger
+import com.techyourchance.template.biometric.BiometricAuthUseCase
 import com.techyourchance.template.common.toasts.ToastsHelper
 import com.techyourchance.template.screens.common.ScreensNavigator
 import com.techyourchance.template.screens.common.dialogs.DialogsNavigator
@@ -23,31 +22,28 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
-class BiometricAuthFragment : BaseFragment(), BiometricAuthViewMvc.Listener {
+class BiometricAuthFragment : BaseFragment(), BiometricAuthViewMvc.Listener, BiometricAuthUseCase.Listener {
 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var dialogsNavigator: DialogsNavigator
     @Inject lateinit var screensNavigator: ScreensNavigator
     @Inject lateinit var toastsHelper: ToastsHelper
     @Inject lateinit var biometricManager: BiometricManager
+    @Inject lateinit var biometricAuthUseCase: BiometricAuthUseCase
 
     private val activityResultHandler = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_CANCELED) {
             dialogsNavigator.showBiometricEnrollmentCancelledDialog(null)
         } else {
-            handleBiometricAuthState()
+            authenticate()
         }
     }
 
     private lateinit var viewMvc: BiometricAuthViewMvc
 
-    private var biometricPrompt: BiometricPrompt? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
         super.onCreate(savedInstanceState)
-
-        initBiometricPrompt()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -58,68 +54,45 @@ class BiometricAuthFragment : BaseFragment(), BiometricAuthViewMvc.Listener {
     override fun onStart() {
         super.onStart()
         viewMvc.registerListener(this)
+        biometricAuthUseCase.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         viewMvc.unregisterListener(this)
-    }
-
-    private fun initBiometricPrompt() {
-        val biometricPrompt = BiometricPrompt(
-            requireActivity(),
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    MyLogger.i("biometric auth error ($errorCode): $errString")
-                    val cancelled = errorCode in arrayListOf<Int>(
-                        BiometricPrompt.ERROR_CANCELED,
-                        BiometricPrompt.ERROR_USER_CANCELED,
-                        BiometricPrompt.ERROR_NEGATIVE_BUTTON
-                    )
-                    if (cancelled) {
-                        dialogsNavigator.showBiometricAuthCancelDialog(null)
-                    } else {
-                        dialogsNavigator.showBiometricAuthErrorDialog(null, errorCode, errString.toString())
-                    }
-                }
-
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    MyLogger.i("biometric auth succeeded")
-                    dialogsNavigator.showBiometricAuthSuccessDialog(null)
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    MyLogger.i("biometric auth failed")
-                }
-            }
-        )
+        biometricAuthUseCase.unregisterListener(this)
     }
 
     override fun onAuthenticateClicked() {
-        handleBiometricAuthState()
-    }
-
-    private fun handleBiometricAuthState() {
-        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> authenticate()
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> launchBiometricEnrollment()
-            else -> dialogsNavigator.showBiometricAuthNotSupportedInfoDialog(DIALOG_ID_BIOMETRIC_AUTH_NOT_POSSIBLE)
-        }
+        authenticate()
     }
 
     private fun authenticate() {
-        val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(getString(R.string.biometric_auth_title))
-            .setSubtitle("")
-            .setDescription(getString(R.string.biometric_auth_description))
-            .setNegativeButtonText(getString(R.string.cancel))
-            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-            .build()
+        biometricAuthUseCase.authenticate(
+            getString(R.string.biometric_auth_title),
+            getString(R.string.biometric_auth_description),
+            getString(R.string.cancel),
+        )
+    }
 
-        biometricPrompt?.authenticate(promptInfo)
+    override fun onBiometricAuthResult(result: BiometricAuthUseCase.AuthResult) {
+        when(result) {
+            is BiometricAuthUseCase.AuthResult.NotEnrolled -> {
+                launchBiometricEnrollment()
+            }
+            is BiometricAuthUseCase.AuthResult.NotSupported -> {
+                dialogsNavigator.showBiometricAuthNotSupportedInfoDialog(DIALOG_ID_BIOMETRIC_AUTH_NOT_SUPPORTED)
+            }
+            is BiometricAuthUseCase.AuthResult.Success -> {
+                dialogsNavigator.showBiometricAuthSuccessDialog(null)
+            }
+            is BiometricAuthUseCase.AuthResult.Cancelled -> {
+                dialogsNavigator.showBiometricAuthCancelDialog(null)
+            }
+            is BiometricAuthUseCase.AuthResult.Failed -> {
+                dialogsNavigator.showBiometricAuthErrorDialog(null, result.errorCode, result.errorMessage)
+            }
+        }
     }
 
     private fun launchBiometricEnrollment() {
@@ -135,11 +108,10 @@ class BiometricAuthFragment : BaseFragment(), BiometricAuthViewMvc.Listener {
         activityResultHandler.launch(intent)
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
     fun onEvent(event: InfoDialogDismissedEvent) {
         when(event.id) {
-            DIALOG_ID_BIOMETRIC_AUTH_NOT_POSSIBLE -> {
+            DIALOG_ID_BIOMETRIC_AUTH_NOT_SUPPORTED -> {
                 screensNavigator.navigateBack()
             }
         }
@@ -151,7 +123,7 @@ class BiometricAuthFragment : BaseFragment(), BiometricAuthViewMvc.Listener {
 
     companion object {
 
-        private const val DIALOG_ID_BIOMETRIC_AUTH_NOT_POSSIBLE = "DIALOG_ID_BIOMETRIC_AUTH_NOT_POSSIBLE"
+        private const val DIALOG_ID_BIOMETRIC_AUTH_NOT_SUPPORTED = "DIALOG_ID_BIOMETRIC_AUTH_NOT_SUPPORTED"
 
         fun newInstance(): BiometricAuthFragment {
             return BiometricAuthFragment()

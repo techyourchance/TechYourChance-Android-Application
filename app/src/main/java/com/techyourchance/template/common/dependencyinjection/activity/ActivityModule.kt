@@ -3,6 +3,7 @@ package com.techyourchance.template.common.dependencyinjection.activity
 import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.ncapdevi.fragnav.FragNavController
 import com.techyourchance.template.R
@@ -18,6 +19,11 @@ class ActivityModule(private val activity: AppCompatActivity) {
     
     @Provides
     fun context(): Context {
+        return activity
+    }
+
+    @Provides
+    fun fragmentActivity(): FragmentActivity {
         return activity
     }
 
