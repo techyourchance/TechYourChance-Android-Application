@@ -8,5 +8,6 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object StackOverflowQuestionsList: ScreenSpec(ActivityName.MAIN)
     data class StackOverflowQuestionDetails(val questionId: String): ScreenSpec(ActivityName.MAIN)
     object BiometricLock: ScreenSpec(ActivityName.MAIN)
+    object NdkBasics: ScreenSpec(ActivityName.MAIN)
 
 }

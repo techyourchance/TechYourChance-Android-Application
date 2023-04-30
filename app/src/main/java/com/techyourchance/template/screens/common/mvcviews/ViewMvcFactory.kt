@@ -7,6 +7,8 @@ import com.techyourchance.template.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.template.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.template.screens.home.HomeViewMvc
 import com.techyourchance.template.screens.home.HomeViewMvcImpl
+import com.techyourchance.template.screens.ndkbasics.NdkBasicsViewMvc
+import com.techyourchance.template.screens.ndkbasics.NdkBasicsViewMvcImpl
 import com.techyourchance.template.screens.questiondetails.QuestionDetailsViewMvc
 import com.techyourchance.template.screens.questiondetails.QuestionDetailsViewMvcImpl
 import com.techyourchance.template.screens.questionslist.QuestionsListViewMvc
@@ -37,5 +39,9 @@ class ViewMvcFactory @Inject constructor(
 
     fun newBiometricLockViewMvc(container: ViewGroup?): BiometricAuthViewMvc {
         return BiometricAuthViewMvcImpl(inflater, container)
+    }
+
+    fun newNdkBasicsViewMvc(container: ViewGroup?): NdkBasicsViewMvc {
+        return NdkBasicsViewMvcImpl(inflater, container)
     }
 }

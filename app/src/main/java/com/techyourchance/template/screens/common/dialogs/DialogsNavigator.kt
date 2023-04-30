@@ -138,4 +138,12 @@ class DialogsNavigator(
             id
         )
     }
+
+    fun showInvalidFibonacciArgumentDialogDialog(argument: Int, id: String?) {
+        showInfoDialog(
+            getString(R.string.ndk_basics_invalid_argument_error, argument),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
 }

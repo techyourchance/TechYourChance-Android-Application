@@ -10,6 +10,7 @@ import com.techyourchance.template.common.eventbus.EventBusSubscriber
 import com.techyourchance.template.common.logs.MyLogger
 import com.techyourchance.template.common.settings.SettingsManager
 import com.techyourchance.template.common.toasts.ToastsHelper
+import com.techyourchance.template.ndk.NdkManager
 import com.techyourchance.template.networking.StackoverflowApi
 import dagger.Module
 import dagger.Provides
@@ -103,4 +104,9 @@ class ApplicationModule(private val application: Application) {
         return BiometricManager.from(application)
     }
 
+    @Provides
+    @ApplicationScope
+    fun ndkManager(): NdkManager {
+        return NdkManager()
+    }
 }

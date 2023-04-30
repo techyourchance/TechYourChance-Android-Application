@@ -43,6 +43,10 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 getString(R.string.from_home_destination_biometric_auth),
                 ScreenSpec.BiometricLock
             ),
+            FromHomeDestination(
+                getString(R.string.from_home_destination_ndk_basics),
+                ScreenSpec.NdkBasics
+            ),
         )
     }
 

@@ -7,6 +7,7 @@ import com.techyourchance.template.screens.common.dialogs.prompt.PromptDialog
 import com.techyourchance.template.screens.debugdrawer.DebugDrawerFragment
 import com.techyourchance.template.screens.home.HomeFragment
 import com.techyourchance.template.screens.main.MainActivity
+import com.techyourchance.template.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.template.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.template.screens.questionslist.QuestionsListFragment
 import dagger.Subcomponent
@@ -23,6 +24,7 @@ interface ControllerComponent {
     fun inject(fragment: QuestionsListFragment)
     fun inject(fragment: QuestionDetailsFragment)
     fun inject(fragment: BiometricAuthFragment)
+    fun inject(fragment: NdkBasicsFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

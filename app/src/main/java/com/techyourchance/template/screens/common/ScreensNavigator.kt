@@ -14,6 +14,7 @@ import com.techyourchance.template.screens.common.activities.BaseActivity
 import com.techyourchance.template.screens.common.fragments.DummyRootFragment
 import com.techyourchance.template.screens.home.HomeFragment
 import com.techyourchance.template.screens.main.MainActivity
+import com.techyourchance.template.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.template.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.template.screens.questionslist.QuestionsListFragment
 import timber.log.Timber
@@ -71,12 +72,14 @@ class ScreensNavigator constructor(
             }
         } else {
             // change just Fragment
-            when(screenSpec) {
-                is ScreenSpec.Home -> toFragment(HomeFragment.newInstance())
-                is ScreenSpec.StackOverflowQuestionsList -> toFragment(QuestionsListFragment.newInstance())
-                is ScreenSpec.StackOverflowQuestionDetails -> toFragment(QuestionDetailsFragment.newInstance(screenSpec))
-                is ScreenSpec.BiometricLock -> toFragment(BiometricAuthFragment.newInstance())
+            val nextFragment = when(screenSpec) {
+                is ScreenSpec.Home -> HomeFragment.newInstance()
+                is ScreenSpec.StackOverflowQuestionsList -> QuestionsListFragment.newInstance()
+                is ScreenSpec.StackOverflowQuestionDetails -> QuestionDetailsFragment.newInstance(screenSpec)
+                is ScreenSpec.BiometricLock -> BiometricAuthFragment.newInstance()
+                is ScreenSpec.NdkBasics -> NdkBasicsFragment.newInstance()
             }
+            toFragment(nextFragment)
         }
     }
 

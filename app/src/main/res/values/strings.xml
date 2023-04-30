@@ -7,6 +7,7 @@
 
     <string name="from_home_destination_stackoverflow">StackOverflow browser</string>
     <string name="from_home_destination_biometric_auth">Biometric authentication</string>
+    <string name="from_home_destination_ndk_basics">NDK basics</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
@@ -19,5 +20,8 @@
     <string name="biometric_auth_cancel">Biometric auth cancelled</string>
     <string name="biometric_auth_error">Biometric auth failed: %1$s (error code %2$d)</string>
     <string name="biometric_auth_success">Biometric auth succeeded</string>
+
+    <string name="ndk_basics_button_caption">Compute Fibonacci</string>
+    <string name="ndk_basics_invalid_argument_error">Invalid argument for Fibonacci: %1$d</string>
 
 </resources>
