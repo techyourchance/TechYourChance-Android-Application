@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.techyourchance.template.screens.common.toolbar.MyToolbar
+    <com.techyourchance.android.screens.common.toolbar.MyToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"/>

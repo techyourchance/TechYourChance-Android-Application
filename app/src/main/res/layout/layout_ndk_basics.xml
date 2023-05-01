@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.techyourchance.template.screens.common.toolbar.MyToolbar
+    <com.techyourchance.android.screens.common.toolbar.MyToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
@@ -28,7 +28,7 @@
         android:inputType="number"
         />
 
-    <com.techyourchance.template.screens.common.widgets.MyButton
+    <com.techyourchance.android.screens.common.widgets.MyButton
         android:id="@+id/btnCompute"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

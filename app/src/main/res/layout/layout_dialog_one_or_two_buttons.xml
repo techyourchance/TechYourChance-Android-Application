@@ -33,7 +33,7 @@
         style="@style/TextViewDialogMessage"
         tools:text="Dialog message very very very very very very very very very very very very long"/>
 
-    <com.techyourchance.template.screens.common.widgets.MyButton
+    <com.techyourchance.android.screens.common.widgets.MyButton
         android:id="@+id/btnPositive"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         tools:text="Positive"/>
 
 
-    <com.techyourchance.template.screens.common.widgets.MyButton
+    <com.techyourchance.android.screens.common.widgets.MyButton
         android:id="@+id/btnNegative"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
