@@ -10,6 +10,7 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object BiometricLock: ScreenSpec(ActivityName.MAIN)
     object NdkBasics: ScreenSpec(ActivityName.MAIN)
     object ForegroundService: ScreenSpec(ActivityName.MAIN)
+    object WorkManager: ScreenSpec(ActivityName.MAIN)
 
     companion object {
         /**

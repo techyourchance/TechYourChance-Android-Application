@@ -11,6 +11,7 @@ import com.techyourchance.android.screens.main.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
+import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import dagger.Subcomponent
 
 @Subcomponent(modules = [ControllerModule::class, ViewMvcModule::class])
@@ -27,6 +28,7 @@ interface ControllerComponent {
     fun inject(fragment: BiometricAuthFragment)
     fun inject(fragment: NdkBasicsFragment)
     fun inject(fragment: ForegroundServiceFragment)
+    fun inject(fragment: WorkManagerFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

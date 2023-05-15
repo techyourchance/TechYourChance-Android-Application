@@ -6,10 +6,11 @@
     <string name="operation_cancelled">Operation cancelled</string>
     <string name="close">Close</string>
 
-    <string name="from_home_destination_stackoverflow">StackOverflow browser</string>
+    <string name="from_home_destination_stackoverflow">StackOverflow client</string>
     <string name="from_home_destination_biometric_auth">Biometric authentication</string>
     <string name="from_home_destination_ndk_basics">NDK basics</string>
     <string name="from_home_destination_foreground_service">Foreground service</string>
+    <string name="from_home_destination_work_manager">WorkManager</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
@@ -29,11 +30,22 @@
     <string name="foreground_service_start">Start foreground service</string>
     <string name="foreground_service_stop">Stop foreground service</string>
     <string name="foreground_service_title">TechYourChance</string>
-    <string name="foreground_service_text">Foreground service demonstration</string>
+    <string name="foreground_service_text">Foreground Service notification</string>
     <string name="foreground_service_channel_name">TechYourChance notification channel</string>
     <string name="foreground_service_without_notification_dialog_message">Foreground service will be launched without a corresponding notification</string>
     <string name="foreground_service_idle">Foreground service wasn\'t started</string>
     <string name="foreground_service_started">Foreground service is running for: %1$ds </string>
     <string name="foreground_service_stopped">Foreground service was stopped</string>
+
+    <string name="work_manager_expedited">Expedited work</string>
+    <string name="work_manager_worker_start">Start worker</string>
+    <string name="work_manager_worker_stop">Stop worker</string>
+    <string name="work_manager_worker_idle">Worker wasn\'t started</string>
+    <string name="work_manager_worker_working">Worker is working. Retry: %1$d/%2$d </string>
+    <string name="work_manager_worker_stopped">Worker was stopped</string>
+    <string name="work_manager_worker_succeeded">Worker succeeded!</string>
+    <string name="work_manager_channel_name">TechYourChance notification channel</string>
+    <string name="work_manager_notification_title">TechYourChance</string>
+    <string name="work_manager_notification_text">WorkManager notification</string>
 
 </resources>

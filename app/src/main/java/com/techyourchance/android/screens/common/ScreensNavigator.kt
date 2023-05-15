@@ -18,6 +18,7 @@ import com.techyourchance.android.screens.main.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
+import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
 
 
@@ -80,6 +81,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.BiometricLock -> BiometricAuthFragment.newInstance()
                 is ScreenSpec.NdkBasics -> NdkBasicsFragment.newInstance()
                 is ScreenSpec.ForegroundService -> ForegroundServiceFragment.newInstance()
+                is ScreenSpec.WorkManager -> WorkManagerFragment.newInstance()
             }
             toFragment(nextFragment)
         }

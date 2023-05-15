@@ -6,7 +6,10 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
 import androidx.biometric.BiometricManager
+import androidx.work.WorkManager
+import com.google.gson.Gson
 import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
+import com.techyourchance.android.backgroundwork.workmanager.MyWorkerManager
 import com.techyourchance.android.common.Constants
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
@@ -59,6 +62,12 @@ class ApplicationModule(private val application: Application) {
     @Provides
     fun toastsHelper(application: Application): ToastsHelper {
         return ToastsHelper(application)
+    }
+
+    @Provides
+    @ApplicationScope
+    fun gson(): Gson {
+        return Gson()
     }
 
     @Provides
@@ -116,6 +125,17 @@ class ApplicationModule(private val application: Application) {
     @ApplicationScope
     fun foregroundServiceStateManager(): ForegroundServiceStateManager {
         return ForegroundServiceStateManager()
+    }
+
+    @Provides
+    fun workManager(application: Application): WorkManager {
+        return WorkManager.getInstance(application)
+    }
+
+    @Provides
+    @ApplicationScope
+    fun myWorkerManager(workManager: WorkManager, settingsManager: SettingsManager): MyWorkerManager {
+        return MyWorkerManager(workManager, settingsManager)
     }
 
     @Provides

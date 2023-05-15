@@ -51,6 +51,10 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 getString(R.string.from_home_destination_foreground_service),
                 ScreenSpec.ForegroundService
             ),
+            FromHomeDestination(
+                getString(R.string.from_home_destination_work_manager),
+                ScreenSpec.WorkManager
+            ),
         )
     }
 
