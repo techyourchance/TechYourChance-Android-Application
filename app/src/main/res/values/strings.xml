@@ -3,11 +3,13 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="operation_cancelled">Operation cancelled</string>
     <string name="close">Close</string>
 
     <string name="from_home_destination_stackoverflow">StackOverflow browser</string>
     <string name="from_home_destination_biometric_auth">Biometric authentication</string>
     <string name="from_home_destination_ndk_basics">NDK basics</string>
+    <string name="from_home_destination_foreground_service">Foreground service</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
@@ -23,5 +25,15 @@
 
     <string name="ndk_basics_button_caption">Compute Fibonacci</string>
     <string name="ndk_basics_invalid_argument_error">Invalid argument for Fibonacci: %1$d</string>
+
+    <string name="foreground_service_start">Start foreground service</string>
+    <string name="foreground_service_stop">Stop foreground service</string>
+    <string name="foreground_service_title">TechYourChance</string>
+    <string name="foreground_service_text">Foreground service demonstration</string>
+    <string name="foreground_service_channel_name">TechYourChance notification channel</string>
+    <string name="foreground_service_without_notification_dialog_message">Foreground service will be launched without a corresponding notification</string>
+    <string name="foreground_service_idle">Foreground service wasn\'t started</string>
+    <string name="foreground_service_started">Foreground service is running for: %1$ds </string>
+    <string name="foreground_service_stopped">Foreground service was stopped</string>
 
 </resources>

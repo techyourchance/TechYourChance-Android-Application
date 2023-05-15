@@ -5,6 +5,7 @@ import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.dialogs.info.InfoDialog
 import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialog
 import com.techyourchance.android.screens.debugdrawer.DebugDrawerFragment
+import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
 import com.techyourchance.android.screens.home.HomeFragment
 import com.techyourchance.android.screens.main.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
@@ -25,6 +26,7 @@ interface ControllerComponent {
     fun inject(fragment: QuestionDetailsFragment)
     fun inject(fragment: BiometricAuthFragment)
     fun inject(fragment: NdkBasicsFragment)
+    fun inject(fragment: ForegroundServiceFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

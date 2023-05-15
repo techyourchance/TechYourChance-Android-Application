@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import com.techyourchance.android.common.imageloader.ImageLoader
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
+import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
+import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvcImpl
 import com.techyourchance.android.screens.home.HomeViewMvc
 import com.techyourchance.android.screens.home.HomeViewMvcImpl
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsViewMvc
@@ -43,5 +45,9 @@ class ViewMvcFactory @Inject constructor(
 
     fun newNdkBasicsViewMvc(container: ViewGroup?): NdkBasicsViewMvc {
         return NdkBasicsViewMvcImpl(inflater, container)
+    }
+
+    fun newForegroundServiceViewMvc(container: ViewGroup?): ForegroundServiceViewMvc {
+        return ForegroundServiceViewMvcImpl(inflater, container)
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.ContentResolver
 import android.content.res.Resources
 import androidx.biometric.BiometricManager
+import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
 import com.techyourchance.android.common.Constants
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
@@ -108,5 +109,11 @@ class ApplicationModule(private val application: Application) {
     @ApplicationScope
     fun ndkManager(): NdkManager {
         return NdkManager()
+    }
+
+    @Provides
+    @ApplicationScope
+    fun foregroundServiceStateManager(): ForegroundServiceStateManager {
+        return ForegroundServiceStateManager()
     }
 }

@@ -9,7 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.techyourchance.android.BuildConfig
 import com.techyourchance.android.R
 import com.techyourchance.android.common.logs.MyLogger
-import com.techyourchance.android.common.permissions.PermissionsHelper
+import com.techyourchance.android.common.permissions.PermissionsHelperDelegate
 import com.techyourchance.android.common.toasts.ToastsHelper
 import com.techyourchance.android.screens.common.ActivityName
 import com.techyourchance.android.screens.common.ScreenSpec
@@ -25,7 +25,7 @@ class MainActivity : BaseActivity() {
 
     @Inject lateinit var screensNavigator: ScreensNavigator
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
-    @Inject lateinit var permissionsHelper: PermissionsHelper
+    @Inject lateinit var permissionsHelperDelegate: PermissionsHelperDelegate
     @Inject lateinit var toastsHelper: ToastsHelper
     @Inject lateinit var dialogsNavigator: DialogsNavigator
 
@@ -97,7 +97,7 @@ class MainActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // must delegate to PermissionsHelper because this object functions as a central "hub"
         // for permissions management in the scope of this Activity
-        permissionsHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionsHelperDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     companion object {

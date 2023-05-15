@@ -146,4 +146,12 @@ class DialogsNavigator(
             id
         )
     }
+
+    fun showForegroundServiceWithoutNotificationInfoDialog(id: String?) {
+        showInfoDialog(
+            getString(R.string.foreground_service_without_notification_dialog_message),
+            getString(R.string.server_error_dialog_button_caption),
+            id
+        )
+    }
 }

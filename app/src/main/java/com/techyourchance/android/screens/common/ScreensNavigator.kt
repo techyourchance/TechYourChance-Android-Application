@@ -12,6 +12,7 @@ import com.techyourchance.android.common.Observable
 import com.techyourchance.android.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.android.screens.common.activities.BaseActivity
 import com.techyourchance.android.screens.common.fragments.DummyRootFragment
+import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
 import com.techyourchance.android.screens.home.HomeFragment
 import com.techyourchance.android.screens.main.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
@@ -78,6 +79,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.StackOverflowQuestionDetails -> QuestionDetailsFragment.newInstance(screenSpec)
                 is ScreenSpec.BiometricLock -> BiometricAuthFragment.newInstance()
                 is ScreenSpec.NdkBasics -> NdkBasicsFragment.newInstance()
+                is ScreenSpec.ForegroundService -> ForegroundServiceFragment.newInstance()
             }
             toFragment(nextFragment)
         }

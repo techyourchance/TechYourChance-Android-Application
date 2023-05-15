@@ -10,7 +10,10 @@ import com.techyourchance.android.R
 import com.techyourchance.android.common.imageloader.ImageLoader
 import com.techyourchance.android.common.imageloader.ImageLoaderImpl
 import com.techyourchance.android.common.permissions.PermissionsHelper
+import com.techyourchance.android.common.permissions.PermissionsHelperDelegate
+import com.techyourchance.android.common.permissions.PermissionsHelperImpl
 import com.techyourchance.android.screens.common.ScreensNavigator
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
@@ -44,8 +47,18 @@ class ActivityModule(private val activity: AppCompatActivity) {
 
     @Provides
     @ActivityScope
-    fun permissionsHelper(activity: Activity): PermissionsHelper {
-        return PermissionsHelper(activity)
+    internal fun permissionsHelperImpl(activity: Activity): PermissionsHelperImpl {
+        return PermissionsHelperImpl(activity)
+    }
+
+    @Provides
+    fun permissionsHelper(permissionsHelperImpl: PermissionsHelperImpl): PermissionsHelper {
+        return permissionsHelperImpl
+    }
+
+    @Provides
+    fun permissionsHelperDelegate(permissionsHelperImpl: PermissionsHelperImpl): PermissionsHelperDelegate {
+        return permissionsHelperImpl
     }
 
     @Provides
