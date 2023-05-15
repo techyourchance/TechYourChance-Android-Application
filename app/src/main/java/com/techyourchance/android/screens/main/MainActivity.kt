@@ -60,7 +60,7 @@ class MainActivity : BaseActivity() {
         addDebugDrawerIfNeeded()
 
         if (savedInstanceState == null) {
-            var startingScreen = intent.getSerializableExtra(INTENT_EXTRA_SCREEN) as ScreenSpec?
+            var startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
             if (startingScreen == null) {
                 startingScreen = ScreenSpec.Home
             }
@@ -77,6 +77,17 @@ class MainActivity : BaseActivity() {
                 R.id.fragmentContainerViewDebugDrawer,
                 DebugDrawerFragment.newInstance()
             ).commit()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        MyLogger.i("onNewIntent()")
+        super.onNewIntent(intent)
+        if (intent != null) {
+            val startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
+            if (startingScreen != null) {
+                screensNavigator.toScreen(startingScreen)
+            }
         }
     }
 
@@ -103,12 +114,10 @@ class MainActivity : BaseActivity() {
     companion object {
         private const val TAG = "MainActivity"
 
-        private const val INTENT_EXTRA_SCREEN = "INTENT_EXTRA_SCREEN"
-
         fun start(context: Context, screenSpec: ScreenSpec) {
             MyLogger.i(TAG, "start() $screenSpec")
             val intent = Intent(context, MainActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_SCREEN, screenSpec as Serializable)
+            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
             context.startActivity(intent)
         }
 
@@ -116,7 +125,7 @@ class MainActivity : BaseActivity() {
             MyLogger.i(TAG, "start() $screenSpec")
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(INTENT_EXTRA_SCREEN, screenSpec as Serializable)
+            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
             context.startActivity(intent)
         }
     }

@@ -11,4 +11,11 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object NdkBasics: ScreenSpec(ActivityName.MAIN)
     object ForegroundService: ScreenSpec(ActivityName.MAIN)
 
+    companion object {
+        /**
+         * Intent extra key for Serialized ScreenSpec's
+         */
+        const val INTENT_EXTRA_SCREEN_SPEC = "INTENT_EXTRA_SCREEN_SPEC"
+    }
+
 }

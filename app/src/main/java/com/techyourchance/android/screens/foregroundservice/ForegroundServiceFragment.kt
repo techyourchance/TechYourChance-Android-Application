@@ -13,6 +13,7 @@ import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.permissions.MyPermission
 import com.techyourchance.android.common.permissions.PermissionsHelper
 import com.techyourchance.android.common.toasts.ToastsHelper
+import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.dialogs.info.InfoDialogDismissedEvent
@@ -118,7 +119,7 @@ class ForegroundServiceFragment : BaseFragment(),
     }
 
     private fun startForegroundService() {
-        ForegroundService.startService(requireContext())
+        ForegroundService.startService(requireContext(), ScreenSpec.ForegroundService)
     }
 
     private fun stopForegroundService() {

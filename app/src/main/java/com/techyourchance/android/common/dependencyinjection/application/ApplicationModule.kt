@@ -1,7 +1,9 @@
 package com.techyourchance.android.common.dependencyinjection.application
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.ContentResolver
+import android.content.Context
 import android.content.res.Resources
 import androidx.biometric.BiometricManager
 import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
@@ -22,7 +24,6 @@ import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
 
 @Module
 class ApplicationModule(private val application: Application) {
@@ -115,5 +116,10 @@ class ApplicationModule(private val application: Application) {
     @ApplicationScope
     fun foregroundServiceStateManager(): ForegroundServiceStateManager {
         return ForegroundServiceStateManager()
+    }
+
+    @Provides
+    fun notificationManager(application: Application): NotificationManager {
+        return application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }
