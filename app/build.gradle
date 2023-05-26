@@ -12,12 +12,43 @@ android {
         versionName "0.1"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            def projectPropsFile = rootProject.file("release.properties")
+            if (projectPropsFile.exists()) {
+                Properties props = new Properties()
+                props.load(new FileInputStream(projectPropsFile))
+
+                storeFile file(props['KEYSTORE_FILE'])
+                storePassword props['STORE_PASSWORD']
+                keyAlias props['KEY_ALIAS']
+                keyPassword props['KEY_PASSWORD']
+            }
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+
+        applicationVariants.all { variant ->
+            def buildTypeSuffix = variant.name.toLowerCase().contains("debug") ? " Debug" : ""
+            mergedFlavor.manifestPlaceholders = [appName: "TechYourChance${buildTypeSuffix}"]
+            variant.outputs.all {
+                outputFileName = "tyc-${variant.name}-${variant.versionCode}-v${variant.versionName}.apk"
+            }
+        }
+
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
