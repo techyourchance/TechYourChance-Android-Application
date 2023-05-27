@@ -4,6 +4,9 @@ import androidx.work.*
 import com.techyourchance.android.common.Observable
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.settings.SettingsManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -81,7 +84,13 @@ class MyWorkerManager(
             } else {
                 val workInfo = workInfos[0]
                 val myWorkerState = when (workInfo.state) {
-                    WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED, WorkInfo.State.RUNNING -> {
+                    WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED -> {
+                        MyWorkerState.Waiting(
+                            workInfo.runAttemptCount,
+                            settingsManager.myWorkerConfig().value,
+                        )
+                    }
+                    WorkInfo.State.RUNNING -> {
                         MyWorkerState.Working(
                             workInfo.runAttemptCount,
                             settingsManager.myWorkerConfig().value,
@@ -103,7 +112,9 @@ class MyWorkerManager(
                 return
             }
         }
-        listeners.map { it.onMyWorkerStateChanged(newState) }
+        GlobalScope.launch(Dispatchers.Main.immediate) {
+            listeners.map { it.onMyWorkerStateChanged(newState) }
+        }
     }
 
     companion object {

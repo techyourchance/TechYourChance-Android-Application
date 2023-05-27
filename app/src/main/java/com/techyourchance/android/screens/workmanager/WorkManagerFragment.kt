@@ -59,12 +59,15 @@ class WorkManagerFragment : BaseFragment(),
     }
 
     override fun onToggleWorkClicked() {
-        if (currentState !is MyWorkerState.Working) {
-            myWorkerManager.startWorker(
-                MyWorkerConfig(viewMvc.getIsNetworkConstrained(), viewMvc.getIsExpedited(), MAX_RETRIES, BACKOFF_DURATION_SEC)
-            )
-        } else {
-            myWorkerManager.stopWorker()
+        when(currentState) {
+            is MyWorkerState.Working, is MyWorkerState.Waiting -> {
+                myWorkerManager.stopWorker()
+            }
+            else -> {
+                myWorkerManager.startWorker(
+                    MyWorkerConfig(viewMvc.getIsNetworkConstrained(), viewMvc.getIsExpedited(), MAX_RETRIES, BACKOFF_DURATION_SEC)
+                )
+            }
         }
     }
 

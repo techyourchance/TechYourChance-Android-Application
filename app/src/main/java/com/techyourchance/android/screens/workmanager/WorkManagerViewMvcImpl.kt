@@ -46,6 +46,13 @@ class WorkManagerViewMvcImpl(
                 checkNetworkConstrained.isEnabled = true
                 checkExpedited.isEnabled = true
             }
+            is MyWorkerState.Waiting -> {btnToggleWork.text = getString(R.string.work_manager_worker_stop)
+                txtWorkState.text = getString(R.string.work_manager_worker_waiting)
+                checkNetworkConstrained.isEnabled = false
+                checkNetworkConstrained.isChecked = state.myWorkerConfig.isNetworkConstrained
+                checkExpedited.isEnabled = false
+                checkExpedited.isChecked = state.myWorkerConfig.isExpedited
+            }
             is MyWorkerState.Working -> {
                 btnToggleWork.text = getString(R.string.work_manager_worker_stop)
                 txtWorkState.text = getString(

@@ -43,6 +43,7 @@
     <string name="work_manager_worker_stop">Stop worker</string>
     <string name="work_manager_worker_idle">Worker wasn\'t started</string>
     <string name="work_manager_worker_working">Worker is working. Retry: %1$d/%2$d </string>
+    <string name="work_manager_worker_waiting">Waiting for the next retry</string>
     <string name="work_manager_worker_stopped">Worker was stopped</string>
     <string name="work_manager_worker_succeeded">Worker succeeded!</string>
     <string name="work_manager_channel_name">TechYourChance notification channel</string>
