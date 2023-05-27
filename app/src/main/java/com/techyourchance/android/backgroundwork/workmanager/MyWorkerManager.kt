@@ -41,8 +41,17 @@ class MyWorkerManager(
             .putInt(MyWorker.DATA_KEY_MAX_RETRIES, myWorkerConfig.maxRetries)
             .build()
 
+        val constraints = Constraints.Builder()
+            .also {
+                if (myWorkerConfig.isNetworkConstrained) {
+                    it.setRequiredNetworkType(NetworkType.CONNECTED)
+                }
+            }
+            .build()
+
         val workRequest = OneTimeWorkRequestBuilder<MyWorker>()
             .setInputData(data)
+            .setConstraints(constraints)
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
                 myWorkerConfig.backoffSeconds.toLong(),

@@ -16,6 +16,25 @@
         />
 
     <CheckBox
+        android:id="@+id/checkNetworkConstrained"
+        android:layout_width="@dimen/checkbox_size_standard"
+        android:layout_height="@dimen/checkbox_size_standard"
+        app:layout_constraintBottom_toTopOf="@id/checkExpedited"
+        app:layout_constraintStart_toStartOf="@id/checkExpedited"
+        android:layout_marginBottom="20dp"
+        android:buttonTint="@color/main"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/checkNetworkConstrained"
+        app:layout_constraintStart_toEndOf="@id/checkNetworkConstrained"
+        android:layout_marginStart="5dp"
+        android:text="@string/work_manager_network_constrained"
+        />
+
+    <CheckBox
         android:id="@+id/checkExpedited"
         android:layout_width="@dimen/checkbox_size_standard"
         android:layout_height="@dimen/checkbox_size_standard"

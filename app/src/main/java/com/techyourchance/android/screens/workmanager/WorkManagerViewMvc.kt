@@ -11,5 +11,6 @@ abstract class WorkManagerViewMvc(): BaseObservableViewMvc<WorkManagerViewMvc.Li
     }
 
     abstract fun getIsExpedited(): Boolean
+    abstract fun getIsNetworkConstrained(): Boolean
     abstract fun bindWorkerState(state: MyWorkerState)
 }

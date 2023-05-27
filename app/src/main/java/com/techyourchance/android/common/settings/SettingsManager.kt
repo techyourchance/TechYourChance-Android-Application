@@ -19,7 +19,7 @@ class SettingsManager(
     }
 
     fun myWorkerConfig(): SettingEntry<MyWorkerConfig> {
-        return object: SettingEntry<MyWorkerConfig>(KEY_WORKER_CONFIG, MyWorkerConfig(false, 0, 0)) {
+        return object: SettingEntry<MyWorkerConfig>(KEY_WORKER_CONFIG, MyWorkerConfig.NULL_CONFIG) {
 
             private val backingEntry = settingsEntriesFactory.getSettingEntry(String::class.javaObjectType, KEY_WORKER_CONFIG, "")
 

@@ -37,6 +37,7 @@
     <string name="foreground_service_started">Foreground service is running for: %1$ds </string>
     <string name="foreground_service_stopped">Foreground service was stopped</string>
 
+    <string name="work_manager_network_constrained">Requires network</string>
     <string name="work_manager_expedited">Expedited work</string>
     <string name="work_manager_worker_start">Start worker</string>
     <string name="work_manager_worker_stop">Stop worker</string>
