@@ -5,6 +5,8 @@
     <string name="cancel">Cancel</string>
     <string name="operation_cancelled">Operation cancelled</string>
     <string name="close">Close</string>
+    <string name="plus">Plus</string>
+    <string name="minus">Minus</string>
 
     <string name="from_home_destination_stackoverflow">StackOverflow client</string>
     <string name="from_home_destination_biometric_auth">Biometric authentication</string>
@@ -50,5 +52,7 @@
     <string name="work_manager_channel_name">TechYourChance notification channel</string>
     <string name="work_manager_notification_title">TechYourChance</string>
     <string name="work_manager_notification_text">WorkManager notification</string>
+
+    <string name="animations_gradient_text">Gradient text</string>
 
 </resources>
