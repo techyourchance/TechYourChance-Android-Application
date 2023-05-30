@@ -3,6 +3,8 @@ package com.techyourchance.android.screens.common.mvcviews
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.techyourchance.android.common.imageloader.ImageLoader
+import com.techyourchance.android.screens.animations.AnimationsViewMvc
+import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
@@ -55,5 +57,9 @@ class ViewMvcFactory @Inject constructor(
 
     fun newWorkManagerViewMvc(container: ViewGroup?): WorkManagerViewMvc {
         return WorkManagerViewMvcImpl(inflater, container)
+    }
+
+    fun newAnimationsViewMvc(container: ViewGroup?): AnimationsViewMvc {
+        return AnimationsViewMvcImpl(inflater, container)
     }
 }

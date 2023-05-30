@@ -11,6 +11,7 @@
     <string name="from_home_destination_ndk_basics">NDK basics</string>
     <string name="from_home_destination_foreground_service">Foreground service</string>
     <string name="from_home_destination_work_manager">WorkManager</string>
+    <string name="from_home_destination_animations">Animations</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>

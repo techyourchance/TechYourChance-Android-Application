@@ -9,6 +9,7 @@ import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.techyourchance.android.common.Observable
+import com.techyourchance.android.screens.animations.AnimationsFragment
 import com.techyourchance.android.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.android.screens.common.activities.BaseActivity
 import com.techyourchance.android.screens.common.fragments.DummyRootFragment
@@ -82,6 +83,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.NdkBasics -> NdkBasicsFragment.newInstance()
                 is ScreenSpec.ForegroundService -> ForegroundServiceFragment.newInstance()
                 is ScreenSpec.WorkManager -> WorkManagerFragment.newInstance()
+                is ScreenSpec.Animations -> AnimationsFragment.newInstance()
             }
             toFragment(nextFragment)
         }

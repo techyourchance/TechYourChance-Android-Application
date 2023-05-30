@@ -13,6 +13,9 @@
     <color name="yellow" type="color">#E2FFA2</color>
     <color name="green" type="color">#BAFFA2</color>
     <color name="blue" type="color">#22CAFF</color>
+    <color name="blue_dark" type="color">#2238FF</color>
+    <color name="orange" type="color">#FF9800</color>
+    <color name="pink" type="color">#F26CBA</color>
     <color name="inactive" type="color">#666666</color>
     <color name="transparent" type="color">#00FFFFFF</color>
 
