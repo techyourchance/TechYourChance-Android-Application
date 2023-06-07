@@ -68,4 +68,9 @@ class VisitCardView @JvmOverloads constructor(
         rectF.set(rectangleX, rectangleCenterY + rectangleDistance / 2, rectangleX + bottomTextRectangleWidth, rectangleCenterY + textRectangleHeight + rectangleDistance / 2)
         canvas.drawRoundRect(rectF, circleRadius, circleRadius, paint)
     }
+
+    fun setCardScaleFactor(scaleFactor: Float) {
+        scaleX = scaleFactor
+        scaleY = scaleFactor
+    }
 }
