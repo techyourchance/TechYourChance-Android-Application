@@ -7,8 +7,12 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
+import android.view.animation.BounceInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
+import com.techyourchance.android.common.logs.MyLogger
 import kotlin.math.sqrt
 
 class StackedCardsView @JvmOverloads constructor(
@@ -61,7 +65,7 @@ class StackedCardsView @JvmOverloads constructor(
         for (i in 0 until numCards) {
             val cardColor = colors[i % colors.size]
             val cardView = CardView(context, cardColor = cardColor)
-            cards.add(MyCard(i, cardView))
+            cards.add(MyCard(i, cardView, false))
         }
         updateCards(shouldAnimate = false)
     }
@@ -86,20 +90,39 @@ class StackedCardsView @JvmOverloads constructor(
                     val startTranslationX = translationX
                     val startTranslationY = translationY
                     val startRotation = rotation
-                    val animator = ValueAnimator.ofFloat(0f, 1f)
-                    animator.duration = SNAP_ANIMATION_DURATION_MS
+                    val animator = ValueAnimator.ofFloat(0f, 1f).also {
+                        it.duration = SNAP_ANIMATION_DURATION_MS
+                    }
+                    val interpolator = DecelerateInterpolator()
 
                     animator.addUpdateListener {
+                        var xVelocity = 0f
+                        var yVelocity = 0f
+
+                        velocityTracker?.let { vt ->
+                            xVelocity = vt.xVelocity
+                            yVelocity = vt.yVelocity
+                        } ?: return@addUpdateListener
+
                         val fraction = it.animatedValue as Float
+                        val flingEndX = startTranslationX + xVelocity
+                        val flingEndY = startTranslationY + yVelocity
+
                         scaleX = startScaleX + (cardScaleFactorForIndex - startScaleX) * fraction
                         scaleY = startScaleY + (cardScaleFactorForIndex - startScaleY) * fraction
                         translationX = startTranslationX + (cardTranslationXForIndex - startTranslationX) * fraction
                         translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction
                         rotation = startRotation * (1 - fraction)
-                    }
 
+                        if (card.isRepositioning) {
+                            val interpolation = interpolator.getInterpolation(fraction)
+                            MyLogger.i("interpolation: $interpolation")
+                            translationX += xVelocity * (1 - interpolation)
+                            translationY += yVelocity * (1 - interpolation)
+                        }
+                    }
                     animator.doOnEnd {
-                        // TODO: remove if not needed
+                        cardFinishedReposition(card)
                     }
                     animator.start()
                 } else {
@@ -117,13 +140,15 @@ class StackedCardsView @JvmOverloads constructor(
                         firstDrag = true
                         lastActionDownX = event.rawX
                         lastActionDownY = event.rawY
-                        velocityTracker = VelocityTracker.obtain()
-                        velocityTracker?.addMovement(event)
+                        velocityTracker?.recycle()
+                        velocityTracker = VelocityTracker.obtain().also {
+                            it.addMovement(event)
+                        }
                     }
                     MotionEvent.ACTION_MOVE -> {
                         velocityTracker?.apply {
                             addMovement(event)
-                            computeCurrentVelocity(1000) // Units are in pixels per second
+                            computeCurrentVelocity(VELOCITY_COMPUTATION_UNIT) // Units are in pixels per second
                         }
                         handleCardDrag(card, event, cardTranslationXForIndex, cardTranslationYForIndex)
                     }
@@ -140,6 +165,14 @@ class StackedCardsView @JvmOverloads constructor(
             addView(it.view)
         }
 
+    }
+
+    private fun cardStartedReposition(repositionedCard: MyCard) {
+        repositionedCard.isRepositioning = true
+    }
+
+    private fun cardFinishedReposition(repositionedCard: MyCard) {
+        repositionedCard.isRepositioning = false
     }
 
     private fun handleCardDrag(card: MyCard, event: MotionEvent, originalX: Float, originalY: Float) {
@@ -175,8 +208,6 @@ class StackedCardsView @JvmOverloads constructor(
         velocityTracker?.let { vt ->
             xVelocity = vt.xVelocity
             yVelocity = vt.yVelocity
-            vt.recycle()
-            velocityTracker = null
         } ?: return
 
         val cardView = card.view
@@ -185,6 +216,7 @@ class StackedCardsView @JvmOverloads constructor(
 
         if (speed > VELOCITY_THRESHOLD) {
             transferCardToBack(card)
+            cardStartedReposition(card)
         } else {
             updateCards(shouldAnimate = true)
         }
@@ -192,16 +224,16 @@ class StackedCardsView @JvmOverloads constructor(
 
     private fun transferCardToBack(transferredCard: MyCard) {
         val transferredCardIndex = transferredCard.stackIndex
-        cards.replaceAll { card ->
-            return@replaceAll when {
+        cards.forEach { card ->
+            when {
                 card.stackIndex < transferredCardIndex -> {
-                    card
+                    // no-op
                 }
                 card.stackIndex == transferredCardIndex -> {
-                    card.copy(stackIndex = numCards - 1)
+                    card.stackIndex = numCards - 1
                 }
                 else -> {
-                    card.copy(stackIndex = card.stackIndex - 1)
+                    card.stackIndex = card.stackIndex - 1
                 }
             }
         }
@@ -219,9 +251,14 @@ class StackedCardsView @JvmOverloads constructor(
     companion object {
         private const val NUM_CARDS_DEFAULT = 4
         private const val SNAP_ANIMATION_DURATION_MS = 500L
-        private const val VELOCITY_THRESHOLD = 1000f
+        private const val VELOCITY_COMPUTATION_UNIT = 100
+        private const val VELOCITY_THRESHOLD = 100f
     }
 
-    private data class MyCard(val stackIndex: Int, val view: CardView)
+    private class MyCard(
+        var stackIndex: Int,
+        var view: CardView,
+        var isRepositioning: Boolean
+    )
 
 }
