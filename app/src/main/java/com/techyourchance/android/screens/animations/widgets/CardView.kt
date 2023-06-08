@@ -10,7 +10,7 @@ import android.view.View
 import androidx.core.graphics.ColorUtils
 import kotlin.math.min
 
-class VisitCardView @JvmOverloads constructor(
+class CardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
