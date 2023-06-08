@@ -7,9 +7,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
-import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.techyourchance.android.common.logs.MyLogger
@@ -27,9 +25,6 @@ class StackedCardsView @JvmOverloads constructor(
     private var cardShift: Float = 0f
 
     private var velocityTracker: VelocityTracker? = null
-    private var firstDrag = false
-    private var lastActionDownX: Float = 0f
-    private var lastActionDownY: Float = 0f
     private var topCardWidth: Float = 0f
     private var topCardHeight: Float = 0f
     private var topCardTranslationX: Float = 0f
@@ -42,6 +37,10 @@ class StackedCardsView @JvmOverloads constructor(
         Color.YELLOW,
         Color.MAGENTA
     ) // Extend this as needed
+
+    fun setNumberOfCards(numCards: Int) {
+        initCards()
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -56,34 +55,190 @@ class StackedCardsView @JvmOverloads constructor(
         post { initCards() } // postpone until after layout is complete
     }
 
-    fun setNumberOfCards(numCards: Int) {
-        initCards()
-    }
-
     private fun initCards() {
         cards.clear()
         for (i in 0 until numCards) {
             val cardColor = colors[i % colors.size]
             val cardView = CardView(context, cardColor = cardColor)
-            cards.add(MyCard(i, cardView, false))
+            cards.add(MyCard(i, cardView))
         }
         updateCards(shouldAnimate = false)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun updateCards(shouldAnimate: Boolean = false) {
+    private fun updateCards(shouldAnimate: Boolean) {
         removeAllViews()
         
         for (i in 0 until numCards) {
             val card = cards.first { it.stackIndex == i }
-            val cardView = card.view
-            val cardScaleFactorForIndex = getCardScaleForIndex(i)
-            val cardTranslationYForIndex = getTranslationYForIndex(i)
-            val cardTranslationXForIndex = topCardTranslationX.toFloat()
 
-            cardView.apply {
-                layoutParams = LayoutParams(topCardWidth.toInt(), topCardHeight.toInt())
+            card.view.layoutParams = LayoutParams(topCardWidth.toInt(), topCardHeight.toInt())
 
+            card.view.setOnTouchListener { _, event ->
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        velocityTracker?.recycle()
+                        velocityTracker = VelocityTracker.obtain().also {
+                            it.addMovement(event)
+                        }
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        velocityTracker?.apply {
+                            addMovement(event)
+                            computeCurrentVelocity(VELOCITY_COMPUTATION_UNIT)
+                        }
+                    }
+                }
+                card.handleMotionEvent(event)
+                true
+            }
+
+            card.update(shouldAnimate)
+        }
+
+        // First card should be added last to be on top
+        cards.sortedBy { numCards - it.stackIndex }.map {
+            addView(it.view)
+        }
+    }
+
+    private fun transferCardToBack(transferredCard: MyCard) {
+        val transferredCardIndex = transferredCard.stackIndex
+        cards.forEach { card ->
+            when {
+                card.stackIndex < transferredCardIndex -> {
+                    // no-op
+                }
+                card.stackIndex == transferredCardIndex -> {
+                    card.stackIndex = numCards - 1
+                }
+                else -> {
+                    card.stackIndex = card.stackIndex - 1
+                }
+            }
+        }
+    }
+
+    private fun getCardTranslationXForIndex(cardIndex: Int): Float {
+        return topCardTranslationX
+    }
+
+    private fun getCardTranslationYForIndex(cardIndex: Int): Float {
+        return topCardTranslationY - cardIndex * cardShift
+    }
+
+    private fun getCardScaleForIndex(numCard: Int): Float {
+        return 1 - 0.1f * numCard
+    }
+
+    companion object {
+        private const val NUM_CARDS_DEFAULT = 4
+        private const val SNAP_ANIMATION_DURATION_MS = 500L
+        private const val VELOCITY_COMPUTATION_UNIT = 100
+        private const val VELOCITY_THRESHOLD = 100f
+    }
+
+    private enum class MyCardState {
+        SETTLED, DRAGGED, SNAPPING_BACK, THROWN, POSITION_SHIFT,
+    }
+
+    private inner class MyCard(var stackIndex: Int, var view: CardView) {
+
+        var state = MyCardState.SETTLED
+
+        private var firstDrag = false
+        private var lastActionDownX: Float = 0f
+        private var lastActionDownY: Float = 0f
+
+        fun handleMotionEvent(event: MotionEvent) {
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    handleActionDownEvent(event)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    handleActionMoveEvent(event)
+                }
+                MotionEvent.ACTION_UP -> {
+                    handleActionUpEvent(event)
+                    // animateCardBackToPosition(card, cardTranslationXForIndex, cardTranslationYForIndex)
+                }
+            }
+        }
+
+        private fun handleActionDownEvent(event: MotionEvent) {
+            if (state != MyCardState.SETTLED) {
+                return // card isn't interactive until settled
+            }
+            firstDrag = true
+            lastActionDownX = event.rawX
+            lastActionDownY = event.rawY
+            state = MyCardState.DRAGGED
+        }
+
+        private fun handleActionUpEvent(event: MotionEvent) {
+            if (state != MyCardState.DRAGGED) {
+                throw RuntimeException("received up event when not dragged")
+            }
+
+            var xVelocity = 0f
+            var yVelocity = 0f
+
+            velocityTracker?.let { vt ->
+                xVelocity = vt.xVelocity
+                yVelocity = vt.yVelocity
+            } ?: return
+
+            val speed = sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
+
+            state = if (speed > VELOCITY_THRESHOLD) {
+                transferCardToBack(this)
+                MyCardState.THROWN
+            } else {
+                MyCardState.SNAPPING_BACK
+            }
+
+            updateCards(shouldAnimate = true)
+        }
+
+        private fun handleActionMoveEvent(event: MotionEvent) {
+            if (state != MyCardState.DRAGGED) {
+                throw RuntimeException("received move event when not dragged")
+            }
+
+            val dX = event.rawX - lastActionDownX
+            val dY = event.rawY - lastActionDownY
+
+            view.translationX = getCardTranslationXForIndex(stackIndex) + dX
+            view.translationY = getCardTranslationYForIndex(stackIndex) + dY
+
+            // Calculate the distance from the center of the card
+            val centerX = view.width / 2
+            val touchXRelativeToCenter = centerX - event.x
+            val maxRotation = 5f // Max rotation in degrees
+
+            // Calculate the rotation degree
+            val rotation = maxRotation * (touchXRelativeToCenter / centerX)
+
+            // Animate rotation on first touch
+            if (dX != 0f && dY != 0f && firstDrag) {
+                view.animate()
+                    .rotation(rotation)
+                    .setDuration(SNAP_ANIMATION_DURATION_MS / 4)
+                    .start()
+                firstDrag = false
+            }
+        }
+
+        fun animationEnded() {
+            state = MyCardState.SETTLED
+        }
+
+        fun update(shouldAnimate: Boolean) {
+            val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
+            val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndex)
+            val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndex)
+
+            view.apply {
                 if (shouldAnimate) {
                     val startScaleX = scaleX
                     val startScaleY = scaleY
@@ -114,7 +269,7 @@ class StackedCardsView @JvmOverloads constructor(
                         translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction
                         rotation = startRotation * (1 - fraction)
 
-                        if (card.isRepositioning) {
+                        if (state == MyCardState.THROWN) {
                             val interpolation = interpolator.getInterpolation(fraction)
                             MyLogger.i("interpolation: $interpolation")
                             translationX += xVelocity * (1 - interpolation)
@@ -122,7 +277,7 @@ class StackedCardsView @JvmOverloads constructor(
                         }
                     }
                     animator.doOnEnd {
-                        cardFinishedReposition(card)
+                        animationEnded()
                     }
                     animator.start()
                 } else {
@@ -133,132 +288,7 @@ class StackedCardsView @JvmOverloads constructor(
                     rotation = 0f
                 }
             }
-
-            cardView.setOnTouchListener { _, event ->
-                when (event.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> {
-                        firstDrag = true
-                        lastActionDownX = event.rawX
-                        lastActionDownY = event.rawY
-                        velocityTracker?.recycle()
-                        velocityTracker = VelocityTracker.obtain().also {
-                            it.addMovement(event)
-                        }
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        velocityTracker?.apply {
-                            addMovement(event)
-                            computeCurrentVelocity(VELOCITY_COMPUTATION_UNIT) // Units are in pixels per second
-                        }
-                        handleCardDrag(card, event, cardTranslationXForIndex, cardTranslationYForIndex)
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        animateCardBackToPosition(card, cardTranslationXForIndex, cardTranslationYForIndex)
-                    }
-                }
-                true
-            }
-        }
-
-        // First card should be added last to be on top
-        cards.sortedBy { numCards - it.stackIndex }.map {
-            addView(it.view)
-        }
-
-    }
-
-    private fun cardStartedReposition(repositionedCard: MyCard) {
-        repositionedCard.isRepositioning = true
-    }
-
-    private fun cardFinishedReposition(repositionedCard: MyCard) {
-        repositionedCard.isRepositioning = false
-    }
-
-    private fun handleCardDrag(card: MyCard, event: MotionEvent, originalX: Float, originalY: Float) {
-        val cardView = card.view
-        val dX = event.rawX - lastActionDownX
-        val dY = event.rawY - lastActionDownY
-
-        cardView.translationX = originalX + dX
-        cardView.translationY = originalY + dY
-
-        // Calculate the distance from the center of the card
-        val centerX = cardView.width / 2
-        val touchXRelativeToCenter = centerX - event.x
-        val maxRotation = 5f // Max rotation in degrees
-
-        // Calculate the rotation degree
-        val rotation = maxRotation * (touchXRelativeToCenter / centerX)
-
-        // Animate rotation on first touch
-        if (dX != 0f && dY != 0f && firstDrag) {
-            cardView.animate()
-                .rotation(rotation)
-                .setDuration(SNAP_ANIMATION_DURATION_MS / 4)
-                .start()
-            firstDrag = false
         }
     }
-
-    private fun animateCardBackToPosition(card: MyCard, originalX: Float, originalY: Float) {
-        var xVelocity = 0f
-        var yVelocity = 0f
-
-        velocityTracker?.let { vt ->
-            xVelocity = vt.xVelocity
-            yVelocity = vt.yVelocity
-        } ?: return
-
-        val cardView = card.view
-
-        val speed = sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
-
-        if (speed > VELOCITY_THRESHOLD) {
-            transferCardToBack(card)
-            cardStartedReposition(card)
-        } else {
-            updateCards(shouldAnimate = true)
-        }
-    }
-
-    private fun transferCardToBack(transferredCard: MyCard) {
-        val transferredCardIndex = transferredCard.stackIndex
-        cards.forEach { card ->
-            when {
-                card.stackIndex < transferredCardIndex -> {
-                    // no-op
-                }
-                card.stackIndex == transferredCardIndex -> {
-                    card.stackIndex = numCards - 1
-                }
-                else -> {
-                    card.stackIndex = card.stackIndex - 1
-                }
-            }
-        }
-        updateCards(shouldAnimate = true)
-    }
-
-    private fun getTranslationYForIndex(numCard: Int): Float {
-        return topCardTranslationY - numCard * cardShift
-    }
-
-    private fun getCardScaleForIndex(numCard: Int): Float {
-        return 1 - 0.1f * numCard
-    }
-
-    companion object {
-        private const val NUM_CARDS_DEFAULT = 4
-        private const val SNAP_ANIMATION_DURATION_MS = 500L
-        private const val VELOCITY_COMPUTATION_UNIT = 100
-        private const val VELOCITY_THRESHOLD = 100f
-    }
-
-    private class MyCard(
-        var stackIndex: Int,
-        var view: CardView,
-        var isRepositioning: Boolean
-    )
 
 }
