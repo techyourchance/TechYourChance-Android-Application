@@ -58,7 +58,7 @@ class StackedCardsView @JvmOverloads constructor(
             cards.add(card)
             addView(card.view)
         }
-        updateAllCards()
+        updateCardsTranslationZ()
     }
 
     private fun initCard(i: Int): MyCard {
@@ -127,13 +127,6 @@ class StackedCardsView @JvmOverloads constructor(
         } ?: false
     }
 
-    private fun updateAllCards() {
-        for (i in numOfCardsInStack - 1 downTo  0) {
-            val card = cards.first { it.stackIndex == i }
-            card.view.translationZ = numOfCardsInStack - 1f - i
-        }
-    }
-
     private fun transferCardToStackIndex(transferredCard: MyCard, newTransferredStackIndex: Int) {
         val previousTransferredStackIndex = transferredCard.stackIndex
 
@@ -148,7 +141,14 @@ class StackedCardsView @JvmOverloads constructor(
             }
             card.transferToPositionInStack(newStackIndex)
         }
-        updateAllCards()
+        updateCardsTranslationZ()
+    }
+
+    private fun updateCardsTranslationZ() {
+        for (i in numOfCardsInStack - 1 downTo  0) {
+            val card = cards.firstOrNull() { it.stackIndex == i }
+            card?.view?.translationZ = numOfCardsInStack - 1f - i
+        }
     }
 
     private fun getCardTranslationXForIndex(cardIndex: Int): Float {
@@ -198,9 +198,9 @@ class StackedCardsView @JvmOverloads constructor(
         private const val DRAG_ANIMATION_ROTATION_MAX_DEGREE = 10f
 
         private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
-        private const val THROW_ANIMATION_DURATION_MS = 800L
+        private const val THROW_ANIMATION_DURATION_MS = 1500L
         private const val SNAP_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 2
-        private const val POSITION_SHIFT_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 5
+        private const val POSITION_AND_SCALE_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 5
     }
 
     private enum class MyCardState {
@@ -211,30 +211,27 @@ class StackedCardsView @JvmOverloads constructor(
 
         var state = MyCardState.SETTLED
         private var stateAnimator: ValueAnimator? = null
-        private var expectedStackIndexAtAnimationEnd = stackIndex
-        private var stateAnimationInProgress = false
 
         private var firstDrag = false
-        private var lastActionDownRawX: Float = 0f // screen coordinates
-        private var lastActionDownRawY: Float = 0f // screen coordinates
-        private var lastActionDownEventX: Float = 0f // card view coordinates
+        private var lastActionDownRawTranslationX = 0f
+        private var lastActionDownRawTranslationY = 0f
+        private var lastActionDownRawX = 0f // screen coordinates
+        private var lastActionDownRawY = 0f // screen coordinates
+        private var lastActionDownEventX = 0f // card view coordinates
 
         init {
             toState(MyCardState.SETTLED)
         }
 
         private fun cancelStateAnimation() {
-            if (stateAnimationInProgress) {
-                MyLogger.v(getTag(), "cancelStateTransition(); cancelling state transition during $state")
-                stateAnimator?.cancel()
-                stateAnimationInProgress = false
-            }
+            MyLogger.v(getTag(), "cancelStateTransition(); cancelling state transition during $state")
+            stateAnimator?.removeAllListeners()
+            stateAnimator?.cancel()
         }
 
         fun handleMotionEvent(event: MotionEvent) {
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    lastActionDownEventX = event.x
                     handleActionDownEvent(event)
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -247,13 +244,16 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         private fun handleActionDownEvent(event: MotionEvent) {
-            if (state !in arrayOf(MyCardState.SETTLED, MyCardState.ANIMATE_POSITION_SHIFT)) {
+            if (state == MyCardState.ANIMATE_THROW) {
                 MyLogger.v(getTag(), "handleActionDownEvent(); received down event when $state - ignoring")
                 return
             }
             firstDrag = true
+            lastActionDownEventX = event.x
             lastActionDownRawX = event.rawX
             lastActionDownRawY = event.rawY
+            lastActionDownRawTranslationX = view.translationX
+            lastActionDownRawTranslationY = view.translationY
             toState(MyCardState.DRAGGED)
         }
 
@@ -289,8 +289,8 @@ class StackedCardsView @JvmOverloads constructor(
             }
             val dX = event.rawX - lastActionDownRawX
             val dY = event.rawY - lastActionDownRawY
-            view.translationX = getCardTranslationXForIndex(stackIndex) + dX
-            view.translationY = getCardTranslationYForIndex(stackIndex) + dY
+            view.translationX = lastActionDownRawTranslationX + dX
+            view.translationY = lastActionDownRawTranslationY + dY
         }
 
         fun transferToPositionInStack(newStackIndex: Int) {
@@ -299,10 +299,14 @@ class StackedCardsView @JvmOverloads constructor(
             }
             MyLogger.v(getTag(),"transferToPositionInStack(); $stackIndex -> $newStackIndex")
             stackIndex = newStackIndex
-            // if the position is changed when the card is not settled, then we assume that
-            // it will be handled after the current transition completes
+            // If the position is changed when the card is not settled, then we assume that
+            // it will be handled after the current transition completes. The exception is
+            // dragged state, in which case we want to reset the state to apply correct
+            // scale.
             if (state == MyCardState.SETTLED) {
                 toState(MyCardState.ANIMATE_POSITION_SHIFT)
+            } else if (state == MyCardState.DRAGGED) {
+                toState(MyCardState.DRAGGED)
             }
         }
 
@@ -321,17 +325,23 @@ class StackedCardsView @JvmOverloads constructor(
                             animateDragRotation()
                         }
                         MyCardState.ANIMATE_POSITION_SHIFT -> {
-                            animateToDefaultPosition(POSITION_SHIFT_ANIMATION_DURATION_MS)
+                            cancelStateAnimation()
+                            animateToDefaultPositionAndScale(POSITION_AND_SCALE_ANIMATION_DURATION_MS)
                         }
                         else -> isValidTransition = false
                     }
                 }
                 MyCardState.DRAGGED -> {
                     when (nextState) {
+                        MyCardState.DRAGGED -> {
+                            cancelStateAnimation()
+                            animateToDefaultScale()
+                        }
                         MyCardState.ANIMATE_SNAP_BACK -> {
-                            animateToDefaultPosition(SNAP_ANIMATION_DURATION_MS)
+                            animateToDefaultPositionAndScale(SNAP_ANIMATION_DURATION_MS)
                         }
                         MyCardState.ANIMATE_THROW -> {
+                            cancelStateAnimation()
                             animateThrowAndTransferToBack()
                         }
                         else -> isValidTransition = false
@@ -342,8 +352,14 @@ class StackedCardsView @JvmOverloads constructor(
                         MyCardState.SETTLED -> {
                             // no-op
                         }
+                        MyCardState.DRAGGED -> {
+                            cancelStateAnimation()
+                            animateDragRotation()
+                            animateToDefaultScale()
+                        }
                         MyCardState.ANIMATE_POSITION_SHIFT -> {
-                            animateToDefaultPosition(POSITION_SHIFT_ANIMATION_DURATION_MS)
+                            cancelStateAnimation()
+                            animateToDefaultPositionAndScale(POSITION_AND_SCALE_ANIMATION_DURATION_MS)
                         }
                         else -> isValidTransition = false
                     }
@@ -354,7 +370,8 @@ class StackedCardsView @JvmOverloads constructor(
                             // no-op
                         }
                         MyCardState.ANIMATE_POSITION_SHIFT -> {
-                            animateToDefaultPosition(POSITION_SHIFT_ANIMATION_DURATION_MS)
+                            cancelStateAnimation()
+                            animateToDefaultPositionAndScale(POSITION_AND_SCALE_ANIMATION_DURATION_MS)
                         }
                         else -> isValidTransition = false
                     }
@@ -366,10 +383,13 @@ class StackedCardsView @JvmOverloads constructor(
                         }
                         MyCardState.DRAGGED -> {
                             cancelStateAnimation()
+                            animateToDefaultScale()
+                            animateDragRotation()
                         }
                         MyCardState.ANIMATE_POSITION_SHIFT -> {
+                            cancelStateAnimation()
                             // there can be multiple back to back position shifts
-                            animateToDefaultPosition(POSITION_SHIFT_ANIMATION_DURATION_MS)
+                            animateToDefaultPositionAndScale(POSITION_AND_SCALE_ANIMATION_DURATION_MS)
                         }
                         else -> isValidTransition = false
                     }
@@ -394,7 +414,6 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         private fun animateDragRotation() {
-            stateAnimationInProgress = true
             val targetRotation = DRAG_ANIMATION_ROTATION_MAX_DEGREE * getLastTouchHorizontalOffsetFraction()
             if (firstDrag) {
                 view.apply {
@@ -405,10 +424,6 @@ class StackedCardsView @JvmOverloads constructor(
                             val fraction = it.animatedValue as Float
                             rotation = startRotation + (targetRotation - startRotation) * fraction
                         }
-                        animator.doOnEnd {
-                            stateAnimationInProgress = false
-                            updateAllCards()
-                        }
                         animator.start()
                     }
                 }
@@ -416,15 +431,13 @@ class StackedCardsView @JvmOverloads constructor(
             }
         }
 
-        private fun animateToDefaultPosition(duration: Long) {
+        private fun animateToDefaultPositionAndScale(duration: Long) {
             MyLogger.v(getTag(), "animateToDefaultPosition()")
-
-            stateAnimationInProgress = true
-
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndex)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndex)
             val bc = getBoundaryConditions()
+            val expectedStackIndexAtAnimationEnd = stackIndex
             view.apply {
                 stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
                     animator.duration = duration
@@ -437,31 +450,41 @@ class StackedCardsView @JvmOverloads constructor(
                         rotation = bc.startRotation * (1 - fraction)
                     }
                     animator.doOnEnd {
-                        stateAnimationInProgress = false
-                        // there is a chance that right before this animation completes the
-                        // card becomes dragged and the cancellation doesn't reach this animator
-                        if (state != MyCardState.DRAGGED) {
-                            if (stackIndex == expectedStackIndexAtAnimationEnd) {
-                                toState(MyCardState.SETTLED)
-                            } else {
-                                toState(MyCardState.ANIMATE_POSITION_SHIFT)
-                            }
+                        if (stackIndex == expectedStackIndexAtAnimationEnd) {
+                            toState(MyCardState.SETTLED)
+                        } else {
+                            toState(MyCardState.ANIMATE_POSITION_SHIFT)
                         }
-                        updateAllCards()
                     }
-                    expectedStackIndexAtAnimationEnd = stackIndex
+                    animator.start()
+                }
+            }
+        }
+
+        private fun animateToDefaultScale() {
+            MyLogger.v(getTag(), "animateToDefaultScale()")
+            val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
+            val bc = getBoundaryConditions()
+            view.apply {
+                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
+                    animator.duration = POSITION_AND_SCALE_ANIMATION_DURATION_MS
+                    animator.addUpdateListener {
+                        val fraction = it.animatedValue as Float
+                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
+                    }
                     animator.start()
                 }
             }
         }
 
         private fun animateThrowAndTransferToBack() {
-            stateAnimationInProgress = true
             val stackIndexBack = numOfCardsInStack - 1
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndexBack)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndexBack)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndexBack)
             val bc = getBoundaryConditions()
+            val expectedStackIndexAtAnimationEnd = numOfCardsInStack - 1
             view.apply {
                 val throwInterpolator = ThrowInterpolator()
 
@@ -487,22 +510,24 @@ class StackedCardsView @JvmOverloads constructor(
                         val totalRotationDegrees = 360 * THROW_ANIMATION_NUM_OF_ROTATIONS * rotationDirection
                         rotation = bc.startRotation + (totalRotationDegrees - bc.startRotation) * fraction
 
-                        val newStackIndex = ceil(bc.startStackIndex + (expectedStackIndexAtAnimationEnd - bc.startStackIndex) * fraction).toInt()
+                        val fractionForStackIndexChange = when {
+                            fraction <= 0.4 -> 0.0
+                            fraction >= 0.6 -> 1.0
+                            else -> (fraction - 0.4) / 0.2
+                        }
+                        val newStackIndex = ceil(bc.startStackIndex + (expectedStackIndexAtAnimationEnd - bc.startStackIndex) * fractionForStackIndexChange).toInt()
                         if (newStackIndex != stackIndex) {
                             transferCardToStackIndex(this@MyCard, newStackIndex)
                         }
                     }
                     animator.doOnEnd {
                         rotation = 0f // reset if we end up with multiples of 360
-                        stateAnimationInProgress = false
                         if (stackIndex == expectedStackIndexAtAnimationEnd) {
                             toState(MyCardState.SETTLED)
                         } else {
                             toState(MyCardState.ANIMATE_POSITION_SHIFT)
                         }
-                        updateAllCards()
                     }
-                    expectedStackIndexAtAnimationEnd = numOfCardsInStack - 1
                     animator.start()
                 }
             }
