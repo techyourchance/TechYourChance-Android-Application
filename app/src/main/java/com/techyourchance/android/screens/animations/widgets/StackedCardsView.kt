@@ -8,10 +8,13 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.techyourchance.android.common.logs.MyLogger
+import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.sqrt
 
@@ -167,12 +170,24 @@ class StackedCardsView @JvmOverloads constructor(
         return 1 - 0.1f * numCard
     }
 
+    private fun isCardAboveTheStack(card: MyCard): Boolean {
+        val stackTopY = topCardTranslationY - (numOfCardsInStack - 1) * cardShift
+        return isViewAboveY(stackTopY, card.view)
+    }
+
+    private fun isViewAboveY(y: Float, view: View): Boolean {
+        val viewRect = RectF(0f, 0f, view.width.toFloat(), view.height.toFloat())
+        val transformedViewRect = RectF()
+        view.matrix.mapRect(transformedViewRect, viewRect)
+        return transformedViewRect.bottom <= y
+    }
+
     companion object {
         private const val NUM_CARDS_DEFAULT = 4
 
         private const val VELOCITY_COMPUTATION_UNIT = 1000 // pixels per second
         private const val MAX_VELOCITY = 500f // pixels per second
-        private const val VELOCITY_THRESHOLD = 250f
+        private const val VELOCITY_THRESHOLD = 300f // pixels per second
 
         private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
         private const val THROW_ANIMATION_DURATION_MS = 1000L
@@ -221,7 +236,7 @@ class StackedCardsView @JvmOverloads constructor(
                     handleActionMoveEvent(event)
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    handleActionUpEvent(event)
+                    handleActionUpAndCancelEvent(event)
                 }
             }
         }
@@ -237,9 +252,9 @@ class StackedCardsView @JvmOverloads constructor(
             toState(MyCardState.DRAGGED)
         }
 
-        private fun handleActionUpEvent(event: MotionEvent) {
+        private fun handleActionUpAndCancelEvent(event: MotionEvent) {
             if (state != MyCardState.DRAGGED) {
-                MyLogger.v(getTag(), "handleActionUpEvent(); received up event when $state - ignoring")
+                MyLogger.v(getTag(), "handleActionUpEvent(); received up/cancel event when $state - ignoring")
                 return
             }
 
@@ -253,7 +268,7 @@ class StackedCardsView @JvmOverloads constructor(
 
             val speed = sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
 
-            val nextState = if (speed > VELOCITY_THRESHOLD) {
+            val nextState = if (speed > VELOCITY_THRESHOLD && isCardAboveTheStack(this)) {
                 MyCardState.ANIMATE_THROW
             } else {
                 MyCardState.ANIMATE_SNAP_BACK
@@ -443,7 +458,6 @@ class StackedCardsView @JvmOverloads constructor(
             }
         }
 
-        // TODO: remove duplicated code between this and previous methods
         private fun animateThrowAndTransferToBack() {
             stateAnimationInProgress = true
             view.isEnabled = false
@@ -460,42 +474,39 @@ class StackedCardsView @JvmOverloads constructor(
                 val startTranslationY = translationY
                 val startRotation = rotation
                 val startStackIndex = stackIndex
-                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
-                    val rotationInterpolator = LinearInterpolator()
-                    animator.duration = THROW_ANIMATION_DURATION_MS
-                    animator.addUpdateListener {
-                        var xVelocity = 0f
-                        var yVelocity = 0f
 
-                        velocityTracker?.let { vt ->
-                            xVelocity = vt.xVelocity
-                            yVelocity = vt.yVelocity
-                        } ?: return@addUpdateListener
+                var xVelocity = 0f
+                var yVelocity = 0f
+                velocityTracker?.let { vt ->
+                    xVelocity = vt.xVelocity
+                    yVelocity = vt.yVelocity
+                } ?: return
+
+                val throwInterpolator = ThrowInterpolator()
+
+                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
+                    animator.duration = THROW_ANIMATION_DURATION_MS
+                    animator.interpolator = LinearInterpolator()
+                    animator.addUpdateListener {
 
                         val fraction = it.animatedValue as Float
 
                         scaleX = startScaleX + (cardScaleFactorForIndex - startScaleX) * fraction
                         scaleY = startScaleY + (cardScaleFactorForIndex - startScaleY) * fraction
 
-                        translationX = startTranslationX + (cardTranslationXForIndex - startTranslationX) * fraction
-                        translationX += xVelocity * (1 - fraction)
-                        translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction
-                        translationY += yVelocity * (1 - fraction)
+                        val fractionForTranslation = throwInterpolator.getInterpolation(fraction)
+                        translationX = startTranslationX + (cardTranslationXForIndex - startTranslationX) * fraction + xVelocity * fractionForTranslation
+                        translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction + yVelocity * fractionForTranslation
 
                         val rotationDirection = if(getLastTouchHorizontalOffsetFraction() > 0) {
-                            1f
-                        } else {
                             -1f
+                        } else {
+                            1f
                         }
                         val totalRotationDegrees = (360 * 2) * rotationDirection - startRotation
-                        rotation = startRotation + totalRotationDegrees * rotationInterpolator.getInterpolation(fraction)
+                        rotation = startRotation + totalRotationDegrees * fraction
 
-                        val stackIndexFraction = when {
-                            fraction <= 0.2 -> 0.0
-                            fraction >= 0.3 -> 1.0
-                            else -> (fraction - 0.2) / 0.1
-                        }
-                        val newStackIndex = floor(startStackIndex + (expectedStackIndexAtAnimationEnd - startStackIndex) * stackIndexFraction).toInt()
+                        val newStackIndex = ceil(startStackIndex + (expectedStackIndexAtAnimationEnd - startStackIndex) * fraction).toInt()
                         if (newStackIndex != stackIndex) {
                             transferCardToStackIndex(this@MyCard, newStackIndex)
                         }
@@ -529,4 +540,16 @@ class StackedCardsView @JvmOverloads constructor(
         }
     }
 
+    private class ThrowInterpolator(): android.view.animation.Interpolator {
+        private val accelerateInterpolator = AccelerateInterpolator()
+        private val decelerateInterpolator = DecelerateInterpolator()
+        private val linearInterpolator = LinearInterpolator()
+        override fun getInterpolation(input: Float): Float {
+            return if (input <= 0.5f) {
+                linearInterpolator.getInterpolation(input * 2)
+            } else {
+                linearInterpolator.getInterpolation(1 - (input - 0.5f) * 2)
+            }
+        }
+    }
 }
