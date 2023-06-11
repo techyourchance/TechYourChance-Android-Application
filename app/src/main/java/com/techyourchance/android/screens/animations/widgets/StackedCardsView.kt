@@ -3,17 +3,16 @@ package com.techyourchance.android.screens.animations.widgets
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
+import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
-import androidx.core.view.get
 import com.techyourchance.android.common.logs.MyLogger
 import kotlin.math.floor
-import kotlin.math.sign
 import kotlin.math.sqrt
 
 class StackedCardsView @JvmOverloads constructor(
@@ -24,14 +23,14 @@ class StackedCardsView @JvmOverloads constructor(
 
     private val numOfCardsInStack = NUM_CARDS_DEFAULT
     private val cards = mutableListOf<MyCard>()
-
-    private var cardShift: Float = 0f
+    private var touchTargetCard: MyCard? = null
 
     private var velocityTracker: VelocityTracker? = null
     private var topCardWidth: Float = 0f
     private var topCardHeight: Float = 0f
     private var topCardTranslationX: Float = 0f
     private var topCardTranslationY: Float = 0f
+    private var cardShift: Float = 0f
 
     private val colors = linkedMapOf(
         "red" to Color.RED,
@@ -60,9 +59,11 @@ class StackedCardsView @JvmOverloads constructor(
 
     private fun initCards() {
         cards.clear()
+        removeAllViews()
         for (i in 0 until numOfCardsInStack) {
             val card = initCard(i)
             cards.add(card)
+            addView(card.view)
         }
         updateAllCards()
     }
@@ -74,15 +75,40 @@ class StackedCardsView @JvmOverloads constructor(
         val cardView = CardView(context, cardColor = cardColor)
         val card = MyCard(i, cardColorName, cardView)
         cardView.layoutParams = LayoutParams(topCardWidth.toInt(), topCardHeight.toInt())
-        cardView.setOnTouchListener { _, event ->
-            handleMotionEvent(event)
-            card.handleMotionEvent(event)
-            true
-        }
         return card
     }
 
-    private fun handleMotionEvent(event: MotionEvent) {
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
+            touchTargetCard = null
+            // Iterate over all cards to find the target for the touch event (if any)
+            for (i in numOfCardsInStack - 1 downTo 0) {
+                val card = cards[i]
+                val cardView = card.view
+                if (isPointInView(ev.x, ev.y, cardView)) {
+                    // This card could potentially handle the touch event,
+                    // but we'll check the rest of the cards to see if
+                    // there's a card with a higher Z position that also
+                    // contains the point
+                    if (touchTargetCard == null || cardView.translationZ >= touchTargetCard!!.view.translationZ) {
+                        touchTargetCard = card
+                    }
+                }
+            }
+        }
+        return touchTargetCard != null
+    }
+
+    private fun isPointInView(x: Float, y: Float, view: View): Boolean {
+        val point = floatArrayOf(x, y)
+        val inverseMatrix = Matrix()
+        view.matrix.invert(inverseMatrix)
+        inverseMatrix.mapPoints(point)
+        val rectF = RectF(view.left.toFloat(), view.top.toFloat(), view.right.toFloat(), view.bottom.toFloat())
+        return rectF.contains(point[0], point[1])
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 velocityTracker?.recycle()
@@ -97,20 +123,18 @@ class StackedCardsView @JvmOverloads constructor(
                 }
             }
         }
+        // Delegate the touch event to the selected card
+        return touchTargetCard?.let {
+            it.view.dispatchTouchEvent(event)
+            it.handleMotionEvent(event)
+            true
+        } ?: false
     }
 
     private fun updateAllCards() {
         for (i in numOfCardsInStack - 1 downTo  0) {
             val card = cards.first { it.stackIndex == i }
-            val cardViewPositionInChildren = numOfCardsInStack - 1 - i
-            val existingView = getChildAt(cardViewPositionInChildren)
-            if (existingView != card.view) {
-                if (existingView != null) {
-                    removeViewAt(cardViewPositionInChildren)
-                }
-                removeView(card.view)
-                addView(card.view, cardViewPositionInChildren)
-            }
+            card.view.translationZ = numOfCardsInStack - 1f - i
         }
     }
 
