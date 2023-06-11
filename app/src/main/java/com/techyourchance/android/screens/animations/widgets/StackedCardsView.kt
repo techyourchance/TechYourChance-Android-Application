@@ -1,21 +1,19 @@
 package com.techyourchance.android.screens.animations.widgets
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.techyourchance.android.common.logs.MyLogger
 import kotlin.math.ceil
-import kotlin.math.floor
 import kotlin.math.sqrt
 
 class StackedCardsView @JvmOverloads constructor(
@@ -29,19 +27,12 @@ class StackedCardsView @JvmOverloads constructor(
     private var touchTargetCard: MyCard? = null
 
     private var velocityTracker: VelocityTracker? = null
+
     private var topCardWidth: Float = 0f
     private var topCardHeight: Float = 0f
     private var topCardTranslationX: Float = 0f
     private var topCardTranslationY: Float = 0f
     private var cardShift: Float = 0f
-
-    private val colors = linkedMapOf(
-        "red" to Color.RED,
-        "green" to Color.GREEN,
-        "blue" to Color.BLUE,
-        "yellow" to Color.YELLOW,
-        "magenta" to Color.MAGENTA
-    )
 
     fun setNumberOfCards(numCards: Int) {
         initCards()
@@ -49,14 +40,13 @@ class StackedCardsView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        topCardWidth = width * 0.9f
-        topCardHeight = topCardWidth * 0.6f
-        cardShift = topCardHeight * 0.15f
-        val topCardBottomMargin = height * 0.02f // Bottom margin is 2% of the view's height
+        topCardWidth = width * CARD_WIDTH_TO_TOTAL_WIDTH_RATIO
+        topCardHeight = topCardWidth * CARD_WIDTH_TO_HEIGHT_RATIO
+        cardShift = topCardHeight * CARD_SHIFT_TO_HEIGHT_RATIO
+        val topCardBottomMargin = height * TOP_CARD_BOTTOM_MARGIN_TO_HEIGHT_RATIO
         val topCardLeftMargin = (width - topCardWidth) / 2 // Center horizontally
         topCardTranslationX = topCardLeftMargin
-        topCardTranslationY = this@StackedCardsView.height - topCardHeight.toInt() - topCardBottomMargin
-
+        topCardTranslationY = height - topCardHeight - topCardBottomMargin
         post { initCards() } // postpone until after layout is complete
     }
 
@@ -71,8 +61,8 @@ class StackedCardsView @JvmOverloads constructor(
         updateAllCards()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initCard(i: Int): MyCard {
+        val colors = CARD_COLORS
         val cardColorName = colors.keys.toList()[i % colors.keys.size]
         val cardColor = colors.values.toList()[i % colors.size]
         val cardView = CardView(context, cardColor = cardColor)
@@ -82,6 +72,9 @@ class StackedCardsView @JvmOverloads constructor(
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        // We need this method because changing the Z translation of a View in Android doesn't
+        // affect how the system routes touch events, so we need to account for Z translation
+        // to find the target for the event ourselves
         if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
             touchTargetCard = null
             // Iterate over all cards to find the target for the touch event (if any)
@@ -184,17 +177,30 @@ class StackedCardsView @JvmOverloads constructor(
 
     companion object {
         private const val NUM_CARDS_DEFAULT = 4
+        private const val CARD_SHIFT_TO_HEIGHT_RATIO = 0.2f
+        private const val TOP_CARD_BOTTOM_MARGIN_TO_HEIGHT_RATIO = 0.1f
+        private const val CARD_WIDTH_TO_TOTAL_WIDTH_RATIO = 0.7f
+        private const val CARD_WIDTH_TO_HEIGHT_RATIO = 0.6f
+
+        private val CARD_COLORS = linkedMapOf(
+            "red" to Color.RED,
+            "green" to Color.GREEN,
+            "blue" to Color.BLUE,
+            "yellow" to Color.YELLOW,
+            "magenta" to Color.MAGENTA
+        )
 
         private const val VELOCITY_COMPUTATION_UNIT = 1000 // pixels per second
-        private const val MAX_VELOCITY = 500f // pixels per second
+        private const val MAX_VELOCITY = 800f // pixels per second
         private const val VELOCITY_THRESHOLD = 300f // pixels per second
 
-        private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
-        private const val THROW_ANIMATION_DURATION_MS = 1000L
-        private const val SNAP_ANIMATION_DURATION_MS = 250L
-        private const val POSITION_SHIFT_ANIMATION_DURATION_MS = 150L
-        private const val POSITION_SHIFT_ANIMATION_DELAY_AFTER_THROW_MS = 200L
+        private const val THROW_ANIMATION_NUM_OF_ROTATIONS = 1
+        private const val DRAG_ANIMATION_ROTATION_MAX_DEGREE = 10f
 
+        private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
+        private const val THROW_ANIMATION_DURATION_MS = 800L
+        private const val SNAP_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 2
+        private const val POSITION_SHIFT_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 5
     }
 
     private enum class MyCardState {
@@ -211,12 +217,11 @@ class StackedCardsView @JvmOverloads constructor(
         private var firstDrag = false
         private var lastActionDownRawX: Float = 0f // screen coordinates
         private var lastActionDownRawY: Float = 0f // screen coordinates
-        private var lastMotionEventX: Float = 0f // card view coordinates
+        private var lastActionDownEventX: Float = 0f // card view coordinates
 
         init {
             toState(MyCardState.SETTLED)
         }
-
 
         private fun cancelStateAnimation() {
             if (stateAnimationInProgress) {
@@ -227,9 +232,9 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         fun handleMotionEvent(event: MotionEvent) {
-            lastMotionEventX = event.x
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
+                    lastActionDownEventX = event.x
                     handleActionDownEvent(event)
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -379,25 +384,18 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         private fun setToIndexPosition() {
-            val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
-            val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndex)
-            val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndex)
             view.apply {
-                scaleX = cardScaleFactorForIndex
-                scaleY = cardScaleFactorForIndex
-                translationY = cardTranslationYForIndex
-                translationX = cardTranslationXForIndex
+                scaleX = getCardScaleForIndex(stackIndex)
+                scaleY = getCardScaleForIndex(stackIndex)
+                translationY = getCardTranslationYForIndex(stackIndex)
+                translationX = getCardTranslationXForIndex(stackIndex)
                 rotation = 0f
             }
         }
 
         private fun animateDragRotation() {
             stateAnimationInProgress = true
-
-            val maxRotation = 10f
-            val targetRotation = maxRotation * getLastTouchHorizontalOffsetFraction()
-
-            // Animate rotation on first touch
+            val targetRotation = DRAG_ANIMATION_ROTATION_MAX_DEGREE * getLastTouchHorizontalOffsetFraction()
             if (firstDrag) {
                 view.apply {
                     val startRotation = rotation
@@ -426,22 +424,17 @@ class StackedCardsView @JvmOverloads constructor(
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndex)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndex)
-
+            val bc = getBoundaryConditions()
             view.apply {
-                val startScaleX = scaleX
-                val startScaleY = scaleY
-                val startTranslationX = translationX
-                val startTranslationY = translationY
-                val startRotation = rotation
                 stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
                     animator.duration = duration
                     animator.addUpdateListener {
                         val fraction = it.animatedValue as Float
-                        scaleX = startScaleX + (cardScaleFactorForIndex - startScaleX) * fraction
-                        scaleY = startScaleY + (cardScaleFactorForIndex - startScaleY) * fraction
-                        translationX = startTranslationX + (cardTranslationXForIndex - startTranslationX) * fraction
-                        translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction
-                        rotation = startRotation * (1 - fraction)
+                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
+                        translationX = bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction
+                        translationY = bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction
+                        rotation = bc.startRotation * (1 - fraction)
                     }
                     animator.doOnEnd {
                         stateAnimationInProgress = false
@@ -464,28 +457,12 @@ class StackedCardsView @JvmOverloads constructor(
 
         private fun animateThrowAndTransferToBack() {
             stateAnimationInProgress = true
-            view.isEnabled = false
-
             val stackIndexBack = numOfCardsInStack - 1
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndexBack)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndexBack)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndexBack)
-
+            val bc = getBoundaryConditions()
             view.apply {
-                val startScaleX = scaleX
-                val startScaleY = scaleY
-                val startTranslationX = translationX
-                val startTranslationY = translationY
-                val startRotation = rotation
-                val startStackIndex = stackIndex
-
-                var xVelocity = 0f
-                var yVelocity = 0f
-                velocityTracker?.let { vt ->
-                    xVelocity = vt.xVelocity
-                    yVelocity = vt.yVelocity
-                } ?: return
-
                 val throwInterpolator = ThrowInterpolator()
 
                 stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
@@ -495,30 +472,29 @@ class StackedCardsView @JvmOverloads constructor(
 
                         val fraction = it.animatedValue as Float
 
-                        scaleX = startScaleX + (cardScaleFactorForIndex - startScaleX) * fraction
-                        scaleY = startScaleY + (cardScaleFactorForIndex - startScaleY) * fraction
+                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
 
                         val fractionForTranslation = throwInterpolator.getInterpolation(fraction)
-                        translationX = startTranslationX + (cardTranslationXForIndex - startTranslationX) * fraction + xVelocity * fractionForTranslation
-                        translationY = startTranslationY + (cardTranslationYForIndex - startTranslationY) * fraction + yVelocity * fractionForTranslation
+                        translationX = bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction + bc.xVelocity * fractionForTranslation
+                        translationY = bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction + bc.yVelocity * fractionForTranslation
 
                         val rotationDirection = if(getLastTouchHorizontalOffsetFraction() > 0) {
-                            -1f
-                        } else {
                             1f
+                        } else {
+                            -1f
                         }
-                        val totalRotationDegrees = (360 * 2) * rotationDirection - startRotation
-                        rotation = startRotation + totalRotationDegrees * fraction
+                        val totalRotationDegrees = 360 * THROW_ANIMATION_NUM_OF_ROTATIONS * rotationDirection
+                        rotation = bc.startRotation + (totalRotationDegrees - bc.startRotation) * fraction
 
-                        val newStackIndex = ceil(startStackIndex + (expectedStackIndexAtAnimationEnd - startStackIndex) * fraction).toInt()
+                        val newStackIndex = ceil(bc.startStackIndex + (expectedStackIndexAtAnimationEnd - bc.startStackIndex) * fraction).toInt()
                         if (newStackIndex != stackIndex) {
                             transferCardToStackIndex(this@MyCard, newStackIndex)
                         }
                     }
                     animator.doOnEnd {
-                        rotation = 0f
+                        rotation = 0f // reset if we end up with multiples of 360
                         stateAnimationInProgress = false
-                        isEnabled = true
                         if (stackIndex == expectedStackIndexAtAnimationEnd) {
                             toState(MyCardState.SETTLED)
                         } else {
@@ -533,20 +509,43 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         private fun getLastTouchHorizontalOffsetFraction(): Float {
-            // Calculate the distance from the center of the card
             val centerX = view.width / 2
-            val touchXRelativeToCenter = centerX - lastMotionEventX
+            val touchXRelativeToCenter = centerX - lastActionDownEventX
             return touchXRelativeToCenter / centerX
+        }
+
+        private fun getBoundaryConditions(): BoundaryConditions {
+            return with(view) {
+                BoundaryConditions(
+                    scaleX,
+                    scaleY,
+                    translationX,
+                    translationY,
+                    rotation,
+                    velocityTracker!!.xVelocity,
+                    velocityTracker!!.yVelocity,
+                    stackIndex,
+                )
+            }
         }
 
         private fun getTag(): String {
             return "MyCard($colorName)($stackIndex)"
         }
     }
+    
+    private data class BoundaryConditions(
+        val startScaleX: Float,
+        val startScaleY: Float,
+        val startTranslationX: Float,
+        val startTranslationY: Float,
+        val startRotation: Float,
+        val xVelocity: Float,
+        val yVelocity: Float,
+        val startStackIndex: Int,
+    )
 
     private class ThrowInterpolator(): android.view.animation.Interpolator {
-        private val accelerateInterpolator = AccelerateInterpolator()
-        private val decelerateInterpolator = DecelerateInterpolator()
         private val linearInterpolator = LinearInterpolator()
         override fun getInterpolation(input: Float): Float {
             return if (input <= 0.5f) {
