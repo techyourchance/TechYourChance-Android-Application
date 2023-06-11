@@ -163,9 +163,9 @@ class StackedCardsView @JvmOverloads constructor(
         return 1 - 0.1f * numCard
     }
 
-    private fun isCardAboveTheStack(card: MyCard): Boolean {
-        val stackTopY = topCardTranslationY - (numOfCardsInStack - 1) * cardShift
-        return isViewAboveY(stackTopY, card.view)
+    private fun isCardAboveTheThrowThreshold(card: MyCard): Boolean {
+        val thresholdY = topCardTranslationY - (numOfCardsInStack - 1) * cardShift + card.view.height * 0.75f
+        return isViewAboveY(thresholdY, card.view)
     }
 
     private fun isViewAboveY(y: Float, view: View): Boolean {
@@ -273,7 +273,7 @@ class StackedCardsView @JvmOverloads constructor(
 
             val speed = sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
 
-            val nextState = if (speed > VELOCITY_THRESHOLD && isCardAboveTheStack(this)) {
+            val nextState = if (speed > VELOCITY_THRESHOLD && isCardAboveTheThrowThreshold(this)) {
                 MyCardState.ANIMATE_THROW
             } else {
                 MyCardState.ANIMATE_SNAP_BACK
