@@ -15,6 +15,16 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
+        android:src="@drawable/ic_tyc_logo"
+        />
+
     <com.techyourchance.android.screens.animations.widgets.StackedCardsView
         android:layout_width="match_parent"
         android:layout_height="0dp"
