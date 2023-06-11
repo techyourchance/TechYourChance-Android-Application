@@ -445,10 +445,14 @@ class StackedCardsView @JvmOverloads constructor(
                     }
                     animator.doOnEnd {
                         stateAnimationInProgress = false
-                        if (stackIndex == expectedStackIndexAtAnimationEnd) {
-                            toState(MyCardState.SETTLED)
-                        } else {
-                            toState(MyCardState.ANIMATE_POSITION_SHIFT)
+                        // there is a chance that right before this animation completes the
+                        // card becomes dragged and the cancellation doesn't reach this animator
+                        if (state != MyCardState.DRAGGED) {
+                            if (stackIndex == expectedStackIndexAtAnimationEnd) {
+                                toState(MyCardState.SETTLED)
+                            } else {
+                                toState(MyCardState.ANIMATE_POSITION_SHIFT)
+                            }
                         }
                         updateAllCards()
                     }
