@@ -198,8 +198,8 @@ class StackedCardsView @JvmOverloads constructor(
         private const val DRAG_ANIMATION_ROTATION_MAX_DEGREE = 10f
 
         private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
-        private const val THROW_ANIMATION_DURATION_MS = 1500L
-        private const val SNAP_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 2
+        private const val THROW_ANIMATION_DURATION_MS = 800L
+        private const val SNAP_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 4
         private const val POSITION_AND_SCALE_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 5
     }
 
@@ -273,7 +273,7 @@ class StackedCardsView @JvmOverloads constructor(
 
             val speed = sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
 
-            val nextState = if (speed > VELOCITY_THRESHOLD && isCardAboveTheThrowThreshold(this)) {
+            val nextState = if (yVelocity < 0 && speed > VELOCITY_THRESHOLD && isCardAboveTheThrowThreshold(this)) {
                 MyCardState.ANIMATE_THROW
             } else {
                 MyCardState.ANIMATE_SNAP_BACK
