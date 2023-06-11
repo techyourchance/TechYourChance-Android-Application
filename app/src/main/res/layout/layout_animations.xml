@@ -73,13 +73,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.techyourchance.android.screens.animations.widgets.StackedCardsView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="50dp"
-        android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
-        />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

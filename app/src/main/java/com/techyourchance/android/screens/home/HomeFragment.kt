@@ -59,6 +59,11 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 getString(R.string.from_home_destination_animations),
                 ScreenSpec.Animations
             ),
+
+            FromHomeDestination(
+                getString(R.string.from_home_destination_stacked_cards_animation),
+                ScreenSpec.StackedCardsAnimation
+            ),
         )
     }
 

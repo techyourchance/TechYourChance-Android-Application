@@ -12,6 +12,7 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object ForegroundService: ScreenSpec(ActivityName.MAIN)
     object WorkManager: ScreenSpec(ActivityName.MAIN)
     object Animations: ScreenSpec(ActivityName.MAIN)
+    object StackedCardsAnimation: ScreenSpec(ActivityName.MAIN)
 
     companion object {
         /**

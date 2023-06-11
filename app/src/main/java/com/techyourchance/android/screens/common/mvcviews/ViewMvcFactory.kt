@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import com.techyourchance.android.common.imageloader.ImageLoader
 import com.techyourchance.android.screens.animations.AnimationsViewMvc
 import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
+import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvc
+import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
@@ -61,5 +63,9 @@ class ViewMvcFactory @Inject constructor(
 
     fun newAnimationsViewMvc(container: ViewGroup?): AnimationsViewMvc {
         return AnimationsViewMvcImpl(inflater, container)
+    }
+
+    fun newStackedCardsAnimationViewMvc(container: ViewGroup?): StackedCardsAnimationViewMvc {
+        return StackedCardsAnimationViewMvcImpl(inflater, container)
     }
 }

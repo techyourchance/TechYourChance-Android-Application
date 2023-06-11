@@ -1,6 +1,7 @@
 package com.techyourchance.android.common.dependencyinjection.controller
 
 import com.techyourchance.android.screens.animations.AnimationsFragment
+import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationFragment
 import com.techyourchance.android.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.dialogs.info.InfoDialog
@@ -31,6 +32,7 @@ interface ControllerComponent {
     fun inject(fragment: ForegroundServiceFragment)
     fun inject(fragment: WorkManagerFragment)
     fun inject(fragment: AnimationsFragment)
+    fun inject(fragment: StackedCardsAnimationFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)
