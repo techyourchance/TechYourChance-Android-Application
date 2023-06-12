@@ -34,19 +34,15 @@ class StackedCardsView @JvmOverloads constructor(
     private var topCardTranslationY: Float = 0f
     private var cardShift: Float = 0f
 
-    fun setNumberOfCards(numCards: Int) {
-        initCards()
-    }
-
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         topCardWidth = width * CARD_WIDTH_TO_TOTAL_WIDTH_RATIO
         topCardHeight = topCardWidth * CARD_WIDTH_TO_HEIGHT_RATIO
-        cardShift = topCardHeight * CARD_SHIFT_TO_HEIGHT_RATIO
         val topCardBottomMargin = height * TOP_CARD_BOTTOM_MARGIN_TO_HEIGHT_RATIO
         val topCardLeftMargin = (width - topCardWidth) / 2 // Center horizontally
         topCardTranslationX = topCardLeftMargin
         topCardTranslationY = height - topCardHeight - topCardBottomMargin
+        cardShift = topCardHeight * CARD_SHIFT_TO_HEIGHT_RATIO
         post { initCards() } // postpone until after layout is complete
     }
 
@@ -198,7 +194,7 @@ class StackedCardsView @JvmOverloads constructor(
         private const val DRAG_ANIMATION_ROTATION_MAX_DEGREE = 10f
 
         private const val DRAG_ROTATION_ANIMATION_DURATION_MS = 50L
-        private const val THROW_ANIMATION_DURATION_MS = 800L
+        private const val THROW_ANIMATION_DURATION_MS = 1500L
         private const val SNAP_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 4
         private const val POSITION_AND_SCALE_ANIMATION_DURATION_MS = THROW_ANIMATION_DURATION_MS / 5
     }
@@ -221,12 +217,6 @@ class StackedCardsView @JvmOverloads constructor(
 
         init {
             toState(MyCardState.SETTLED)
-        }
-
-        private fun cancelStateAnimation() {
-            MyLogger.v(getTag(), "cancelStateTransition(); cancelling state transition during $state")
-            stateAnimator?.removeAllListeners()
-            stateAnimator?.cancel()
         }
 
         fun handleMotionEvent(event: MotionEvent) {
@@ -414,123 +404,123 @@ class StackedCardsView @JvmOverloads constructor(
         }
 
         private fun animateDragRotation() {
-            val targetRotation = DRAG_ANIMATION_ROTATION_MAX_DEGREE * getLastTouchHorizontalOffsetFraction()
             if (firstDrag) {
-                view.apply {
-                    val startRotation = rotation
-                    stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
-                        animator.duration = DRAG_ROTATION_ANIMATION_DURATION_MS
-                        animator.addUpdateListener {
-                            val fraction = it.animatedValue as Float
-                            rotation = startRotation + (targetRotation - startRotation) * fraction
-                        }
-                        animator.start()
-                    }
+                val startRotation = view.rotation
+                val targetRotation = DRAG_ANIMATION_ROTATION_MAX_DEGREE * getLastTouchHorizontalOffsetFraction()
+
+                val animator = ValueAnimator.ofFloat(0f, 1f).also { stateAnimator = it }
+                animator.duration = DRAG_ROTATION_ANIMATION_DURATION_MS
+                animator.addUpdateListener {
+                    val fraction = it.animatedValue as Float
+                    view.rotation = startRotation + (targetRotation - startRotation) * fraction
                 }
+                animator.start()
+
                 firstDrag = false
             }
         }
 
         private fun animateToDefaultPositionAndScale(duration: Long) {
-            MyLogger.v(getTag(), "animateToDefaultPosition()")
+            MyLogger.v(getTag(), "animateToDefaultPositionAndScale()")
+            val bc = getBoundaryConditions()
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndex)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndex)
-            val bc = getBoundaryConditions()
             val expectedStackIndexAtAnimationEnd = stackIndex
-            view.apply {
-                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
-                    animator.duration = duration
-                    animator.addUpdateListener {
-                        val fraction = it.animatedValue as Float
-                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
-                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
-                        translationX = bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction
-                        translationY = bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction
-                        rotation = bc.startRotation * (1 - fraction)
-                    }
-                    animator.doOnEnd {
-                        if (stackIndex == expectedStackIndexAtAnimationEnd) {
-                            toState(MyCardState.SETTLED)
-                        } else {
-                            toState(MyCardState.ANIMATE_POSITION_SHIFT)
-                        }
-                    }
-                    animator.start()
+
+            val animator = ValueAnimator.ofFloat(0f, 1f).also { stateAnimator = it }
+            animator.duration = duration
+            animator.addUpdateListener {
+                val fraction = it.animatedValue as Float
+                view.apply {
+                    scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                    scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
+                    translationX = bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction
+                    translationY = bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction
+                    rotation = bc.startRotation * (1 - fraction)
                 }
             }
+            animator.doOnEnd {
+                if (stackIndex == expectedStackIndexAtAnimationEnd) {
+                    toState(MyCardState.SETTLED)
+                } else {
+                    toState(MyCardState.ANIMATE_POSITION_SHIFT)
+                }
+            }
+            animator.start()
         }
 
         private fun animateToDefaultScale() {
             MyLogger.v(getTag(), "animateToDefaultScale()")
-            val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
             val bc = getBoundaryConditions()
-            view.apply {
-                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
-                    animator.duration = POSITION_AND_SCALE_ANIMATION_DURATION_MS
-                    animator.addUpdateListener {
-                        val fraction = it.animatedValue as Float
-                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
-                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
-                    }
-                    animator.start()
-                }
+            val cardScaleFactorForIndex = getCardScaleForIndex(stackIndex)
+
+            val animator = ValueAnimator.ofFloat(0f, 1f).also { stateAnimator = it }
+            animator.duration = POSITION_AND_SCALE_ANIMATION_DURATION_MS
+            animator.addUpdateListener {
+                val fraction = it.animatedValue as Float
+                view.scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                view.scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
             }
+            animator.start()
         }
 
         private fun animateThrowAndTransferToBack() {
+            MyLogger.v(getTag(), "animateThrowAndTransferToBack()")
+
+            val bc = getBoundaryConditions()
             val stackIndexBack = numOfCardsInStack - 1
             val cardScaleFactorForIndex = getCardScaleForIndex(stackIndexBack)
             val cardTranslationYForIndex = getCardTranslationYForIndex(stackIndexBack)
             val cardTranslationXForIndex = getCardTranslationXForIndex(stackIndexBack)
-            val bc = getBoundaryConditions()
             val expectedStackIndexAtAnimationEnd = numOfCardsInStack - 1
-            view.apply {
-                val throwInterpolator = ThrowInterpolator()
 
-                stateAnimator = ValueAnimator.ofFloat(0f, 1f).also { animator ->
-                    animator.duration = THROW_ANIMATION_DURATION_MS
-                    animator.interpolator = LinearInterpolator()
-                    animator.addUpdateListener {
+            val rotationDirection = if (getLastTouchHorizontalOffsetFraction() > 0) { 1f } else { -1f }
+            val totalRotationDegrees = 360 * THROW_ANIMATION_NUM_OF_ROTATIONS * rotationDirection
 
-                        val fraction = it.animatedValue as Float
+            val throwInterpolator = ThrowInterpolator()
 
-                        scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
-                        scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
-
-                        val fractionForTranslation = throwInterpolator.getInterpolation(fraction)
-                        translationX = bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction + bc.xVelocity * fractionForTranslation
-                        translationY = bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction + bc.yVelocity * fractionForTranslation
-
-                        val rotationDirection = if(getLastTouchHorizontalOffsetFraction() > 0) {
-                            1f
-                        } else {
-                            -1f
-                        }
-                        val totalRotationDegrees = 360 * THROW_ANIMATION_NUM_OF_ROTATIONS * rotationDirection
-                        rotation = bc.startRotation + (totalRotationDegrees - bc.startRotation) * fraction
-
-                        val fractionForStackIndexChange = when {
-                            fraction <= 0.4 -> 0.0
-                            fraction >= 0.6 -> 1.0
-                            else -> (fraction - 0.4) / 0.2
-                        }
-                        val newStackIndex = ceil(bc.startStackIndex + (expectedStackIndexAtAnimationEnd - bc.startStackIndex) * fractionForStackIndexChange).toInt()
-                        if (newStackIndex != stackIndex) {
-                            transferCardToStackIndex(this@MyCard, newStackIndex)
-                        }
-                    }
-                    animator.doOnEnd {
-                        rotation = 0f // reset if we end up with multiples of 360
-                        if (stackIndex == expectedStackIndexAtAnimationEnd) {
-                            toState(MyCardState.SETTLED)
-                        } else {
-                            toState(MyCardState.ANIMATE_POSITION_SHIFT)
-                        }
-                    }
-                    animator.start()
+            val animator = ValueAnimator.ofFloat(0f, 1f).also { stateAnimator = it }
+            animator.duration = THROW_ANIMATION_DURATION_MS
+            animator.interpolator = LinearInterpolator()
+            animator.addUpdateListener {
+                val fraction = it.animatedValue as Float
+                val fractionForTranslation = throwInterpolator.getInterpolation(fraction)
+                val fractionForStackIndexChange = when {
+                    fraction <= 0.4 -> 0.0
+                    fraction >= 0.6 -> 1.0
+                    else -> (fraction - 0.4) / 0.2
+                }
+                view.apply {
+                    scaleX = bc.startScaleX + (cardScaleFactorForIndex - bc.startScaleX) * fraction
+                    scaleY = bc.startScaleY + (cardScaleFactorForIndex - bc.startScaleY) * fraction
+                    translationX =
+                        bc.startTranslationX + (cardTranslationXForIndex - bc.startTranslationX) * fraction + bc.xVelocity * fractionForTranslation
+                    translationY =
+                        bc.startTranslationY + (cardTranslationYForIndex - bc.startTranslationY) * fraction + bc.yVelocity * fractionForTranslation
+                    rotation = bc.startRotation + (totalRotationDegrees - bc.startRotation) * fraction
+                }
+                val newStackIndex =
+                    ceil(bc.startStackIndex + (expectedStackIndexAtAnimationEnd - bc.startStackIndex) * fractionForStackIndexChange).toInt()
+                if (newStackIndex != stackIndex) {
+                    transferCardToStackIndex(this@MyCard, newStackIndex)
                 }
             }
+            animator.doOnEnd {
+                view.rotation = 0f // reset if we end up with multiples of 360
+                if (stackIndex == expectedStackIndexAtAnimationEnd) {
+                    toState(MyCardState.SETTLED)
+                } else {
+                    toState(MyCardState.ANIMATE_POSITION_SHIFT)
+                }
+            }
+            animator.start()
+        }
+
+        private fun cancelStateAnimation() {
+            MyLogger.v(getTag(), "cancelStateAnimation(); state: $state")
+            stateAnimator?.removeAllListeners()
+            stateAnimator?.cancel()
         }
 
         private fun getLastTouchHorizontalOffsetFraction(): Float {
@@ -539,9 +529,9 @@ class StackedCardsView @JvmOverloads constructor(
             return touchXRelativeToCenter / centerX
         }
 
-        private fun getBoundaryConditions(): BoundaryConditions {
+        private fun getBoundaryConditions(): CardBoundaryConditions {
             return with(view) {
-                BoundaryConditions(
+                CardBoundaryConditions(
                     scaleX,
                     scaleY,
                     translationX,
@@ -559,7 +549,7 @@ class StackedCardsView @JvmOverloads constructor(
         }
     }
     
-    private data class BoundaryConditions(
+    private data class CardBoundaryConditions(
         val startScaleX: Float,
         val startScaleY: Float,
         val startTranslationX: Float,
