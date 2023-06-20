@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.FinalizeBundleTask
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -38,12 +40,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
-
+        
         applicationVariants.all { variant ->
+
+            def artifactName = "tyc-${variant.name}-${variant.versionCode}-v${variant.versionName}"
+
             def buildTypeSuffix = variant.name.toLowerCase().contains("debug") ? " Debug" : ""
             mergedFlavor.manifestPlaceholders = [appName: "TechYourChance${buildTypeSuffix}"]
+
+            // Rename APKs
             variant.outputs.all {
-                outputFileName = "tyc-${variant.name}-${variant.versionCode}-v${variant.versionName}.apk"
+                outputFileName = "${artifactName}.apk"
+            }
+
+            // Rename AABs
+            tasks.named("sign${variant.name.capitalize()}Bundle", FinalizeBundleTask) {
+                File file = finalBundleFile.asFile.get()
+                File finalFile = new File(file.parentFile, "${artifactName}.aab")
+                finalBundleFile.set(finalFile)
             }
         }
 
