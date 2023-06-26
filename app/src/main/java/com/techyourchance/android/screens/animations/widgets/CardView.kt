@@ -10,12 +10,15 @@ import android.view.View
 import androidx.core.graphics.ColorUtils
 import kotlin.math.min
 
-class CardView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-    private val cardColor: Int = Color.BLUE
-) : View(context, attrs, defStyleAttr) {
+class CardView: View {
+
+    private var cardColor: Int = Color.BLUE
+
+    constructor(context: Context, cardColor: Int) : super(context) {
+        this.cardColor = cardColor
+    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     private val paint = Paint().apply { isAntiAlias = true }
     private val blendColor = ColorUtils.blendARGB(Color.GRAY, cardColor, 0.3f)

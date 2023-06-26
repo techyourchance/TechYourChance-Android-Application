@@ -16,11 +16,11 @@ import com.techyourchance.android.common.logs.MyLogger
 import kotlin.math.ceil
 import kotlin.math.sqrt
 
-class StackedCardsView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+class StackedCardsView: FrameLayout {
+
+    constructor(context: Context) : super(context) {}
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     private val numOfCardsInStack = NUM_CARDS_DEFAULT
     private val cards = mutableListOf<MyCard>()
