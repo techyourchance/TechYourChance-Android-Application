@@ -3,6 +3,7 @@ package com.techyourchance.android.screens.common.dialogs.prompt
 import android.os.Bundle
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.screens.common.dialogs.BaseOneOrTwoButtonDialog
+import java.io.Serializable
 import javax.inject.Inject
 
 class PromptDialog : BaseOneOrTwoButtonDialog() {
@@ -20,24 +21,28 @@ class PromptDialog : BaseOneOrTwoButtonDialog() {
     }
 
     override fun getMessage(): CharSequence {
-        return arguments!!.getString(ARG_MESSAGE)!!
+        return requireArguments().getString(ARG_MESSAGE)!!
     }
 
     override fun getPositiveButtonCaption(): CharSequence {
-        return arguments!!.getString(ARG_POSITIVE_BUTTON_CAPTION)!!
+        return requireArguments().getString(ARG_POSITIVE_BUTTON_CAPTION)!!
     }
 
     override fun getNegativeButtonCaption(): CharSequence {
-        return arguments!!.getString(ARG_NEGATIVE_BUTTON_CAPTION)!!
+        return requireArguments().getString(ARG_NEGATIVE_BUTTON_CAPTION)!!
+    }
+
+    override fun getPayload(): Serializable? {
+        return requireArguments().getSerializable(ARG_PAYLOAD)
     }
 
     override fun onPositiveButtonClicked() {
-        eventBusPoster.post(PromptDialogDismissedEvent(dialogId, PromptDialogButton.POSITIVE))
+        eventBusPoster.post(PromptDialogDismissedEvent(dialogId, PromptDialogButton.POSITIVE, getPayload()))
         dismiss()
     }
 
     override fun onNegativeButtonClicked() {
-        eventBusPoster.post(PromptDialogDismissedEvent(dialogId, PromptDialogButton.NEGATIVE))
+        eventBusPoster.post(PromptDialogDismissedEvent(dialogId, PromptDialogButton.NEGATIVE, getPayload()))
         dismiss()
     }
 
@@ -46,13 +51,20 @@ class PromptDialog : BaseOneOrTwoButtonDialog() {
         private const val ARG_MESSAGE = "ARG_MESSAGE"
         private const val ARG_POSITIVE_BUTTON_CAPTION = "ARG_POSITIVE_BUTTON_CAPTION"
         private const val ARG_NEGATIVE_BUTTON_CAPTION = "ARG_NEGATIVE_BUTTON_CAPTION"
+        private const val ARG_PAYLOAD = "ARG_PAYLOAD"
 
 
-        fun newInstance(message: String, positiveButton: String, negativeButton: String): PromptDialog {
+        fun newInstance(
+            message: String,
+            positiveButton: String,
+            negativeButton: String,
+            payload: Serializable?
+        ): PromptDialog {
             val args = Bundle(4)
             args.putString(ARG_MESSAGE, message)
             args.putString(ARG_POSITIVE_BUTTON_CAPTION, positiveButton)
             args.putString(ARG_NEGATIVE_BUTTON_CAPTION, negativeButton)
+            args.putSerializable(ARG_PAYLOAD, payload)
 
             val promptDialog = PromptDialog()
             promptDialog.arguments = args

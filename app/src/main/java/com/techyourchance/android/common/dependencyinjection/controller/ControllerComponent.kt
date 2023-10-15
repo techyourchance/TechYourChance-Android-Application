@@ -5,6 +5,7 @@ import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAn
 import com.techyourchance.android.screens.biometricauth.BiometricAuthFragment
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.dialogs.info.InfoDialog
+import com.techyourchance.android.screens.common.dialogs.progress.ProgressDialog
 import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialog
 import com.techyourchance.android.screens.debugdrawer.DebugDrawerFragment
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
@@ -37,6 +38,7 @@ interface ControllerComponent {
     // Dialogs
     fun inject(dialog: PromptDialog)
     fun inject(dialog: InfoDialog)
+    fun inject(dialog: ProgressDialog)
 
     // this method is added only to be able to retrieve dialog ID in BaseDialog class
     val dialogNavigator: DialogsNavigator

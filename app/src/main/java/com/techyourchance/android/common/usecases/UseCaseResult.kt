@@ -6,7 +6,7 @@ package com.techyourchance.android.common.usecases
  */
 sealed class UseCaseResult<T> {
     data class Success<T>(val data: T): UseCaseResult<T>()
-    data class Failure<T>(val errorCode: Long, val errorMessage: String): UseCaseResult<T>() {
+    data class Failure<T>(val errorCode: Int, val errorMessage: String): UseCaseResult<T>() {
         constructor(otherFailure: Failure<out Any>): this(otherFailure.errorCode, otherFailure.errorMessage)
     }
 }

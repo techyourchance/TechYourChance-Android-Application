@@ -18,6 +18,8 @@
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
+    <string name="update_apk_dialog_message">New app version is available. Would you like to update now?</string>
+    <string name="progress_dialog_title_default">Please wait…</string>
 
     <string name="biometric_auth_authenticate">Authenticate</string>
     <string name="biometric_auth_enrollment_cancel">Biometric enrollment cancelled</string>

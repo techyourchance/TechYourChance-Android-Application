@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import com.techyourchance.android.R
 import com.techyourchance.android.common.restart.RestartAppUseCase
-import com.techyourchance.android.common.settings.SettingsManager
+import com.techyourchance.android.settings.SettingsManager
 import com.techyourchance.android.common.toasts.ToastsHelper
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import javax.inject.Inject

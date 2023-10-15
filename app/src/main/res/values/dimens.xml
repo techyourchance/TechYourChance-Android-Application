@@ -23,4 +23,6 @@
 
     <dimen name="home_recycler_item_height">80dp</dimen>
 
+    <dimen name="dialog_progress_bar_circular_size">65dp</dimen>
+
 </resources>

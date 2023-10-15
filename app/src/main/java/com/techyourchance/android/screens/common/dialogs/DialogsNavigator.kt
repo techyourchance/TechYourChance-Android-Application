@@ -8,8 +8,11 @@ import androidx.annotation.UiThread
 import androidx.fragment.app.DialogFragment
 import com.techyourchance.dialoghelper.DialogHelper
 import com.techyourchance.android.R
+import com.techyourchance.android.apkupdate.ApkInfo
 import com.techyourchance.android.screens.common.dialogs.info.InfoDialog
+import com.techyourchance.android.screens.common.dialogs.progress.ProgressDialog
 import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialog
+import java.io.Serializable
 
 @UiThread
 class DialogsNavigator(
@@ -63,13 +66,15 @@ class DialogsNavigator(
         message: String,
         positiveButtonCaption: String,
         negativeButtonCaption: String,
-        id: String?
+        id: String?,
+        payload: Serializable?,
     ) {
         dialogHelper.showDialog(
             PromptDialog.newInstance(
                 message,
                 positiveButtonCaption,
                 negativeButtonCaption,
+                payload
             ),
             id
         )
@@ -78,13 +83,15 @@ class DialogsNavigator(
     private fun showInfoDialog(
         message: String,
         buttonCaption: String,
-        id: String?
+        id: String?,
+        payload: Serializable?,
     ) {
         uiHandler.post {
             dialogHelper.showDialog(
                 InfoDialog.newInstance(
                     message,
                     buttonCaption,
+                    payload
                 ),
                 id
             )
@@ -95,7 +102,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.server_error_dialog_message),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -103,7 +111,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.biometric_auth_not_supported),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -111,7 +120,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.biometric_auth_success),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -119,7 +129,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.biometric_auth_cancel),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -127,7 +138,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.biometric_auth_error, errorMessage, errorCode),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -135,7 +147,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.biometric_auth_enrollment_cancel),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -143,7 +156,8 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.ndk_basics_invalid_argument_error, argument),
             getString(R.string.server_error_dialog_button_caption),
-            id
+            id,
+            null
         )
     }
 
@@ -151,6 +165,24 @@ class DialogsNavigator(
         showInfoDialog(
             getString(R.string.foreground_service_without_notification_dialog_message),
             getString(R.string.server_error_dialog_button_caption),
+            id,
+            null
+        )
+    }
+
+    fun showUpdateApkPromptDialog(id: String?, latestApkInfo: ApkInfo) {
+        showPromptDialog(
+            getString(R.string.update_apk_dialog_message),
+            getString(R.string.ok),
+            getString(R.string.cancel),
+            id,
+            latestApkInfo
+        )
+    }
+
+    fun showProgressDialog(message: CharSequence?, id: String?) {
+        dialogHelper.showDialog(
+            ProgressDialog.newInstance(message),
             id
         )
     }

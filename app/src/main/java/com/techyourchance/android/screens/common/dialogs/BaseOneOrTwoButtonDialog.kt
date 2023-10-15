@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import com.techyourchance.android.R
 import com.techyourchance.android.common.imageloader.ImageLoader
 import com.techyourchance.android.screens.common.widgets.ViewExtensions.showBorder
+import java.io.Serializable
 import javax.inject.Inject
 
 abstract class BaseOneOrTwoButtonDialog() : BaseDialog() {
@@ -39,6 +40,7 @@ abstract class BaseOneOrTwoButtonDialog() : BaseDialog() {
     abstract fun getMessage(): CharSequence
     abstract fun getPositiveButtonCaption(): CharSequence
     abstract fun getNegativeButtonCaption(): CharSequence
+    abstract fun getPayload(): Serializable?
     abstract fun onPositiveButtonClicked()
     abstract fun onNegativeButtonClicked()
 

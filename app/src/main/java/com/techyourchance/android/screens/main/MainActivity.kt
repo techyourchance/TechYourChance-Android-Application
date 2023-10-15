@@ -8,16 +8,26 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.techyourchance.android.BuildConfig
 import com.techyourchance.android.R
+import com.techyourchance.android.apkupdate.ApkInfo
+import com.techyourchance.android.apkupdate.FetchLatestApkInfoUseCase
+import com.techyourchance.android.apkupdate.UpdateApkUseCase
+import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.permissions.PermissionsHelperDelegate
 import com.techyourchance.android.common.toasts.ToastsHelper
+import com.techyourchance.android.common.usecases.UseCaseResult
 import com.techyourchance.android.screens.common.ActivityName
 import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.activities.BaseActivity
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
+import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialogButton
+import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialogDismissedEvent
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
 import com.techyourchance.android.screens.debugdrawer.DebugDrawerFragment
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -89,14 +99,6 @@ class MainActivity : BaseActivity() {
                 screensNavigator.toScreen(startingScreen)
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

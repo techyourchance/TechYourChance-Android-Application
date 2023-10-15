@@ -8,25 +8,29 @@ import android.content.res.Resources
 import androidx.biometric.BiometricManager
 import androidx.work.WorkManager
 import com.google.gson.Gson
+import com.ncapdevi.fragnav.BuildConfig
 import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
 import com.techyourchance.android.backgroundwork.workmanager.MyWorkerManager
 import com.techyourchance.android.common.Constants
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.logs.MyLogger
-import com.techyourchance.android.common.settings.SettingsManager
+import com.techyourchance.android.settings.SettingsManager
 import com.techyourchance.android.common.toasts.ToastsHelper
 import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
+import com.techyourchance.android.networking.TechYourChanceApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 @Module
 class ApplicationModule(private val application: Application) {
@@ -72,13 +76,14 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @ApplicationScope
-    fun retrofit(settingsManager: SettingsManager): Retrofit {
+    @Named("stackoverflow")
+    fun retrofitStackoverflow(settingsManager: SettingsManager): Retrofit {
         val httpClientBuilder = OkHttpClient.Builder()
         httpClientBuilder.addInterceptor { chain ->
             try {
                 val originalRequest = chain.request()
                 val newRequestBuilder = originalRequest.newBuilder()
-                newRequestBuilder.method(originalRequest.method(), originalRequest.body())
+                newRequestBuilder.method(originalRequest.method, originalRequest.body)
                 val authToken = settingsManager.authToken().value
                 if (authToken.isNotBlank()) {
                     newRequestBuilder.header("Authorization", authToken)
@@ -93,21 +98,48 @@ class ApplicationModule(private val application: Application) {
                     .protocol(Protocol.HTTP_2)
                     .message("internal exception in OkHttp: ${e.message}")
                     .request(chain.request())
-                    .build();
+                    .build()
             }
         }
 
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(Constants.STACKOVERFLOW_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClientBuilder.build())
             .build()
     }
 
+
     @Provides
     @ApplicationScope
-    fun stackOverflowApi(retrofit: Retrofit): StackoverflowApi {
+    @Named("techyourchance")
+    fun retrofitTechyourchance(settingsManager: SettingsManager): Retrofit {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        if (BuildConfig.DEBUG) {
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
+        } else {
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
+        }
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+        return Retrofit.Builder()
+            .baseUrl(Constants.TECHYOURCHANCE_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+    }
+
+    @Provides
+    @ApplicationScope
+    fun stackOverflowApi(@Named("stackoverflow") retrofit: Retrofit): StackoverflowApi {
         return retrofit.create(StackoverflowApi::class.java)
+    }
+
+    @Provides
+    @ApplicationScope
+    fun techyourchanceApi(@Named("techyourchance") retrofit: Retrofit): TechYourChanceApi {
+        return retrofit.create(TechYourChanceApi::class.java)
     }
 
     @Provides
