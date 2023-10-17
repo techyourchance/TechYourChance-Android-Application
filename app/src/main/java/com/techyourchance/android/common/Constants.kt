@@ -7,7 +7,6 @@ object Constants {
     const val STACKOVERFLOW_API_KEY = "ZiXCZbWaOwnDgpVT9Hx8IA(("
 
     const val TECHYOURCHANCE_BASE_URL = "https://api.techyourchance.com/"
-    const val TECHYOURCHANCE_APKS_URL = "$TECHYOURCHANCE_BASE_URL/apks/"
 
     const val LATEST_APK_INFO_FILE_NAME_RELEASE = "latest-release.json"
     const val LATEST_APK_INFO_FILE_NAME_DEBUG = "latest-debug.json"
