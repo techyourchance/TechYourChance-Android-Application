@@ -11,6 +11,7 @@ object Constants {
 
     const val LATEST_APK_INFO_FILE_NAME_RELEASE = "latest-release.json"
     const val LATEST_APK_INFO_FILE_NAME_DEBUG = "latest-debug.json"
+    const val APK_VERSION_CHECK_MIN_INTERVAL_MS = 1000L * 60 * 60 * 24 // 24 hours
 
     const val DEFAULT_DIALOG_WIDTH_RATIO = 0.8f
     const val DEFAULT_DIALOG_HEIGHT_RATIO = 0.3f

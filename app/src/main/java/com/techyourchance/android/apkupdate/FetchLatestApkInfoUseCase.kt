@@ -4,9 +4,11 @@ import com.techyourchance.android.common.Constants
 import com.techyourchance.android.common.application.AppVersionInfo
 import com.techyourchance.android.common.application.AppVersionInfoProvider
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
+import com.techyourchance.android.common.datetime.DateTimeProvider
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.usecases.UseCaseResult
 import com.techyourchance.android.networking.TechYourChanceApi
+import com.techyourchance.android.settings.SettingsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -14,11 +16,16 @@ import javax.inject.Inject
 class FetchLatestApkInfoUseCase @Inject constructor(
     private val techYourChanceApi: TechYourChanceApi,
     private val appVersionInfoProvider: AppVersionInfoProvider,
+    private val settingsManager: SettingsManager,
+    private val dateTimeProvider: DateTimeProvider,
 ) {
 
     suspend fun fetchLatestApkInfo(): UseCaseResult<ApkInfo> {
         MyLogger.i("fetchLatestApkInfo()")
         return withContext(Dispatchers.Background) {
+            if (tooEarlyForNewVersionCheck()) {
+                return@withContext UseCaseResult.Success(ApkInfo.NULL_APK_INFO)
+            }
             val appVersionInfo = appVersionInfoProvider.getAppVersionInfo()
             val latestApkInfoResponse = try {
                  techYourChanceApi.latestApkInfo(getLatestApkInfoFileName(appVersionInfo))
@@ -28,6 +35,7 @@ class FetchLatestApkInfoUseCase @Inject constructor(
             }
             val responseSchema = latestApkInfoResponse.body()
             return@withContext if (responseSchema != null) {
+                settingsManager.lastApkVersionCheckTimestamp().value = dateTimeProvider.getTimestampUtc()
                 val isNewerVersion = responseSchema.versionCode > appVersionInfo.versionCode
                 UseCaseResult.Success(
                     ApkInfo(
@@ -49,5 +57,9 @@ class FetchLatestApkInfoUseCase @Inject constructor(
         } else {
             Constants.LATEST_APK_INFO_FILE_NAME_DEBUG
         }
+    }
+
+    private fun tooEarlyForNewVersionCheck(): Boolean {
+        return dateTimeProvider.getTimestampUtc() <= settingsManager.lastApkVersionCheckTimestamp().value + Constants.APK_VERSION_CHECK_MIN_INTERVAL_MS
     }
 }

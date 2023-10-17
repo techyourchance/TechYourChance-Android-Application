@@ -41,9 +41,14 @@ class SettingsManager(
         }
     }
 
+    fun lastApkVersionCheckTimestamp(): SettingEntry<Long> {
+        return settingsEntriesFactory.getSettingEntry(Long::class.javaObjectType, KEY_LAST_APK_VERSION_CHECK_TIMESTAMP, 0L)
+    }
+
     companion object {
         private const val KEY_EXAMPLE = "KEY_EXAMPLE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
         private const val KEY_WORKER_CONFIG = "KEY_WORKER_CONFIG"
+        private const val KEY_LAST_APK_VERSION_CHECK_TIMESTAMP = "KEY_LAST_APK_VERSION_CHECK_TIMESTAMP"
     }
 }

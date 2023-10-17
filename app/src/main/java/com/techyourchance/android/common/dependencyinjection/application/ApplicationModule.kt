@@ -12,14 +12,18 @@ import com.ncapdevi.fragnav.BuildConfig
 import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
 import com.techyourchance.android.backgroundwork.workmanager.MyWorkerManager
 import com.techyourchance.android.common.Constants
+import com.techyourchance.android.common.datetime.DateTimeChangeNotifier
+import com.techyourchance.android.common.datetime.DateTimeProvider
+import com.techyourchance.android.common.datetime.DateTimeProviderImpl
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.logs.MyLogger
-import com.techyourchance.android.settings.SettingsManager
 import com.techyourchance.android.common.toasts.ToastsHelper
 import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
 import com.techyourchance.android.networking.TechYourChanceApi
+import com.techyourchance.android.settings.SettingsManager
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -32,7 +36,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 
-@Module
+@Module(includes = [ApplicationModule.BindsModule::class])
 class ApplicationModule(private val application: Application) {
 
     @Provides
@@ -173,5 +177,20 @@ class ApplicationModule(private val application: Application) {
     @Provides
     fun notificationManager(application: Application): NotificationManager {
         return application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+    @Provides
+    @ApplicationScope
+    fun dateTimeProviderImpl(): DateTimeProviderImpl {
+        return DateTimeProviderImpl()
+    }
+
+    @Module
+    interface BindsModule {
+        @Binds
+        fun bindDateTimeProvider(dateTimeProviderImpl: DateTimeProviderImpl): DateTimeProvider
+
+        @Binds
+        fun bindDateTimeChangeNotifier(dateTimeProviderImpl: DateTimeProviderImpl): DateTimeChangeNotifier
     }
 }

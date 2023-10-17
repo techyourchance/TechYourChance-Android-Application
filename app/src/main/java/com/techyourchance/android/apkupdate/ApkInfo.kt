@@ -7,4 +7,9 @@ data class ApkInfo(
     val versionName: String,
     val versionCode: Int,
     val apkName: String,
-): Serializable
+): Serializable {
+
+    companion object {
+        val NULL_APK_INFO = ApkInfo(false, "", 0, "")
+    }
+}
