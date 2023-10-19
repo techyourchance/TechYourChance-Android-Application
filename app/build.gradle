@@ -1,8 +1,11 @@
 import com.android.build.gradle.internal.tasks.FinalizeBundleTask
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "io.sentry.android.gradle" version "3.14.0"
+}
 
 android {
     compileSdk 34
@@ -14,6 +17,10 @@ android {
         versionCode 2
         versionName "1.0.1"
         vectorDrawables.useSupportLibrary = true
+    }
+
+    sentry {
+        ignoredBuildTypes = ["debug"]
     }
 
     signingConfigs {
@@ -34,12 +41,17 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
+            buildConfigField("String", "SENTRY_DSN", "\"\"")
         }
 
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'gson.pro', 'retrofit2.pro'
             signingConfig signingConfigs.release
+
+            def sentryProperties = new Properties()
+            sentryProperties.load(new FileInputStream(rootProject.file("sentry.properties")))
+            buildConfigField("String", "SENTRY_DSN", sentryProperties['dsn'])
         }
         
         applicationVariants.all { variant ->

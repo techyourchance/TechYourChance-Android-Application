@@ -2,6 +2,9 @@
 release.properties
 release.keystore
 
+# Sentry configs
+sentry.properties
+
 #built application files
 *.apk
 *.ap_

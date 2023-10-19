@@ -9,8 +9,10 @@ import com.techyourchance.android.common.dependencyinjection.application.DaggerA
 import com.techyourchance.android.common.dependencyinjection.application.SettingsModule
 import com.techyourchance.android.common.logs.TimberDebugTree
 import com.techyourchance.android.common.logs.TimberReleaseTree
+import io.sentry.android.core.SentryAndroid
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class MyApplication: Application(), Configuration.Provider {
 
@@ -27,6 +29,10 @@ class MyApplication: Application(), Configuration.Provider {
 
     override fun onCreate() {
         applicationComponent.inject(this)
+
+        SentryAndroid.init(this) { options ->
+            options.dsn = BuildConfig.SENTRY_DSN
+        }
 
         super.onCreate()
 
