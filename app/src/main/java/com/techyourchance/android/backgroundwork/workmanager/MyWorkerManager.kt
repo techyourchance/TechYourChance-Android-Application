@@ -26,7 +26,10 @@ class MyWorkerManager(
 
     init {
         MyLogger.i("init; current thread: ${Thread.currentThread().name}")
-        observeMyWorkerState()
+        GlobalScope.launch(Dispatchers.Main.immediate) {
+            observeMyWorkerState()
+        }
+
     }
 
     fun getState(): MyWorkerState {
