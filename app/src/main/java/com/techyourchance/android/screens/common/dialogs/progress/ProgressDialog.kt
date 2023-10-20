@@ -27,6 +27,7 @@ class ProgressDialog : BaseDialog() {
         super.onCreate(savedInstanceState)
         isCancelable = false
         message = requireArguments().getCharSequence(ARG_MESSAGE)
+        isCancelable = requireArguments().getBoolean(ARG_IS_CANCELLABLE)
     }
 
     override fun onCreateDialogInternal(savedInstanceState: Bundle?): Dialog {
@@ -44,16 +45,24 @@ class ProgressDialog : BaseDialog() {
         return dialog
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        eventBusPoster.post(ProgressDialogDismissedEvent(dialogId, true))
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         eventBusPoster.post(ProgressDialogDismissedEvent(dialogId))
     }
 
     companion object {
-        const val ARG_MESSAGE = "ARG_MESSAGE"
-        fun newInstance(message: CharSequence?): ProgressDialog {
+        private const val ARG_MESSAGE = "ARG_MESSAGE"
+        private const val ARG_IS_CANCELLABLE = "ARG_IS_CANCELLABLE"
+
+        fun newInstance(message: CharSequence?, isCancellable: Boolean = false): ProgressDialog {
             val args = Bundle()
             args.putCharSequence(ARG_MESSAGE, message)
+            args.putBoolean(ARG_IS_CANCELLABLE, isCancellable)
             val dialog = ProgressDialog()
             dialog.arguments = args
             return dialog

@@ -152,7 +152,7 @@ class DialogsNavigator(
         )
     }
 
-    fun showInvalidFibonacciArgumentDialogDialog(argument: Int, id: String?) {
+    fun showInvalidFibonacciArgumentDialog(argument: Int, id: String?) {
         showInfoDialog(
             getString(R.string.ndk_basics_invalid_argument_error, argument),
             getString(R.string.server_error_dialog_button_caption),
@@ -183,6 +183,13 @@ class DialogsNavigator(
     fun showProgressDialog(message: CharSequence?, id: String?) {
         dialogHelper.showDialog(
             ProgressDialog.newInstance(message),
+            id
+        )
+    }
+
+    fun showCancellableProgressDialog(message: CharSequence?, id: String?) {
+        dialogHelper.showDialog(
+            ProgressDialog.newInstance(message, true),
             id
         )
     }
