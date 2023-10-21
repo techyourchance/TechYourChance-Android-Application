@@ -52,33 +52,28 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
     private fun getDestinations(): List<FromHomeDestination> {
         return listOf(
             FromHomeDestination(
-                getString(R.string.from_home_destination_stackoverflow),
+                getString(R.string.screen_stackoverflow_client),
                 ScreenSpec.StackOverflowQuestionsList
             ),
             FromHomeDestination(
-                getString(R.string.from_home_destination_biometric_auth),
+                getString(R.string.screen_biometric_auth),
                 ScreenSpec.BiometricLock
             ),
             FromHomeDestination(
-                getString(R.string.from_home_destination_ndk_basics),
+                getString(R.string.screen_ndk_basics),
                 ScreenSpec.NdkBasics
             ),
             FromHomeDestination(
-                getString(R.string.from_home_destination_foreground_service),
+                getString(R.string.screen_foreground_service),
                 ScreenSpec.ForegroundService
             ),
             FromHomeDestination(
-                getString(R.string.from_home_destination_work_manager),
+                getString(R.string.screen_work_manager),
                 ScreenSpec.WorkManager
             ),
             FromHomeDestination(
-                getString(R.string.from_home_destination_animations),
-                ScreenSpec.Animations
-            ),
-
-            FromHomeDestination(
-                getString(R.string.from_home_destination_stacked_cards_animation),
-                ScreenSpec.StackedCardsAnimation
+                getString(R.string.screen_user_interfaces),
+                ScreenSpec.UserInterfaces
             ),
         )
     }

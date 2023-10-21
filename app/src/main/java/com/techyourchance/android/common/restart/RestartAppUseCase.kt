@@ -2,7 +2,7 @@ package com.techyourchance.android.common.restart
 
 import android.app.Activity
 import android.content.Intent
-import com.techyourchance.android.screens.main.MainActivity
+import com.techyourchance.android.screens.MainActivity
 import javax.inject.Inject
 import kotlin.system.exitProcess
 

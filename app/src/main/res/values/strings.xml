@@ -8,13 +8,14 @@
     <string name="plus">Plus</string>
     <string name="minus">Minus</string>
 
-    <string name="from_home_destination_stackoverflow">StackOverflow client</string>
-    <string name="from_home_destination_biometric_auth">Biometric authentication</string>
-    <string name="from_home_destination_ndk_basics">NDK basics</string>
-    <string name="from_home_destination_foreground_service">Foreground service</string>
-    <string name="from_home_destination_work_manager">WorkManager</string>
-    <string name="from_home_destination_animations">Animations</string>
-    <string name="from_home_destination_stacked_cards_animation">Stacked cards animation</string>
+    <string name="screen_stackoverflow_client">StackOverflow client</string>
+    <string name="screen_biometric_auth">Biometric authentication</string>
+    <string name="screen_ndk_basics">NDK basics</string>
+    <string name="screen_foreground_service">Foreground service</string>
+    <string name="screen_work_manager">WorkManager</string>
+    <string name="screen_user_interfaces">User interfaces</string>
+    <string name="screen_animations">Animations</string>
+    <string name="screen_stacked_cards_animation">Stacked cards animation</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>

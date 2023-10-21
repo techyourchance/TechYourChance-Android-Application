@@ -10,10 +10,12 @@ import com.techyourchance.android.screens.common.dialogs.prompt.PromptDialog
 import com.techyourchance.android.screens.debugdrawer.DebugDrawerFragment
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
 import com.techyourchance.android.screens.home.HomeFragment
-import com.techyourchance.android.screens.main.MainActivity
+import com.techyourchance.android.screens.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
+import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import dagger.Subcomponent
 
@@ -22,6 +24,7 @@ interface ControllerComponent {
 
     // Activities
     fun inject(activity: MainActivity)
+    fun inject(activity: UserInterfacesActivity)
 
     // Fragments
     fun inject(fragment: HomeFragment)
@@ -32,6 +35,7 @@ interface ControllerComponent {
     fun inject(fragment: NdkBasicsFragment)
     fun inject(fragment: ForegroundServiceFragment)
     fun inject(fragment: WorkManagerFragment)
+    fun inject(fragment: UserInterfacesFragment)
     fun inject(fragment: AnimationsFragment)
     fun inject(fragment: StackedCardsAnimationFragment)
 

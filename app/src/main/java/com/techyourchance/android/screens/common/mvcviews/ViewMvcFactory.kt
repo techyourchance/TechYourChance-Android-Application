@@ -19,6 +19,8 @@ import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvc
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvcImpl
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvc
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvcImpl
+import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvcImpl
+import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvc
 import com.techyourchance.android.screens.workmanager.WorkManagerViewMvc
 import com.techyourchance.android.screens.workmanager.WorkManagerViewMvcImpl
 import javax.inject.Inject
@@ -59,6 +61,10 @@ class ViewMvcFactory @Inject constructor(
 
     fun newWorkManagerViewMvc(container: ViewGroup?): WorkManagerViewMvc {
         return WorkManagerViewMvcImpl(inflater, container)
+    }
+
+    fun newUserInterfacesViewMvc(container: ViewGroup?): UserInterfacesViewMvc {
+        return UserInterfacesViewMvcImpl(inflater, container)
     }
 
     fun newAnimationsViewMvc(container: ViewGroup?): AnimationsViewMvc {

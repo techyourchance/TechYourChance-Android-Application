@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.home
+package com.techyourchance.android.screens.userinterfaces
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 
-class HomeViewMvcImpl(
+class UserInterfacesViewMvcImpl(
         layoutInflater: LayoutInflater,
         parent: ViewGroup?
-): HomeViewMvc() {
+): UserInterfacesViewMvc() {
 
     private val toolbar: MyToolbar
     private val destinationsRecycler: RecyclerView
@@ -29,10 +29,14 @@ class HomeViewMvcImpl(
 
         toolbar = findViewById(R.id.toolbar)
 
-        toolbar.setTitle(getString(R.string.app_name))
+        toolbar.setTitle(getString(R.string.screen_user_interfaces))
+
+        toolbar.setNavigateUpListener {
+            listeners.map { it.onBackClicked() }
+        }
     }
 
-    override fun bindDestinations(destinations: List<FromHomeDestination>) {
+    override fun bindDestinations(destinations: List<FromUserInterfacesDestination>) {
         destinationsAdapter.bindDestinations(destinations)
     }
 
@@ -46,9 +50,9 @@ class HomeViewMvcImpl(
 
         private val VIEW_TYPE_REGULAR = 0
 
-        private val destinations = mutableListOf<FromHomeDestination>()
+        private val destinations = mutableListOf<FromUserInterfacesDestination>()
 
-        fun bindDestinations(destinationDetails: List<FromHomeDestination>) {
+        fun bindDestinations(destinationDetails: List<FromUserInterfacesDestination>) {
             this.destinations.clear()
             this.destinations.addAll(destinationDetails)
             notifyDataSetChanged()

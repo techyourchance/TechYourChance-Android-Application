@@ -70,7 +70,7 @@ class ActivityModule(private val activity: AppCompatActivity) {
     @Provides
     @ActivityScope
     fun screensNavigator(
-        activity: Activity,
+        activity: AppCompatActivity,
         fragNavController: FragNavController
     ): ScreensNavigator {
         return ScreensNavigator(activity, fragNavController)

@@ -11,7 +11,7 @@ import com.techyourchance.android.R
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.service.BaseService
 import com.techyourchance.android.screens.common.ScreenSpec
-import com.techyourchance.android.screens.main.MainActivity
+import com.techyourchance.android.screens.MainActivity
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive

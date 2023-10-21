@@ -11,8 +11,9 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object NdkBasics: ScreenSpec(ActivityName.MAIN)
     object ForegroundService: ScreenSpec(ActivityName.MAIN)
     object WorkManager: ScreenSpec(ActivityName.MAIN)
-    object Animations: ScreenSpec(ActivityName.MAIN)
-    object StackedCardsAnimation: ScreenSpec(ActivityName.MAIN)
+    object UserInterfaces: ScreenSpec(ActivityName.USER_INTERFACES)
+    object Animations: ScreenSpec(ActivityName.USER_INTERFACES)
+    object StackedCardsAnimation: ScreenSpec(ActivityName.USER_INTERFACES)
 
     companion object {
         /**

@@ -1,5 +1,6 @@
 package com.techyourchance.android.screens.common
 
 enum class ActivityName {
-    MAIN
+    MAIN,
+    USER_INTERFACES,
 }

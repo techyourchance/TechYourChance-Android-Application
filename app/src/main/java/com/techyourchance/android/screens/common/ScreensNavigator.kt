@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.UiThread
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
@@ -16,17 +17,19 @@ import com.techyourchance.android.screens.common.activities.BaseActivity
 import com.techyourchance.android.screens.common.fragments.DummyRootFragment
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
 import com.techyourchance.android.screens.home.HomeFragment
-import com.techyourchance.android.screens.main.MainActivity
+import com.techyourchance.android.screens.MainActivity
 import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
+import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
 
 
 @UiThread
 class ScreensNavigator constructor(
-        private val activity: Activity,
+        private val activity: AppCompatActivity,
         private val fragNavController: FragNavController,
 ): Observable<ScreensNavigator.Listener>() {
 
@@ -73,6 +76,9 @@ class ScreensNavigator constructor(
                 ActivityName.MAIN -> {
                     MainActivity.startClearTask(activity, screenSpec)
                 }
+                ActivityName.USER_INTERFACES -> {
+                    UserInterfacesActivity.start(activity, screenSpec)
+                }
             }
         } else {
             // change just Fragment
@@ -84,6 +90,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.NdkBasics -> NdkBasicsFragment.newInstance()
                 is ScreenSpec.ForegroundService -> ForegroundServiceFragment.newInstance()
                 is ScreenSpec.WorkManager -> WorkManagerFragment.newInstance()
+                is ScreenSpec.UserInterfaces -> UserInterfacesFragment.newInstance()
                 is ScreenSpec.Animations -> AnimationsFragment.newInstance()
                 is ScreenSpec.StackedCardsAnimation -> StackedCardsAnimationFragment.newInstance()
             }
@@ -93,10 +100,14 @@ class ScreensNavigator constructor(
 
     fun navigateBack() {
         if (fragNavController.isRootFragment) {
-            val homeIntent = Intent(Intent.ACTION_MAIN)
-            homeIntent.addCategory(Intent.CATEGORY_HOME)
-            homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            activity.startActivity(homeIntent)
+            if (activity.isTaskRoot) {
+                val homeIntent = Intent(Intent.ACTION_MAIN)
+                homeIntent.addCategory(Intent.CATEGORY_HOME)
+                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                activity.startActivity(homeIntent)
+            } else {
+                activity.finish()
+            }
         } else {
             fragNavController.popFragment()
         }

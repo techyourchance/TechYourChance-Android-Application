@@ -10,10 +10,9 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundwork.ForegroundService
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.screens.common.ScreenSpec
-import com.techyourchance.android.screens.main.MainActivity
+import com.techyourchance.android.screens.MainActivity
 
 class MyWorker(
     context: Context,
