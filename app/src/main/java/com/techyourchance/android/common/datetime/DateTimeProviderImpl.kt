@@ -41,6 +41,10 @@ class DateTimeProviderImpl : Observable<DateTimeChangeNotifier.Listener>(), Date
         return ZonedDateTime.now(ZoneOffset.UTC)
     }
 
+    override fun getNanoTime(): Long {
+        return System.nanoTime()
+    }
+
     override fun onFirstListenerRegistered() {
         super.onFirstListenerRegistered()
         uiHandler.post(listenersNotificationRunnable)

@@ -75,6 +75,10 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 getString(R.string.screen_user_interfaces),
                 ScreenSpec.UserInterfaces
             ),
+            FromHomeDestination(
+                getString(R.string.screen_benchmarks),
+                ScreenSpec.Benchmarks
+            ),
         )
     }
 

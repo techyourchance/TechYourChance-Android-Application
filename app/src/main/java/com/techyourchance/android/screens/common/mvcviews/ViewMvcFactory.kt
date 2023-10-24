@@ -7,6 +7,8 @@ import com.techyourchance.android.screens.animations.AnimationsViewMvc
 import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvc
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvcImpl
+import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvc
+import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
@@ -19,6 +21,8 @@ import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvc
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvcImpl
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvc
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvcImpl
+import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadViewMvc
+import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadViewMvcImpl
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvcImpl
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvc
 import com.techyourchance.android.screens.workmanager.WorkManagerViewMvc
@@ -73,5 +77,13 @@ class ViewMvcFactory @Inject constructor(
 
     fun newStackedCardsAnimationViewMvc(container: ViewGroup?): StackedCardsAnimationViewMvc {
         return StackedCardsAnimationViewMvcImpl(inflater, container)
+    }
+
+    fun newBenchmarksViewMvc(container: ViewGroup?): BenchmarksViewMvc {
+        return BenchmarksViewMvcImpl(inflater, container)
+    }
+
+    fun newThreadsOverheadViewMvc(container: ViewGroup?): ThreadsOverheadViewMvc {
+        return ThreadsOverheadViewMvcImpl(inflater, container)
     }
 }

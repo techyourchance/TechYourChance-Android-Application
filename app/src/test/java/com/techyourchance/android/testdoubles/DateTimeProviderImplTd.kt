@@ -31,4 +31,8 @@ class DateTimeProviderImplTd : DateTimeProvider {
     override fun getZonedDateTimeUtc(): ZonedDateTime {
         return stubZonedDateTime?.withZoneSameInstant(ZoneOffset.UTC) ?: ZonedDateTime.now(ZoneOffset.UTC)
     }
+
+    override fun getNanoTime(): Long {
+        return System.nanoTime()
+    }
 }

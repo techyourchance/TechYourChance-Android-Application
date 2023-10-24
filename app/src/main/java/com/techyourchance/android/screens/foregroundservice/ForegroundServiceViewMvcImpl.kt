@@ -21,7 +21,7 @@ class ForegroundServiceViewMvcImpl(
         setRootView(layoutInflater.inflate(R.layout.layout_foreground_service, parent, false))
 
         toolbar = findViewById(R.id.toolbar)
-        btnStartService = findViewById(R.id.btnToggleService)
+        btnStartService = findViewById(R.id.btnToggleBenchmark)
         txtServiceState = findViewById(R.id.txtServiceState)
 
         toolbar.setNavigateUpListener {

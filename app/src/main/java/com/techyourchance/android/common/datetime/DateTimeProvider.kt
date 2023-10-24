@@ -13,5 +13,5 @@ interface DateTimeProvider {
     fun getDateUtc(): Date
     fun getTimestampUtc(): Long
     fun getZonedDateTimeUtc(): ZonedDateTime
-
+    fun getNanoTime(): Long
 }
