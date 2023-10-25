@@ -61,7 +61,7 @@ class ThreadsOverheadFragment : BaseFragment(), ThreadsOverheadViewMvc.Listener 
             try {
                 viewMvc.showBenchmarkStarted()
                 val result = threadsStartupBenchmarkUseCase.runBenchmark()
-                viewMvc.bindBenchmarkResults(result)
+                viewMvc.bindBenchmarkResults(result.threadsStartupResult, result.coroutinesStartupResult)
             } finally {
                 viewMvc.showBenchmarkStopped()
             }

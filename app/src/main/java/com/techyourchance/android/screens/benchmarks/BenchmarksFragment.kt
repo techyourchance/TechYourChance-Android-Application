@@ -34,8 +34,8 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
     private fun getDestinations(): List<FromBenchmarksDestination> {
         return listOf(
             FromBenchmarksDestination(
-                getString(R.string.screen_threads_overhead),
-                ScreenSpec.ThreadsOverhead
+                getString(R.string.screen_background_tasks_startup_duration),
+                ScreenSpec.BackgroundTasksStartupDuration
             ),
         )
     }

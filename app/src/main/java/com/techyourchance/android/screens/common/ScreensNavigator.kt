@@ -1,6 +1,5 @@
 package com.techyourchance.android.screens.common
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.UiThread
@@ -96,7 +95,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.Animations -> AnimationsFragment.newInstance()
                 is ScreenSpec.StackedCardsAnimation -> StackedCardsAnimationFragment.newInstance()
                 is ScreenSpec.Benchmarks -> BenchmarksFragment.newInstance()
-                is ScreenSpec.ThreadsOverhead -> ThreadsOverheadFragment.newInstance()
+                is ScreenSpec.BackgroundTasksStartupDuration -> ThreadsOverheadFragment.newInstance()
             }
             toFragment(nextFragment)
         }

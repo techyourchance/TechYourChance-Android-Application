@@ -1,6 +1,5 @@
 package com.techyourchance.android.threadsoverhead
 
-data class ThreadStartupData(
-    val threadName: String,
+data class BackgroundTaskStartupData(
     val startupDurationNano: Long,
 )

@@ -44,7 +44,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="40dp"
-        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="start"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
