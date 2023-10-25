@@ -1,36 +1,43 @@
-package com.techyourchance.android.threadsoverhead
+package com.techyourchance.android.backgroundstartup
 
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.common.datetime.DateTimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.math.sqrt
 
-class ThreadsStartupBenchmarkUseCase @Inject constructor(
+class BackgroundTasksStartupBenchmarkUseCase @Inject constructor(
     private val dateTimeProvider: DateTimeProvider,
 ) {
 
     data class Result(
         val threadsStartupResult: BackgroundTasksStartupResult,
         val coroutinesStartupResult: BackgroundTasksStartupResult,
+        val threadPoolStartupResult: BackgroundTasksStartupResult,
     )
 
     // using the "standard" background dispatcher for this benchmark
     private val coroutinesScope = CoroutineScope(Dispatchers.Default)
 
+    // no need for more than one thread since this benchmark is serial
+    private val threadPool = Executors.newSingleThreadExecutor()
+
     suspend fun runBenchmark(): Result {
         return withContext(Dispatchers.Background) {
             val threadsStartupResult = benchmarkThreads()
             val coroutinesStartupResult = benchmarkCoroutines()
-            Result(threadsStartupResult, coroutinesStartupResult)
+            val threadPoolStartupResult = benchmarkThreadPool()
+            Result(threadsStartupResult, coroutinesStartupResult, threadPoolStartupResult)
         }
     }
 
@@ -45,14 +52,10 @@ class ThreadsStartupBenchmarkUseCase @Inject constructor(
 
     private fun benchmarkSingleThread(i: Int, threadsTimings: MutableMap<Int, BackgroundTaskStartupData>) {
         val startedNano = dateTimeProvider.getNanoTime()
-        val threadName = "benchmark-thread-$i"
         val activatedNano = AtomicLong(0)
-        val thread = Thread(
-            {
-                activatedNano.set(dateTimeProvider.getNanoTime())
-            },
-            threadName
-        ).apply {
+        val thread = Thread {
+            activatedNano.set(dateTimeProvider.getNanoTime())
+        }.apply {
             start()
             join()
         }
@@ -79,6 +82,28 @@ class ThreadsStartupBenchmarkUseCase @Inject constructor(
         }
         val terminatedNano = dateTimeProvider.getNanoTime()
         coroutinesTimings[i] = BackgroundTaskStartupData(activatedNano.get() - startedNano)
+    }
+
+    private suspend fun benchmarkThreadPool(): BackgroundTasksStartupResult {
+        val threadPoolTimings: ConcurrentHashMap<Int, BackgroundTaskStartupData> = ConcurrentHashMap<Int, BackgroundTaskStartupData>(NUM_TASKS)
+        for (i in 0 until NUM_TASKS) {
+            coroutineContext.ensureActive()
+            benchmarkSingleThreadPoolTask(i, threadPoolTimings)
+        }
+        return computeResult(threadPoolTimings)
+    }
+
+    private suspend fun benchmarkSingleThreadPoolTask(i: Int, threadPoolTimings: MutableMap<Int, BackgroundTaskStartupData>) {
+        val startedNano = dateTimeProvider.getNanoTime()
+        val activatedNano = AtomicLong(0)
+        suspendCoroutine { continuation ->
+            threadPool.submit {
+                activatedNano.set(dateTimeProvider.getNanoTime())
+                continuation.resume(Unit)
+            }
+        }
+        val terminatedNano = dateTimeProvider.getNanoTime()
+        threadPoolTimings[i] = BackgroundTaskStartupData(activatedNano.get() - startedNano)
     }
 
     private fun computeResult(backgroundTasksTimings: Map<Int, BackgroundTaskStartupData>): BackgroundTasksStartupResult {

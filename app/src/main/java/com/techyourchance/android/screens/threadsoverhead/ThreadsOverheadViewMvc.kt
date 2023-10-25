@@ -1,7 +1,7 @@
 package com.techyourchance.android.screens.threadsoverhead
 
 import com.techyourchance.android.screens.common.mvcviews.BaseObservableViewMvc
-import com.techyourchance.android.threadsoverhead.BackgroundTasksStartupResult
+import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupResult
 
 abstract class ThreadsOverheadViewMvc: BaseObservableViewMvc<ThreadsOverheadViewMvc.Listener>() {
 
@@ -13,6 +13,7 @@ abstract class ThreadsOverheadViewMvc: BaseObservableViewMvc<ThreadsOverheadView
     abstract fun bindBenchmarkResults(
         threadsResult: BackgroundTasksStartupResult,
         coroutinesResult: BackgroundTasksStartupResult,
+        threadPoolResult: BackgroundTasksStartupResult,
     )
     abstract fun showBenchmarkStarted()
     abstract fun showBenchmarkStopped()

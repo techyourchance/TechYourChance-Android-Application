@@ -11,7 +11,7 @@ import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
-import com.techyourchance.android.threadsoverhead.BackgroundTasksStartupResult
+import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupResult
 
 
 class ThreadsOverheadViewMvcImpl(
@@ -57,6 +57,7 @@ class ThreadsOverheadViewMvcImpl(
     override fun bindBenchmarkResults(
         threadsResult: BackgroundTasksStartupResult,
         coroutinesResult: BackgroundTasksStartupResult,
+        threadPoolResult: BackgroundTasksStartupResult,
     ) {
         val threadsString = getString(
             R.string.background_tasks_startup_benchmark_threads_average,
@@ -68,13 +69,20 @@ class ThreadsOverheadViewMvcImpl(
             coroutinesResult.averageStartupDurationNano.toFloat() / 1_000,
             coroutinesResult.stdStartupTimeNano.toFloat() / 1_000,
         )
-        txtAverageStartupTime.text = threadsString + "\n" + coroutinesString
-        bindBenchmarkResultsToScatterChart(threadsResult, coroutinesResult)
+        val threadPoolString = getString(
+            R.string.background_tasks_startup_benchmark_thread_pool_average,
+            threadPoolResult.averageStartupDurationNano.toFloat() / 1_000,
+            threadPoolResult.stdStartupTimeNano.toFloat() / 1_000,
+        )
+
+        txtAverageStartupTime.text = "$threadsString\n$coroutinesString\n$threadPoolString"
+        bindBenchmarkResultsToScatterChart(threadsResult, coroutinesResult, threadPoolResult)
     }
     
     private fun bindBenchmarkResultsToScatterChart(
         threadsResult: BackgroundTasksStartupResult,
         coroutinesResult: BackgroundTasksStartupResult,
+        threadPoolResult: BackgroundTasksStartupResult,
     ) {
         val threadsDataSet = toScatterChartDataSet(
             threadsResult,
@@ -86,9 +94,15 @@ class ThreadsOverheadViewMvcImpl(
             getString(R.string.background_tasks_startup_benchmark_coroutines_chart_label),
             getColor(R.color.blue),
         )
+        val threadPoolDataSet = toScatterChartDataSet(
+            threadPoolResult,
+            getString(R.string.background_tasks_startup_benchmark_thread_pool_chart_label),
+            getColor(R.color.orange),
+        )
         scatterChart.data = ScatterData(
             threadsDataSet,
             coroutinesDataSet,
+            threadPoolDataSet
         )
         scatterChart.axisLeft.axisMaximum = scatterChart.data.yMax * 1.1f
         scatterChart.invalidate()

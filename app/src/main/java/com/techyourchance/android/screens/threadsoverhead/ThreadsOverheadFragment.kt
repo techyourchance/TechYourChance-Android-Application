@@ -8,7 +8,7 @@ import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
-import com.techyourchance.android.threadsoverhead.ThreadsStartupBenchmarkUseCase
+import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupBenchmarkUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class ThreadsOverheadFragment : BaseFragment(), ThreadsOverheadViewMvc.Listener 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var dialogsNavigator: DialogsNavigator
     @Inject lateinit var screensNavigator: ScreensNavigator
-    @Inject lateinit var threadsStartupBenchmarkUseCase: ThreadsStartupBenchmarkUseCase
+    @Inject lateinit var backgroundTasksStartupBenchmarkUseCase: BackgroundTasksStartupBenchmarkUseCase
 
     private lateinit var viewMvc: ThreadsOverheadViewMvc
 
@@ -60,8 +60,12 @@ class ThreadsOverheadFragment : BaseFragment(), ThreadsOverheadViewMvc.Listener 
         benchmarkJob = coroutineScope.launch {
             try {
                 viewMvc.showBenchmarkStarted()
-                val result = threadsStartupBenchmarkUseCase.runBenchmark()
-                viewMvc.bindBenchmarkResults(result.threadsStartupResult, result.coroutinesStartupResult)
+                val result = backgroundTasksStartupBenchmarkUseCase.runBenchmark()
+                viewMvc.bindBenchmarkResults(
+                    result.threadsStartupResult,
+                    result.coroutinesStartupResult,
+                    result.threadPoolStartupResult,
+                )
             } finally {
                 viewMvc.showBenchmarkStopped()
             }
