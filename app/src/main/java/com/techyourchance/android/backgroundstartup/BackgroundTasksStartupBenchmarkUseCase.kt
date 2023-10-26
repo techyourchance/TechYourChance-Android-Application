@@ -4,6 +4,7 @@ import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Backgro
 import com.techyourchance.android.common.datetime.DateTimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,11 +27,10 @@ class BackgroundTasksStartupBenchmarkUseCase @Inject constructor(
         val threadPoolStartupResult: BackgroundTasksStartupResult,
     )
 
-    // using the "standard" background dispatcher for this benchmark
-    private val coroutinesScope = CoroutineScope(Dispatchers.Default)
-
-    // no need for more than one thread since this benchmark is serial
-    private val threadPool = Executors.newSingleThreadExecutor()
+    // equivalent thread pools for thread pool and coroutines benchmarks
+    private val threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    private val coroutinesDispatcher = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()).asCoroutineDispatcher()
+    private val coroutinesScope = CoroutineScope(coroutinesDispatcher)
 
     suspend fun runBenchmark(): Result {
         return withContext(Dispatchers.Background) {
