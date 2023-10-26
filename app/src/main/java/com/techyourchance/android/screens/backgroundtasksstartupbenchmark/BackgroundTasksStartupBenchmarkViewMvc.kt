@@ -1,9 +1,9 @@
-package com.techyourchance.android.screens.threadsoverhead
+package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
 
 import com.techyourchance.android.screens.common.mvcviews.BaseObservableViewMvc
 import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupResult
 
-abstract class ThreadsOverheadViewMvc: BaseObservableViewMvc<ThreadsOverheadViewMvc.Listener>() {
+abstract class BackgroundTasksStartupBenchmarkViewMvc: BaseObservableViewMvc<BackgroundTasksStartupBenchmarkViewMvc.Listener>() {
 
     interface Listener {
         fun onBackClicked()

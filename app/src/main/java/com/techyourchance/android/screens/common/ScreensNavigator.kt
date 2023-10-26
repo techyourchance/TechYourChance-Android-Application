@@ -22,7 +22,7 @@ import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragmen
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
 import com.techyourchance.android.screens.benchmarks.BenchmarksFragment
-import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadFragment
+import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
@@ -95,7 +95,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.Animations -> AnimationsFragment.newInstance()
                 is ScreenSpec.StackedCardsAnimation -> StackedCardsAnimationFragment.newInstance()
                 is ScreenSpec.Benchmarks -> BenchmarksFragment.newInstance()
-                is ScreenSpec.BackgroundTasksStartupDuration -> ThreadsOverheadFragment.newInstance()
+                is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
             }
             toFragment(nextFragment)
         }

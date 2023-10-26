@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.threadsoverhead
+package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,14 +13,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ThreadsOverheadFragment : BaseFragment(), ThreadsOverheadViewMvc.Listener {
+class BackgroundTasksStartupBenchmarkFragment : BaseFragment(), BackgroundTasksStartupBenchmarkViewMvc.Listener {
 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var dialogsNavigator: DialogsNavigator
     @Inject lateinit var screensNavigator: ScreensNavigator
     @Inject lateinit var backgroundTasksStartupBenchmarkUseCase: BackgroundTasksStartupBenchmarkUseCase
 
-    private lateinit var viewMvc: ThreadsOverheadViewMvc
+    private lateinit var viewMvc: BackgroundTasksStartupBenchmarkViewMvc
 
     private var benchmarkJob: Job? = null
 
@@ -77,8 +77,8 @@ class ThreadsOverheadFragment : BaseFragment(), ThreadsOverheadViewMvc.Listener 
     }
 
     companion object {
-        fun newInstance(): ThreadsOverheadFragment {
-            return ThreadsOverheadFragment()
+        fun newInstance(): BackgroundTasksStartupBenchmarkFragment {
+            return BackgroundTasksStartupBenchmarkFragment()
         }
     }
 }

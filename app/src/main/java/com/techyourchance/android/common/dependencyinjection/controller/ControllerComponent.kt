@@ -16,7 +16,7 @@ import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragmen
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
 import com.techyourchance.android.screens.benchmarks.BenchmarksFragment
-import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadFragment
+import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import dagger.Subcomponent
@@ -41,7 +41,7 @@ interface ControllerComponent {
     fun inject(fragment: AnimationsFragment)
     fun inject(fragment: StackedCardsAnimationFragment)
     fun inject(fragment: BenchmarksFragment)
-    fun inject(fragment: ThreadsOverheadFragment)
+    fun inject(fragment: BackgroundTasksStartupBenchmarkFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

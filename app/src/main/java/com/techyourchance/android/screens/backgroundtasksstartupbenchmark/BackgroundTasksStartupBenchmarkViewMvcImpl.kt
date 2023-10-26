@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.threadsoverhead
+package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,10 +14,10 @@ import com.techyourchance.android.screens.common.widgets.MyButton
 import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupResult
 
 
-class ThreadsOverheadViewMvcImpl(
+class BackgroundTasksStartupBenchmarkViewMvcImpl(
         layoutInflater: LayoutInflater,
         parent: ViewGroup?
-): ThreadsOverheadViewMvc() {
+): BackgroundTasksStartupBenchmarkViewMvc() {
 
     private val toolbar: MyToolbar
     private val btnToggleBenchmark: MyButton

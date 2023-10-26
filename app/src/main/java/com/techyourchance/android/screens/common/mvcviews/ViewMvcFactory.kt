@@ -21,8 +21,8 @@ import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvc
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsViewMvcImpl
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvc
 import com.techyourchance.android.screens.questionslist.QuestionsListViewMvcImpl
-import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadViewMvc
-import com.techyourchance.android.screens.threadsoverhead.ThreadsOverheadViewMvcImpl
+import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvc
+import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvcImpl
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvcImpl
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesViewMvc
 import com.techyourchance.android.screens.workmanager.WorkManagerViewMvc
@@ -83,7 +83,7 @@ class ViewMvcFactory @Inject constructor(
         return BenchmarksViewMvcImpl(inflater, container)
     }
 
-    fun newThreadsOverheadViewMvc(container: ViewGroup?): ThreadsOverheadViewMvc {
-        return ThreadsOverheadViewMvcImpl(inflater, container)
+    fun newThreadsOverheadViewMvc(container: ViewGroup?): BackgroundTasksStartupBenchmarkViewMvc {
+        return BackgroundTasksStartupBenchmarkViewMvcImpl(inflater, container)
     }
 }

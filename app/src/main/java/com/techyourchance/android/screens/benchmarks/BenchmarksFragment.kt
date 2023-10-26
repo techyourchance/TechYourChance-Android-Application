@@ -35,7 +35,7 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
         return listOf(
             FromBenchmarksDestination(
                 getString(R.string.screen_background_tasks_startup_duration),
-                ScreenSpec.BackgroundTasksStartupDuration
+                ScreenSpec.BackgroundTasksStartupBenchmark
             ),
         )
     }
