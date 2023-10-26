@@ -1,26 +1,26 @@
-package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
+package com.techyourchance.android.screens.backgroundtasksmemorybenchmark
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksMemoryBenchmarkUseCase
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
-import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksStartupBenchmarkUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BackgroundTasksStartupBenchmarkFragment : BaseFragment(), BackgroundTasksStartupBenchmarkViewMvc.Listener {
+class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMemoryBenchmarkViewMvc.Listener {
 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var dialogsNavigator: DialogsNavigator
     @Inject lateinit var screensNavigator: ScreensNavigator
-    @Inject lateinit var backgroundTasksStartupBenchmarkUseCase: BackgroundTasksStartupBenchmarkUseCase
+    @Inject lateinit var backgroundTasksMemoryBenchmarkUseCase: BackgroundTasksMemoryBenchmarkUseCase
 
-    private lateinit var viewMvc: BackgroundTasksStartupBenchmarkViewMvc
+    private lateinit var viewMvc: BackgroundTasksMemoryBenchmarkViewMvc
 
     private var benchmarkJob: Job? = null
 
@@ -30,7 +30,7 @@ class BackgroundTasksStartupBenchmarkFragment : BaseFragment(), BackgroundTasksS
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        viewMvc = viewMvcFactory.newBackgroundTasksStartupBenchmarkViewMvc(container)
+        viewMvc = viewMvcFactory.newBackgroundTasksMemoryBenchmarkViewMvc(container)
         return viewMvc.getRootView()
     }
 
@@ -60,11 +60,11 @@ class BackgroundTasksStartupBenchmarkFragment : BaseFragment(), BackgroundTasksS
         benchmarkJob = coroutineScope.launch {
             try {
                 viewMvc.showBenchmarkStarted()
-                val result = backgroundTasksStartupBenchmarkUseCase.runBenchmark()
+                val result = backgroundTasksMemoryBenchmarkUseCase.runBenchmark()
                 viewMvc.bindBenchmarkResults(
-                    result.threadsStartupResult,
-                    result.coroutinesStartupResult,
-                    result.threadPoolStartupResult,
+                    result.threadsResult,
+                    result.coroutinesResult,
+                    result.threadPoolResult,
                 )
             } finally {
                 viewMvc.showBenchmarkStopped()
@@ -77,8 +77,8 @@ class BackgroundTasksStartupBenchmarkFragment : BaseFragment(), BackgroundTasksS
     }
 
     companion object {
-        fun newInstance(): BackgroundTasksStartupBenchmarkFragment {
-            return BackgroundTasksStartupBenchmarkFragment()
+        fun newInstance(): BackgroundTasksMemoryBenchmarkFragment {
+            return BackgroundTasksMemoryBenchmarkFragment()
         }
     }
 }

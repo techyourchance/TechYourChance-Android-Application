@@ -1,7 +1,7 @@
 package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
 
 import com.techyourchance.android.screens.common.mvcviews.BaseObservableViewMvc
-import com.techyourchance.android.backgroundstartup.BackgroundTasksStartupResult
+import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksStartupResult
 
 abstract class BackgroundTasksStartupBenchmarkViewMvc: BaseObservableViewMvc<BackgroundTasksStartupBenchmarkViewMvc.Listener>() {
 

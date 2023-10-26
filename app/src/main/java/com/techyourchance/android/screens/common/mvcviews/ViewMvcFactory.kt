@@ -7,6 +7,8 @@ import com.techyourchance.android.screens.animations.AnimationsViewMvc
 import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvc
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvcImpl
+import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvc
+import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvcImpl
 import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvc
 import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
@@ -83,7 +85,11 @@ class ViewMvcFactory @Inject constructor(
         return BenchmarksViewMvcImpl(inflater, container)
     }
 
-    fun newThreadsOverheadViewMvc(container: ViewGroup?): BackgroundTasksStartupBenchmarkViewMvc {
+    fun newBackgroundTasksStartupBenchmarkViewMvc(container: ViewGroup?): BackgroundTasksStartupBenchmarkViewMvc {
         return BackgroundTasksStartupBenchmarkViewMvcImpl(inflater, container)
+    }
+
+    fun newBackgroundTasksMemoryBenchmarkViewMvc(container: ViewGroup?): BackgroundTasksMemoryBenchmarkViewMvc {
+        return BackgroundTasksMemoryBenchmarkViewMvcImpl(inflater, container)
     }
 }

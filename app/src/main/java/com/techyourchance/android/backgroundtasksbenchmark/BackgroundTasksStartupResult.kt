@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundstartup
+package com.techyourchance.android.backgroundtasksbenchmark
 
 data class BackgroundTasksStartupResult(
     val averageStartupDurationNano: Long,

@@ -29,7 +29,7 @@ class BenchmarksViewMvcImpl(
 
         toolbar = findViewById(R.id.toolbar)
 
-        toolbar.setTitle(getString(R.string.screen_user_interfaces))
+        toolbar.setTitle(getString(R.string.screen_benchmarks))
 
         toolbar.setNavigateUpListener {
             listeners.map { it.onBackClicked() }

@@ -21,6 +21,7 @@ import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.BenchmarksFragment
 import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
@@ -96,6 +97,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.StackedCardsAnimation -> StackedCardsAnimationFragment.newInstance()
                 is ScreenSpec.Benchmarks -> BenchmarksFragment.newInstance()
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
+                is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance()
             }
             toFragment(nextFragment)
         }

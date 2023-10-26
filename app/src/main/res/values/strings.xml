@@ -17,7 +17,8 @@
     <string name="screen_animations">Animations</string>
     <string name="screen_stacked_cards_animation">Stacked cards animation</string>
     <string name="screen_benchmarks">Benchmarks</string>
-    <string name="screen_background_tasks_startup_duration">Background tasks startup duration</string>
+    <string name="screen_background_tasks_startup_benchmark">Background tasks startup benchmark</string>
+    <string name="screen_background_tasks_memory_benchmark">Background tasks memory benchmark</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
@@ -69,5 +70,9 @@
     <string name="background_tasks_startup_benchmark_threads_average">Threads average: %1$.2f \u00B1 %2$.2f [\u00B5s] </string>
     <string name="background_tasks_startup_benchmark_coroutines_average">Coroutines average: %1$.2f \u00B1 %2$.2f [\u00B5s] </string>
     <string name="background_tasks_startup_benchmark_thread_pool_average">Thread pool average: %1$.2f \u00B1 %2$.2f [\u00B5s] </string>
+
+    <string name="background_tasks_memory_benchmark_threads_chart_label">Threads memory consumption [kB]</string>
+    <string name="background_tasks_memory_benchmark_coroutines_chart_label">Coroutines memory consumption [kB]</string>
+    <string name="background_tasks_memory_benchmark_thread_pool_chart_label">Thread pool memory consumption [kB]</string>
 
 </resources>

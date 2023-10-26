@@ -34,8 +34,12 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
     private fun getDestinations(): List<FromBenchmarksDestination> {
         return listOf(
             FromBenchmarksDestination(
-                getString(R.string.screen_background_tasks_startup_duration),
+                getString(R.string.screen_background_tasks_startup_benchmark),
                 ScreenSpec.BackgroundTasksStartupBenchmark
+            ),
+            FromBenchmarksDestination(
+                getString(R.string.screen_background_tasks_memory_benchmark),
+                ScreenSpec.BackgroundTasksMemoryBenchmark
             ),
         )
     }

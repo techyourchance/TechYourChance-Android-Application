@@ -15,6 +15,7 @@ import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.BenchmarksFragment
 import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
@@ -42,6 +43,7 @@ interface ControllerComponent {
     fun inject(fragment: StackedCardsAnimationFragment)
     fun inject(fragment: BenchmarksFragment)
     fun inject(fragment: BackgroundTasksStartupBenchmarkFragment)
+    fun inject(fragment: BackgroundTasksMemoryBenchmarkFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)
