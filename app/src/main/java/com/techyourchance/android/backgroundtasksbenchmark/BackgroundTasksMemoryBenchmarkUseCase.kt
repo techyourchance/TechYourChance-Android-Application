@@ -3,14 +3,21 @@ package com.techyourchance.android.backgroundtasksbenchmark
 import com.techyourchance.android.common.application.AppMemoryInfoProvider
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.common.logs.MyLogger
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
@@ -87,7 +94,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
             val groupCountDownLatch = CountDownLatch(NUM_TASKS_IN_GROUP)
             for (taskInGroup in 0 until NUM_TASKS_IN_GROUP) {
                 val thread = Thread {
-                    MyLogger.d("Thread started; iteration: $iterationNum; group $taskGroupNum; thread $taskInGroup")
+                    MyLogger.d("Thread started; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
                     groupCountDownLatch.countDown() // make sure all threads started
                     groupCountDownLatch.await()
                     if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
@@ -97,7 +104,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                     }
                     countDownLatch.countDown()
                     countDownLatch.await()
-                    MyLogger.d("Thread terminates; iteration: $iterationNum; group $taskGroupNum; thread $taskInGroup")
+                    MyLogger.d("Thread terminates; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
                 }.apply {
                     start()
                 }
@@ -106,25 +113,58 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     }
 
     private suspend fun benchmarkCoroutines(coroutinesData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>) {
-//        for (iterationNum in 0 until NUM_ITERATIONS) {
-//            for (taskNum in 0 until NUM_TASKS) {
-//                coroutineContext.ensureActive()
-//                benchmarkSingleCoroutine(i, coroutinesTimings)
-//            }
-//        }
+        for (iterationNum in 0 until NUM_ITERATIONS) {
+            MyLogger.i("benchmarkCoroutines(); iteration: $iterationNum")
+            System.gc()
+            val awaitFlow = MutableSharedFlow<Unit>()
+            for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
+                coroutineContext.ensureActive()
+                benchmarkSingleCoroutineGroup(iterationNum, taskGroupNum, coroutinesData, awaitFlow)
+            }
+            awaitFlow.emit(Unit)
+        }
     }
 
-//    private suspend fun benchmarkSingleCoroutine(i: Int, coroutinesTimings: MutableMap<Int, BackgroundTaskStartupData>) {
-//        val startedNano = dateTimeProvider.getNanoTime()
-//        val activatedNano = AtomicLong(0)
-//        val job = coroutinesScope.launch {
-//            activatedNano.set(dateTimeProvider.getNanoTime())
-//        }.apply {
-//            join()
-//        }
-//        val terminatedNano = dateTimeProvider.getNanoTime()
-//        coroutinesTimings[i] = BackgroundTaskStartupData(activatedNano.get() - startedNano)
-//    }
+    private suspend fun benchmarkSingleCoroutineGroup(
+        iterationNum: Int,
+        taskGroupNum: Int,
+        coroutinesData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>,
+        awaitFlow: MutableSharedFlow<Unit>,
+    ) {
+        suspendCoroutine { continuation ->
+            val groupLaunchedCounter = AtomicInteger(0)
+            val groupAwaitFlow = MutableSharedFlow<Unit>()
+            for (taskInGroup in 0 until NUM_TASKS_IN_GROUP) {
+                coroutinesScope.launch {
+                    MyLogger.d("Coroutine launched; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
+                    if(groupLaunchedCounter.incrementAndGet() == NUM_TASKS_IN_GROUP) {
+                        groupAwaitFlow.emit(Unit)
+                    } else {
+                        try {
+                            groupAwaitFlow.collect {
+                                throw CancellationException()
+                            }
+                        } catch (e: CancellationException) {
+                            // no-op
+                        }
+                    }
+                    if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
+                        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
+                        coroutinesData[iterationNum]!![taskGroupNum] = BackgroundTaskMemoryData(appMemoryConsumption)
+                        continuation.resume(Unit)
+                    }
+                    try {
+                        awaitFlow.collect {
+                            throw CancellationException()
+                        }
+                    } catch (e: CancellationException) {
+                        //no-op
+                    }
+                    MyLogger.d("Coroutine terminates; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
+                }
+            }
+        }
+    }
 
     private suspend fun benchmarkThreadPool(threadPoolData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>) {
 //        for (i in 0 until NUM_TASKS) {
@@ -169,8 +209,8 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     }
 
     companion object {
-        const val NUM_TASK_GROUPS = 50
-        const val NUM_TASKS_IN_GROUP = 20
+        const val NUM_TASK_GROUPS = 100
+        const val NUM_TASKS_IN_GROUP = 50
         const val NUM_ITERATIONS = 5
     }
 }
