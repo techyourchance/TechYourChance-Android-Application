@@ -2,9 +2,9 @@ package com.techyourchance.android.screens.backgroundtasksmemorybenchmark
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import com.github.mikephil.charting.charts.ScatterChart
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
@@ -12,7 +12,6 @@ import com.techyourchance.android.R
 import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksMemoryResult
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
-import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksStartupResult
 
 
 class BackgroundTasksMemoryBenchmarkViewMvcImpl(
@@ -34,8 +33,8 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
         scatterChart.axisRight.isEnabled = false
         scatterChart.axisLeft.axisMinimum = 0f
         scatterChart.description.isEnabled = false
-        scatterChart.xAxis.isEnabled = false
-
+        scatterChart.xAxis.isEnabled = true
+        scatterChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
         val l: Legend = scatterChart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
@@ -78,7 +77,9 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
             coroutinesDataSet,
             threadPoolDataSet
         )
-        scatterChart.axisLeft.axisMaximum = scatterChart.data.yMax * 1.1f
+        val chartYRange = scatterChart.data.yMax - scatterChart.data.yMin
+        scatterChart.axisLeft.axisMaximum = scatterChart.data.yMax + 0.2f * chartYRange
+        scatterChart.axisLeft.axisMinimum = scatterChart.data.yMin - 0.2f * chartYRange
         scatterChart.invalidate()
     }
 

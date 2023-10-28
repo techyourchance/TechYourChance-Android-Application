@@ -42,14 +42,16 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
             val coroutinesData = preAllocatedDataStructures()
             val threadPoolData = preAllocatedDataStructures()
 
-            delay(1000)
-            System.gc()
+            askForGarbageCollection()
+
             benchmarkThreads(threadsData)
-            delay(1000)
-            System.gc()
+
+            askForGarbageCollection()
+
             benchmarkCoroutines(coroutinesData)
-            delay(1000)
-            System.gc()
+
+            askForGarbageCollection()
+
             benchmarkThreadPool(threadPoolData)
 
             Result(
@@ -59,7 +61,6 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
             )
         }
     }
-
 
     private fun preAllocatedDataStructures(): MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>> {
         val data = ConcurrentHashMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>(NUM_ITERATIONS)
@@ -76,7 +77,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     private suspend fun benchmarkThreads(threadsData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>) {
         for (iterationNum in 0 until NUM_ITERATIONS) {
             MyLogger.i("benchmarkThreads(); iteration: $iterationNum")
-            System.gc()
+            askForGarbageCollection()
             val startedThreads = mutableListOf<Thread>()
             val threadBarrier = CyclicBarrier(NUM_TASK_GROUPS * NUM_TASKS_IN_GROUP + 1)
             for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
@@ -129,7 +130,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
 
         for (iterationNum in 0 until NUM_ITERATIONS) {
             MyLogger.i("benchmarkCoroutines(); iteration: $iterationNum")
-            System.gc()
+            askForGarbageCollection()
             val awaitFlow = MutableSharedFlow<Unit>()
             for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
                 coroutineContext.ensureActive()
@@ -195,7 +196,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
 
         for (iterationNum in 0 until NUM_ITERATIONS) {
             MyLogger.i("benchmarkThreadPool(); iteration: $iterationNum")
-            System.gc()
+            askForGarbageCollection()
             val threadsBarrier = CyclicBarrier(NUM_TASK_GROUPS * NUM_TASKS_IN_GROUP + 1)
             for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
                 coroutineContext.ensureActive()
@@ -234,6 +235,12 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         }
     }
 
+    private suspend fun askForGarbageCollection() {
+        delay(1000)
+        System.gc()
+        delay(1000)
+    }
+
     private fun computeAverage(tasksData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>): Map<Int, BackgroundTaskMemoryData> {
         val averageTasksMemoryConsumptions = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(NUM_TASK_GROUPS)
         for (taskNum in 0 until NUM_TASK_GROUPS) {
@@ -256,7 +263,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     }
 
     companion object {
-        const val NUM_TASK_GROUPS = 20
+        const val NUM_TASK_GROUPS = 100
         const val NUM_TASKS_IN_GROUP = 5
         const val NUM_ITERATIONS = 1
     }
