@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksMemoryBenchmarkUseCase
+import com.techyourchance.android.common.restart.RestartAppUseCase
+import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
@@ -19,14 +21,17 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
     @Inject lateinit var dialogsNavigator: DialogsNavigator
     @Inject lateinit var screensNavigator: ScreensNavigator
     @Inject lateinit var backgroundTasksMemoryBenchmarkUseCase: BackgroundTasksMemoryBenchmarkUseCase
+    @Inject lateinit var restartAppUseCase: RestartAppUseCase
 
     private lateinit var viewMvc: BackgroundTasksMemoryBenchmarkViewMvc
 
+    private var startBenchmark = false
     private var benchmarkJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
         super.onCreate(savedInstanceState)
+        startBenchmark = requireArguments().getBoolean(ARG_START_BENCHMARK)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,6 +43,9 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
         super.onStart()
         viewMvc.registerListener(this)
         viewMvc.showBenchmarkStopped()
+        if (startBenchmark) {
+            startBenchmark()
+        }
     }
 
     override fun onStop() {
@@ -51,9 +59,15 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
             if (it.isActive) {
                 it.cancel()
             } else {
-                startBenchmark()
+                relaunchAppAndStartBenchmark()
             }
-        } ?: startBenchmark()
+        } ?: relaunchAppAndStartBenchmark()
+    }
+
+    private fun relaunchAppAndStartBenchmark() {
+        restartAppUseCase.restartAppOnScreen(
+            ScreenSpec.BackgroundTasksMemoryBenchmark(startBenchmark = true)
+        )
     }
 
     private fun startBenchmark() {
@@ -77,8 +91,14 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
     }
 
     companion object {
-        fun newInstance(): BackgroundTasksMemoryBenchmarkFragment {
-            return BackgroundTasksMemoryBenchmarkFragment()
+        const val ARG_START_BENCHMARK = "ARG_START_BENCHMARK"
+
+        fun newInstance(screenSpec: ScreenSpec.BackgroundTasksMemoryBenchmark): BackgroundTasksMemoryBenchmarkFragment {
+            val args = Bundle(1)
+            args.putBoolean(ARG_START_BENCHMARK, screenSpec.startBenchmark)
+            val fragment = BackgroundTasksMemoryBenchmarkFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

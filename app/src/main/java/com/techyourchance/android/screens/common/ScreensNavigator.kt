@@ -97,7 +97,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.StackedCardsAnimation -> StackedCardsAnimationFragment.newInstance()
                 is ScreenSpec.Benchmarks -> BenchmarksFragment.newInstance()
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
-                is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance()
+                is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
             }
             toFragment(nextFragment)
         }

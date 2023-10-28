@@ -39,7 +39,7 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
             ),
             FromBenchmarksDestination(
                 getString(R.string.screen_background_tasks_memory_benchmark),
-                ScreenSpec.BackgroundTasksMemoryBenchmark
+                ScreenSpec.BackgroundTasksMemoryBenchmark()
             ),
         )
     }

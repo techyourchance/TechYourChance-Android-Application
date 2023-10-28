@@ -16,7 +16,7 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object StackedCardsAnimation: ScreenSpec(ActivityName.USER_INTERFACES)
     object Benchmarks: ScreenSpec(ActivityName.MAIN)
     object BackgroundTasksStartupBenchmark: ScreenSpec(ActivityName.MAIN)
-    object BackgroundTasksMemoryBenchmark: ScreenSpec(ActivityName.MAIN)
+    data class BackgroundTasksMemoryBenchmark(val startBenchmark: Boolean = false): ScreenSpec(ActivityName.MAIN)
 
     companion object {
         /**
