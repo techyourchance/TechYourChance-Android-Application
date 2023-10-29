@@ -100,6 +100,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(":database")
+    
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -148,6 +150,9 @@ dependencies {
 
     // Background work
     implementation "androidx.work:work-runtime-ktx:2.8.1"
+
+    // Json serialization
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

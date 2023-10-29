@@ -19,6 +19,7 @@ import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.toasts.ToastsHelper
+import com.techyourchance.android.database.MyDatabase
 import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
 import com.techyourchance.android.networking.TechYourChanceApi
@@ -81,7 +82,7 @@ class ApplicationModule(private val application: Application) {
     @Provides
     @ApplicationScope
     @Named("stackoverflow")
-    fun retrofitStackoverflow(settingsManager: SettingsManager): Retrofit {
+    fun retrofitStackoverflow(gson: Gson, settingsManager: SettingsManager): Retrofit {
         val httpClientBuilder = OkHttpClient.Builder()
         httpClientBuilder.addInterceptor { chain ->
             try {
@@ -108,7 +109,7 @@ class ApplicationModule(private val application: Application) {
 
         return Retrofit.Builder()
             .baseUrl(Constants.STACKOVERFLOW_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(httpClientBuilder.build())
             .build()
     }
@@ -117,7 +118,7 @@ class ApplicationModule(private val application: Application) {
     @Provides
     @ApplicationScope
     @Named("techyourchance")
-    fun retrofitTechyourchance(settingsManager: SettingsManager): Retrofit {
+    fun retrofitTechyourchance(gson: Gson, settingsManager: SettingsManager): Retrofit {
         val loggingInterceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
             loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
@@ -129,7 +130,7 @@ class ApplicationModule(private val application: Application) {
             .build()
         return Retrofit.Builder()
             .baseUrl(Constants.TECHYOURCHANCE_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(httpClient)
             .build()
     }
@@ -192,5 +193,11 @@ class ApplicationModule(private val application: Application) {
 
         @Binds
         fun bindDateTimeChangeNotifier(dateTimeProviderImpl: DateTimeProviderImpl): DateTimeChangeNotifier
+    }
+
+    @Provides
+    @ApplicationScope
+    fun myDatabase(application: Application, gson: Gson): MyDatabase {
+        return MyDatabase(application, gson)
     }
 }
