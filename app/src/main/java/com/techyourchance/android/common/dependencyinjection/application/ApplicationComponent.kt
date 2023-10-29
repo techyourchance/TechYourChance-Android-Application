@@ -12,6 +12,7 @@ import dagger.Component
     modules = [
         ApplicationModule::class,
         SettingsModule::class,
+        DatabaseModule::class,
     ]
 )
 interface ApplicationComponent {

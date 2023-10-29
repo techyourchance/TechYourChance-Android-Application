@@ -11,6 +11,7 @@ abstract class BackgroundTasksMemoryBenchmarkViewMvc: BaseObservableViewMvc<Back
     }
 
     abstract fun bindBenchmarkResults(
+        numTasksInGroup: Int,
         threadsResult: BackgroundTasksMemoryResult,
         coroutinesResult: BackgroundTasksMemoryResult,
         threadPoolResult: BackgroundTasksMemoryResult,

@@ -195,9 +195,4 @@ class ApplicationModule(private val application: Application) {
         fun bindDateTimeChangeNotifier(dateTimeProviderImpl: DateTimeProviderImpl): DateTimeChangeNotifier
     }
 
-    @Provides
-    @ApplicationScope
-    fun myDatabase(application: Application, gson: Gson): MyDatabase {
-        return MyDatabase(application, gson)
-    }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkPhase
 import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkUseCase
 import com.techyourchance.android.common.restart.RestartAppUseCase
 import com.techyourchance.android.screens.common.ScreenSpec
@@ -26,12 +27,18 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
     private lateinit var viewMvc: BackgroundTasksMemoryBenchmarkViewMvc
 
     private var startBenchmark = false
+    private var startBenchmarkPhase = BackgroundTasksMemoryBenchmarkPhase.THREADS
+    private var startBenchmarkIterationNum = 0
+
     private var benchmarkJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
         super.onCreate(savedInstanceState)
-        startBenchmark = requireArguments().getBoolean(ARG_START_BENCHMARK)
+        val args = requireArguments()
+        startBenchmark = args.getBoolean(ARG_START_BENCHMARK)
+        startBenchmarkPhase = args.getSerializable(ARG_START_BENCHMARK_PHASE) as BackgroundTasksMemoryBenchmarkPhase
+        startBenchmarkIterationNum = args.getInt(ARG_START_BENCHMARK_ITERATION)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -74,8 +81,9 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
         benchmarkJob = coroutineScope.launch {
             try {
                 viewMvc.showBenchmarkStarted()
-                val result = backgroundTasksMemoryBenchmarkUseCase.runBenchmark()
+                val result = backgroundTasksMemoryBenchmarkUseCase.runBenchmark(startBenchmarkPhase, startBenchmarkIterationNum)
                 viewMvc.bindBenchmarkResults(
+                    result.numTasksInGroup,
                     result.threadsResult,
                     result.coroutinesResult,
                     result.threadPoolResult,
@@ -92,10 +100,14 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
 
     companion object {
         const val ARG_START_BENCHMARK = "ARG_START_BENCHMARK"
+        const val ARG_START_BENCHMARK_PHASE = "ARG_START_BENCHMARK_PHASE"
+        const val ARG_START_BENCHMARK_ITERATION = "ARG_START_BENCHMARK_ITERATION"
 
         fun newInstance(screenSpec: ScreenSpec.BackgroundTasksMemoryBenchmark): BackgroundTasksMemoryBenchmarkFragment {
-            val args = Bundle(1)
+            val args = Bundle(3)
             args.putBoolean(ARG_START_BENCHMARK, screenSpec.startBenchmark)
+            args.putSerializable(ARG_START_BENCHMARK_PHASE, screenSpec.startBenchmarkPhase)
+            args.putInt(ARG_START_BENCHMARK_ITERATION, screenSpec.startBenchmarkIteration)
             val fragment = BackgroundTasksMemoryBenchmarkFragment()
             fragment.arguments = args
             return fragment

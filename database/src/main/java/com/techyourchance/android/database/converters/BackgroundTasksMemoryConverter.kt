@@ -5,10 +5,9 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.techyourchance.android.database.entities.backgroundtasksmemory.BackgroundTasksMemoryDb
 
-@ProvidedTypeConverter
-class BackgroundTasksMemoryConverter constructor(
-    private val gson: Gson,
-) {
+class BackgroundTasksMemoryConverter {
+
+    private val gson = Gson()
 
     @TypeConverter
     fun fromString(serialized: String): BackgroundTasksMemoryDb {

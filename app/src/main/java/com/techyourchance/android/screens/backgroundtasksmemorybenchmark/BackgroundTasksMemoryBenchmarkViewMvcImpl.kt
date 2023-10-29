@@ -37,11 +37,12 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
         scatterChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
         val l: Legend = scatterChart.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
         l.setDrawInside(true)
         l.xOffset = 5f
+        l.yOffset = 20f
 
         toolbar.setNavigateUpListener {
             listeners.map { it.onBackClicked() }
@@ -53,21 +54,25 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
     }
 
     override fun bindBenchmarkResults(
+        numTasksInGroup: Int,
         threadsResult: BackgroundTasksMemoryResult,
         coroutinesResult: BackgroundTasksMemoryResult,
         threadPoolResult: BackgroundTasksMemoryResult,
     ) {
         val threadsDataSet = toScatterChartDataSet(
+            numTasksInGroup,
             threadsResult,
             getString(R.string.background_tasks_memory_benchmark_threads_chart_label),
             getColor(R.color.green),
         )
         val coroutinesDataSet = toScatterChartDataSet(
+            numTasksInGroup,
             coroutinesResult,
             getString(R.string.background_tasks_memory_benchmark_coroutines_chart_label),
             getColor(R.color.blue),
         )
         val threadPoolDataSet = toScatterChartDataSet(
+            numTasksInGroup,
             threadPoolResult,
             getString(R.string.background_tasks_memory_benchmark_thread_pool_chart_label),
             getColor(R.color.orange),
@@ -84,18 +89,22 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
     }
 
     private fun toScatterChartDataSet(
+        numTasksInGroup: Int,
         result: BackgroundTasksMemoryResult,
         dataSetName: String,
         color: Int,
     ): ScatterDataSet {
         val resultEntries = result.averageAppMemoryConsumption.entries.sortedBy { it.key }
         val chartEntries = resultEntries.map {
-            Entry(it.key.toFloat(), it.value.appMemoryConsumption.nativeMemoryKb + it.value.appMemoryConsumption.heapMemoryKb)
+            Entry(
+                it.key.toFloat() * numTasksInGroup, // each key represents group index, which can contain multiple threads
+                it.value.appMemoryInfo.nativeMemoryKb + it.value.appMemoryInfo.heapMemoryKb,
+            )
         }
         val dataSet = ScatterDataSet(chartEntries, dataSetName)
         dataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE)
         dataSet.color = color
-        dataSet.scatterShapeSize = 6f
+        dataSet.scatterShapeSize = 10f
         dataSet.setDrawValues(false)
         return dataSet
     }

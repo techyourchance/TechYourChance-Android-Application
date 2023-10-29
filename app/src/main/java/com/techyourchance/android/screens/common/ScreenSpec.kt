@@ -1,5 +1,6 @@
 package com.techyourchance.android.screens.common
 
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkPhase
 import java.io.Serializable
 
 @Suppress("ClassName")
@@ -16,7 +17,11 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     object StackedCardsAnimation: ScreenSpec(ActivityName.USER_INTERFACES)
     object Benchmarks: ScreenSpec(ActivityName.MAIN)
     object BackgroundTasksStartupBenchmark: ScreenSpec(ActivityName.MAIN)
-    data class BackgroundTasksMemoryBenchmark(val startBenchmark: Boolean = false): ScreenSpec(ActivityName.MAIN)
+    data class BackgroundTasksMemoryBenchmark(
+        val startBenchmark: Boolean = false,
+        val startBenchmarkPhase: BackgroundTasksMemoryBenchmarkPhase = BackgroundTasksMemoryBenchmarkPhase.THREADS,
+        val startBenchmarkIteration: Int = 0,
+    ): ScreenSpec(ActivityName.MAIN)
 
     companion object {
         /**

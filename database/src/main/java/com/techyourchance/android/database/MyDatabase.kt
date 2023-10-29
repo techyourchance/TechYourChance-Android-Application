@@ -20,8 +20,8 @@ class MyDatabase(context: Context, gson: Gson) {
             MyRoomDatabase::class.java,
             DatabaseConstants.DATABASE_NAME
         ).apply {
-            addTypeConverter(AppMemoryInfoConverter(gson))
-            addTypeConverter(BackgroundTasksMemoryConverter(gson))
+//            addTypeConverter(AppMemoryInfoConverter(gson))
+//            addTypeConverter(BackgroundTasksMemoryConverter(gson))
         }.build()
     }
 

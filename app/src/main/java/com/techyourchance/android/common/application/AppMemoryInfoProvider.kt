@@ -5,11 +5,6 @@ import javax.inject.Inject
 
 class AppMemoryInfoProvider @Inject constructor() {
 
-    data class AppMemoryInfo(
-        val heapMemoryKb: Float,
-        val nativeMemoryKb: Float,
-    )
-
     fun getAppMemoryConsumption(): AppMemoryInfo {
         val runtime = Runtime.getRuntime()
         val memoryInfo = Debug.MemoryInfo()
