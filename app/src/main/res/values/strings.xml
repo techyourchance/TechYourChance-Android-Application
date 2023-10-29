@@ -74,5 +74,8 @@
     <string name="background_tasks_memory_benchmark_threads_chart_label">Threads memory consumption [kB]</string>
     <string name="background_tasks_memory_benchmark_coroutines_chart_label">Coroutines memory consumption [kB]</string>
     <string name="background_tasks_memory_benchmark_thread_pool_chart_label">Thread pool memory consumption [kB]</string>
+    <string name="background_tasks_memory_benchmark_thread_memory">Single thread: %1$.2f kB</string>
+    <string name="background_tasks_memory_benchmark_coroutine_memory">Single coroutine: %1$.2f kB</string>
+    <string name="background_tasks_memory_benchmark_thread_in_thread_pool_memory">Single thread in thread pool: %1$.2f kB</string>
 
 </resources>

@@ -31,10 +31,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/btnToggleBenchmark"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtTaskMemoryConsumption"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
         android:layout_marginHorizontal="20dp"
+        />
+
+    <TextView
+        android:id="@+id/txtTaskMemoryConsumption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scatterChart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginHorizontal="20dp"
+        android:lines="3"
+        android:gravity="start"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

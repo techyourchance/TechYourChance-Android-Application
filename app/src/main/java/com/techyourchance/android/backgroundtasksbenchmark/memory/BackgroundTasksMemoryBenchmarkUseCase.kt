@@ -1,6 +1,5 @@
 package com.techyourchance.android.backgroundtasksbenchmark.memory
 
-import com.techyourchance.android.common.application.AppMemoryInfo
 import com.techyourchance.android.common.application.AppMemoryInfoProvider
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.common.logs.MyLogger
@@ -38,9 +37,9 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     data class Result(
         val isCompleteResult: Boolean,
         val numTasksInGroup: Int,
-        val threadsResult: BackgroundTasksMemoryResult,
-        val coroutinesResult: BackgroundTasksMemoryResult,
-        val threadPoolResult: BackgroundTasksMemoryResult,
+        val threadsResult: BackgroundTaskGroupsMemoryResult,
+        val coroutinesResult: BackgroundTaskGroupsMemoryResult,
+        val threadPoolResult: BackgroundTaskGroupsMemoryResult,
     )
 
     suspend fun runBenchmark(benchmarkPhase: BackgroundTasksMemoryBenchmarkPhase, benchmarkIterationNum: Int): Result {
@@ -79,9 +78,9 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                 Result(
                     false,
                     0,
-                    BackgroundTasksMemoryResult.NULL_OBJECT,
-                    BackgroundTasksMemoryResult.NULL_OBJECT,
-                    BackgroundTasksMemoryResult.NULL_OBJECT,
+                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
+                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
+                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
                 )
             }
         }
@@ -129,8 +128,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                     MyLogger.d("Thread started; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
                     groupThreadBarrier.await() // make sure all threads started
                     if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
-                        threadsData[taskGroupNum] = BackgroundTaskMemoryData(appMemoryConsumption)
+                        threadsData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
                         continuation.resume(Unit)
                     }
                     threadBarrier.await()
@@ -198,8 +196,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                         }
                     }
                     if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
-                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(appMemoryConsumption)
+                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
                         continuation.resume(Unit)
                     }
                     try {
@@ -257,8 +254,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                     MyLogger.d("Thread pool started; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
                     groupThreadBarrier.await() // make sure all threads started
                     if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
-                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(appMemoryConsumption)
+                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
                         continuation.resume(Unit)
                     }
                     threadsBarrier.await()
@@ -266,6 +262,11 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getAppMemoryConsumption(): Float {
+        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
+        return appMemoryConsumption.heapMemoryKb + appMemoryConsumption.nativeMemoryKb
     }
 
     private fun restartAppForNextIteration(
@@ -310,9 +311,9 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     }
 
     companion object {
-        const val NUM_TASK_GROUPS = 100
+        const val NUM_TASK_GROUPS = 50
         const val NUM_TASKS_IN_GROUP = 1
-        const val NUM_ITERATIONS = 5
+        const val NUM_ITERATIONS = 10
 
         const val LABEL_THREADS = "threads"
         const val LABEL_COROUTINES = "coroutines"

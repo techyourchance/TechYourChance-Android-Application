@@ -2,6 +2,7 @@ package com.techyourchance.android.screens.backgroundtasksmemorybenchmark
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import com.github.mikephil.charting.charts.ScatterChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -9,7 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryResult
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTaskGroupsMemoryResult
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
 
@@ -22,6 +23,7 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
     private val toolbar: MyToolbar
     private val btnToggleBenchmark: MyButton
     private val scatterChart: ScatterChart
+    private val txtTaskMemoryConsumption: TextView
 
     init {
         setRootView(layoutInflater.inflate(R.layout.layout_background_tasks_memory_benchmark, parent, false))
@@ -29,6 +31,7 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
         toolbar = findViewById(R.id.toolbar)
         btnToggleBenchmark = findViewById(R.id.btnToggleBenchmark)
         scatterChart = findViewById(R.id.scatterChart)
+        txtTaskMemoryConsumption = findViewById(R.id.txtTaskMemoryConsumption)
 
         scatterChart.axisRight.isEnabled = false
         scatterChart.axisLeft.axisMinimum = 0f
@@ -55,10 +58,25 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
 
     override fun bindBenchmarkResults(
         numTasksInGroup: Int,
-        threadsResult: BackgroundTasksMemoryResult,
-        coroutinesResult: BackgroundTasksMemoryResult,
-        threadPoolResult: BackgroundTasksMemoryResult,
+        threadsResult: BackgroundTaskGroupsMemoryResult,
+        coroutinesResult: BackgroundTaskGroupsMemoryResult,
+        threadPoolResult: BackgroundTaskGroupsMemoryResult,
     ) {
+        val threadsString = getString(
+            R.string.background_tasks_memory_benchmark_thread_memory,
+            threadsResult.averageLinearFitSlope / numTasksInGroup
+        )
+        val coroutinesString = getString(
+            R.string.background_tasks_memory_benchmark_coroutine_memory,
+            coroutinesResult.averageLinearFitSlope / numTasksInGroup
+        )
+        val threadPoolString = getString(
+            R.string.background_tasks_memory_benchmark_thread_in_thread_pool_memory,
+            threadPoolResult.averageLinearFitSlope / numTasksInGroup
+        )
+
+        txtTaskMemoryConsumption.text = "$threadsString\n$coroutinesString\n$threadPoolString"
+
         val threadsDataSet = toScatterChartDataSet(
             numTasksInGroup,
             threadsResult,
@@ -90,7 +108,7 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
 
     private fun toScatterChartDataSet(
         numTasksInGroup: Int,
-        result: BackgroundTasksMemoryResult,
+        result: BackgroundTaskGroupsMemoryResult,
         dataSetName: String,
         color: Int,
     ): ScatterDataSet {
@@ -98,7 +116,7 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
         val chartEntries = resultEntries.map {
             Entry(
                 it.key.toFloat() * numTasksInGroup, // each key represents group index, which can contain multiple threads
-                it.value.appMemoryInfo.nativeMemoryKb + it.value.appMemoryInfo.heapMemoryKb,
+                it.value.consumedMemory,
             )
         }
         val dataSet = ScatterDataSet(chartEntries, dataSetName)
@@ -106,6 +124,7 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
         dataSet.color = color
         dataSet.scatterShapeSize = 10f
         dataSet.setDrawValues(false)
+
         return dataSet
     }
 
