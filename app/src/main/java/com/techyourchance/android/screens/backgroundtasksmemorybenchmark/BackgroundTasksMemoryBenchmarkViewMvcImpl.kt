@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksMemoryResult
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryResult
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
 

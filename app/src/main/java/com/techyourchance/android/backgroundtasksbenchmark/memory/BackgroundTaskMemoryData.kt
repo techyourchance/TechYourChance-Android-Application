@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundtasksbenchmark
+package com.techyourchance.android.backgroundtasksbenchmark.memory
 
 import com.techyourchance.android.common.application.AppMemoryInfoProvider
 

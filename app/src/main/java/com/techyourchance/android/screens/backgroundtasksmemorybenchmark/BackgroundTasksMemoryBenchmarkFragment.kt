@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksMemoryBenchmarkUseCase
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkUseCase
 import com.techyourchance.android.common.restart.RestartAppUseCase
 import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
