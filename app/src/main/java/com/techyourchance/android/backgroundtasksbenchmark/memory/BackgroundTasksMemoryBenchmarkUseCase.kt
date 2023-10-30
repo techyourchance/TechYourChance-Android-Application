@@ -230,7 +230,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
 
     private fun getAppMemoryConsumption(): Float {
         val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
-        return appMemoryConsumption.heapMemoryKb + appMemoryConsumption.nativeMemoryKb
+        return appMemoryConsumption.heapMemoryKb + appMemoryConsumption.nativeMemoryKb + appMemoryConsumption.stackMemoryKb
     }
 
     private fun restartAppForNextIteration(

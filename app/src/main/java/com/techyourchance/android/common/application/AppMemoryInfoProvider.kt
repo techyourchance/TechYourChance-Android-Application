@@ -12,6 +12,7 @@ class AppMemoryInfoProvider @Inject constructor() {
         return AppMemoryInfo(
             memoryInfo.getMemoryStat("summary.java-heap").toFloat(),
             memoryInfo.getMemoryStat("summary.native-heap").toFloat(),
+            memoryInfo.getMemoryStat("summary.stack").toFloat(),
         )
     }
 }
