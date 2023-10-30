@@ -10,7 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTaskGroupsMemoryResult
+import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryResult
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
 
@@ -57,40 +57,36 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
     }
 
     override fun bindBenchmarkResults(
-        numTasksInGroup: Int,
-        threadsResult: BackgroundTaskGroupsMemoryResult,
-        coroutinesResult: BackgroundTaskGroupsMemoryResult,
-        threadPoolResult: BackgroundTaskGroupsMemoryResult,
+        threadsResult: BackgroundTasksMemoryResult,
+        coroutinesResult: BackgroundTasksMemoryResult,
+        threadPoolResult: BackgroundTasksMemoryResult,
     ) {
         val threadsString = getString(
             R.string.background_tasks_memory_benchmark_thread_memory,
-            threadsResult.averageLinearFitSlope / numTasksInGroup
+            threadsResult.averageLinearFitCoefficients.slope
         )
         val coroutinesString = getString(
             R.string.background_tasks_memory_benchmark_coroutine_memory,
-            coroutinesResult.averageLinearFitSlope / numTasksInGroup
+            coroutinesResult.averageLinearFitCoefficients.slope
         )
         val threadPoolString = getString(
             R.string.background_tasks_memory_benchmark_thread_in_thread_pool_memory,
-            threadPoolResult.averageLinearFitSlope / numTasksInGroup
+            threadPoolResult.averageLinearFitCoefficients.slope
         )
 
         txtTaskMemoryConsumption.text = "$threadsString\n$coroutinesString\n$threadPoolString"
 
         val threadsDataSet = toScatterChartDataSet(
-            numTasksInGroup,
             threadsResult,
             getString(R.string.background_tasks_memory_benchmark_threads_chart_label),
             getColor(R.color.green),
         )
         val coroutinesDataSet = toScatterChartDataSet(
-            numTasksInGroup,
             coroutinesResult,
             getString(R.string.background_tasks_memory_benchmark_coroutines_chart_label),
             getColor(R.color.blue),
         )
         val threadPoolDataSet = toScatterChartDataSet(
-            numTasksInGroup,
             threadPoolResult,
             getString(R.string.background_tasks_memory_benchmark_thread_pool_chart_label),
             getColor(R.color.orange),
@@ -107,15 +103,14 @@ class BackgroundTasksMemoryBenchmarkViewMvcImpl(
     }
 
     private fun toScatterChartDataSet(
-        numTasksInGroup: Int,
-        result: BackgroundTaskGroupsMemoryResult,
+        result: BackgroundTasksMemoryResult,
         dataSetName: String,
         color: Int,
     ): ScatterDataSet {
         val resultEntries = result.averageAppMemoryConsumption.entries.sortedBy { it.key }
         val chartEntries = resultEntries.map {
             Entry(
-                it.key.toFloat() * numTasksInGroup, // each key represents group index, which can contain multiple threads
+                it.key.toFloat(),
                 it.value.consumedMemory,
             )
         }

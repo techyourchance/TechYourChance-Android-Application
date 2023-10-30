@@ -20,7 +20,6 @@ import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
@@ -36,10 +35,9 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
 
     data class Result(
         val isCompleteResult: Boolean,
-        val numTasksInGroup: Int,
-        val threadsResult: BackgroundTaskGroupsMemoryResult,
-        val coroutinesResult: BackgroundTaskGroupsMemoryResult,
-        val threadPoolResult: BackgroundTaskGroupsMemoryResult,
+        val threadsResult: BackgroundTasksMemoryResult,
+        val coroutinesResult: BackgroundTasksMemoryResult,
+        val threadPoolResult: BackgroundTasksMemoryResult,
     )
 
     suspend fun runBenchmark(benchmarkPhase: BackgroundTasksMemoryBenchmarkPhase, benchmarkIterationNum: Int): Result {
@@ -69,7 +67,6 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
             return@withContext if (isBenchmarkCompleted) {
                 Result(
                     true,
-                    NUM_TASKS_IN_GROUP,
                     fetchBackgroundTaskMemoryDataUseCase.fetchData(LABEL_THREADS),
                     fetchBackgroundTaskMemoryDataUseCase.fetchData(LABEL_COROUTINES),
                     fetchBackgroundTaskMemoryDataUseCase.fetchData(LABEL_THREAD_POOL),
@@ -77,18 +74,17 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
             } else {
                 Result(
                     false,
-                    0,
-                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
-                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
-                    BackgroundTaskGroupsMemoryResult.NULL_OBJECT,
+                    BackgroundTasksMemoryResult.NULL_OBJECT,
+                    BackgroundTasksMemoryResult.NULL_OBJECT,
+                    BackgroundTasksMemoryResult.NULL_OBJECT,
                 )
             }
         }
     }
 
     private fun preAllocateIterationData(): ConcurrentHashMap<Int, BackgroundTaskMemoryData> {
-        val iterationData = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(NUM_TASK_GROUPS)
-        for (taskNum in 0 until NUM_TASK_GROUPS) {
+        val iterationData = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(NUM_TASKS)
+        for (taskNum in 0 until NUM_TASKS) {
             iterationData[taskNum] = BackgroundTaskMemoryData.NULL_OBJECT
         }
         return iterationData
@@ -100,13 +96,13 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     ): Boolean {
         MyLogger.i("benchmarkThreads(); iteration: $iterationNum")
         val startedThreads = mutableListOf<Thread>()
-        val threadBarrier = CyclicBarrier(NUM_TASK_GROUPS * NUM_TASKS_IN_GROUP + 1)
-        for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
+        val threadBarrier = CyclicBarrier(NUM_TASKS + 1)
+        for (taskNum in 0 until NUM_TASKS) {
             coroutineContext.ensureActive()
-            val groupStartedThreads = benchmarkSingleThreadsGroup(
-                iterationNum, taskGroupNum, iterationData, threadBarrier
+            val thread = benchmarkSingleThread(
+                iterationNum, taskNum, iterationData, threadBarrier
             )
-            startedThreads.addAll(groupStartedThreads)
+            startedThreads.add(thread)
         }
         threadBarrier.await()
         startedThreads.forEach { it.join() }
@@ -114,32 +110,23 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         return !restartAppForNextIteration(BackgroundTasksMemoryBenchmarkPhase.THREADS, iterationNum)
     }
 
-    private suspend fun benchmarkSingleThreadsGroup(
+    private suspend fun benchmarkSingleThread(
         iterationNum: Int,
-        taskGroupNum: Int,
+        taskNum: Int,
         threadsData: MutableMap<Int, BackgroundTaskMemoryData>,
         threadBarrier: CyclicBarrier
-    ): List<Thread> {
-        val groupThreads = mutableListOf<Thread>()
-        suspendCoroutine { continuation ->
-            val groupThreadBarrier = CyclicBarrier(NUM_TASKS_IN_GROUP)
-            for (taskInGroup in 0 until NUM_TASKS_IN_GROUP) {
-                Thread {
-                    MyLogger.d("Thread started; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
-                    groupThreadBarrier.await() // make sure all threads started
-                    if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        threadsData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
-                        continuation.resume(Unit)
-                    }
-                    threadBarrier.await()
-                    MyLogger.d("Thread terminates; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
-                }.apply {
-                    start()
-                    groupThreads.add(this)
-                }
+    ): Thread {
+        return suspendCoroutine { continuation ->
+            val thread = Thread {
+                MyLogger.d("Thread started; iteration: $iterationNum; task $taskNum")
+                threadsData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                continuation.resume(Thread.currentThread())
+                threadBarrier.await()
+                MyLogger.d("Thread terminates; iteration: $iterationNum; task $taskNum")
+            }.apply {
+                start()
             }
         }
-        return groupThreads
     }
 
     private suspend fun benchmarkCoroutines(
@@ -156,10 +143,10 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
 
         MyLogger.i("benchmarkCoroutines(); iteration: $iterationNum")
         val awaitFlow = MutableSharedFlow<Unit>()
-        for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
+        for (taskNum in 0 until NUM_TASKS) {
             coroutineContext.ensureActive()
-            benchmarkSingleCoroutineGroup(
-                iterationNum, taskGroupNum, iterationData, awaitFlow, coroutinesScope
+            benchmarkSingleCoroutine(
+                iterationNum, taskNum, iterationData, awaitFlow, coroutinesScope
             )
         }
         awaitFlow.emit(Unit)
@@ -171,43 +158,26 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         return !restartAppForNextIteration(BackgroundTasksMemoryBenchmarkPhase.COROUTINES, iterationNum)
     }
 
-    private suspend fun benchmarkSingleCoroutineGroup(
+    private suspend fun benchmarkSingleCoroutine(
         iterationNum: Int,
-        taskGroupNum: Int,
+        taskNum: Int,
         iterationData: MutableMap<Int, BackgroundTaskMemoryData>,
         awaitFlow: MutableSharedFlow<Unit>,
         coroutinesScope: CoroutineScope,
     ) {
         suspendCoroutine { continuation ->
-            val groupLaunchedCounter = AtomicInteger(0)
-            val groupAwaitFlow = MutableSharedFlow<Unit>()
-            for (taskInGroup in 0 until NUM_TASKS_IN_GROUP) {
-                coroutinesScope.launch {
-                    MyLogger.d("Coroutine launched; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
-                    if(groupLaunchedCounter.incrementAndGet() == NUM_TASKS_IN_GROUP) {
-                        groupAwaitFlow.emit(Unit)
-                    } else {
-                        try {
-                            groupAwaitFlow.collect {
-                                throw CancellationException()
-                            }
-                        } catch (e: CancellationException) {
-                            // no-op
-                        }
+            coroutinesScope.launch {
+                MyLogger.d("Coroutine launched; iteration: $iterationNum; task $taskNum")
+                iterationData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                continuation.resume(Unit)
+                try {
+                    awaitFlow.collect {
+                        throw CancellationException()
                     }
-                    if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
-                        continuation.resume(Unit)
-                    }
-                    try {
-                        awaitFlow.collect {
-                            throw CancellationException()
-                        }
-                    } catch (e: CancellationException) {
-                        //no-op
-                    }
-                    MyLogger.d("Coroutine terminates; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
+                } catch (e: CancellationException) {
+                    //no-op
                 }
+                MyLogger.d("Coroutine terminates; iteration: $iterationNum; task $taskNum")
             }
         }
     }
@@ -224,10 +194,10 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         )
 
         MyLogger.i("benchmarkThreadPool(); iteration: $iterationNum")
-        val threadsBarrier = CyclicBarrier(NUM_TASK_GROUPS * NUM_TASKS_IN_GROUP + 1)
-        for (taskGroupNum in 0 until NUM_TASK_GROUPS) {
+        val threadsBarrier = CyclicBarrier(NUM_TASKS + 1)
+        for (taskNum in 0 until NUM_TASKS) {
             coroutineContext.ensureActive()
-            benchmarkSingleThreadPoolGroup(iterationNum, taskGroupNum, iterationData, threadPool, threadsBarrier)
+            benchmarkSingleThreadPoolThread(iterationNum, taskNum, iterationData, threadPool, threadsBarrier)
         }
         threadsBarrier.await()
 
@@ -240,26 +210,20 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         return !restartAppForNextIteration(BackgroundTasksMemoryBenchmarkPhase.THREAD_POOL, iterationNum)
     }
 
-    private suspend fun benchmarkSingleThreadPoolGroup(
+    private suspend fun benchmarkSingleThreadPoolThread(
         iterationNum: Int,
-        taskGroupNum: Int,
+        taskNum: Int,
         iterationData:MutableMap<Int, BackgroundTaskMemoryData>,
         threadPool: ThreadPoolExecutor,
         threadsBarrier: CyclicBarrier
     ) {
         suspendCoroutine { continuation ->
-            val groupThreadBarrier = CyclicBarrier(NUM_TASKS_IN_GROUP)
-            for (taskInGroup in 0 until NUM_TASKS_IN_GROUP) {
-                threadPool.execute {
-                    MyLogger.d("Thread pool started; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
-                    groupThreadBarrier.await() // make sure all threads started
-                    if (taskInGroup == NUM_TASKS_IN_GROUP - 1) {
-                        iterationData[taskGroupNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
-                        continuation.resume(Unit)
-                    }
-                    threadsBarrier.await()
-                    MyLogger.d("Thread pool terminates; iteration: $iterationNum; group $taskGroupNum; task $taskInGroup")
-                }
+            threadPool.execute {
+                MyLogger.d("Thread pool started; iteration: $iterationNum; task $taskNum")
+                iterationData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                continuation.resume(Unit)
+                threadsBarrier.await()
+                MyLogger.d("Thread pool terminates; iteration: $iterationNum; task $taskNum")
             }
         }
     }
@@ -311,9 +275,8 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     }
 
     companion object {
-        const val NUM_TASK_GROUPS = 50
-        const val NUM_TASKS_IN_GROUP = 1
-        const val NUM_ITERATIONS = 10
+        const val NUM_TASKS = 100
+        const val NUM_ITERATIONS = 3
 
         const val LABEL_THREADS = "threads"
         const val LABEL_COROUTINES = "coroutines"

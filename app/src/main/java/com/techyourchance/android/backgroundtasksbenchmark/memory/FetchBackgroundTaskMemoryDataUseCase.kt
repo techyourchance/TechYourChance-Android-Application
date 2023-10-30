@@ -1,40 +1,44 @@
 package com.techyourchance.android.backgroundtasksbenchmark.memory
 
+import com.techyourchance.android.common.maths.LinearFitCalculator
+import com.techyourchance.android.common.maths.LinearFitCoefficients
 import com.techyourchance.android.database.entities.backgroundtasksmemory.BackgroundTasksMemoryDao
+import com.techyourchance.android.database.entities.backgroundtasksmemory.BackgroundTasksMemoryDb
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 class FetchBackgroundTaskMemoryDataUseCase @Inject constructor(
     private val backgroundTasksMemoryDao: BackgroundTasksMemoryDao,
-
+    private val linearFitCalculator: LinearFitCalculator,
 ) {
 
-    suspend fun fetchData(label: String): BackgroundTaskGroupsMemoryResult {
+    suspend fun fetchData(label: String): BackgroundTasksMemoryResult {
         val dbEntities = backgroundTasksMemoryDao.fetchAllWithLabel(label)
-        val sortedDbEntities = dbEntities.sortedBy { it.iteration * 100 + it.tasksGroup }
-        val tasksData = preAllocatedDataStructures()
+        val sortedDbEntities = dbEntities.sortedBy { it.iterationNum * 100 + it.taskNum }
+        val tasksData = preAllocatedDataStructures(sortedDbEntities)
         sortedDbEntities.forEach { dbEntity ->
-            tasksData[dbEntity.iteration]!![dbEntity.tasksGroup] = BackgroundTaskMemoryData(
+            tasksData[dbEntity.iterationNum]!![dbEntity.taskNum] = BackgroundTaskMemoryData(
                 dbEntity.memoryInfo.consumedMemory
             )
         }
-        val averagedTasksData = computeAverage(tasksData)
-        val (averageLinearFitSlope, averageLinearFitIntercept) = computeLinearFitCoefficients(averagedTasksData)
-        return BackgroundTaskGroupsMemoryResult(
+        val averagedTasksData = computeAverageOfIterations(tasksData)
+        val averageLinearFitCoefficients = calculateLinearFit(averagedTasksData)
+        return BackgroundTasksMemoryResult(
             averagedTasksData,
-            averageLinearFitSlope,
-            averageLinearFitIntercept,
+            averageLinearFitCoefficients,
             tasksData,
         )
     }
 
-    private fun preAllocatedDataStructures(): MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>> {
-        val data = ConcurrentHashMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>(
-            BackgroundTasksMemoryBenchmarkUseCase.NUM_ITERATIONS
-        )
-        for (iterationNum in 0 until BackgroundTasksMemoryBenchmarkUseCase.NUM_ITERATIONS) {
-            val iterationData = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(BackgroundTasksMemoryBenchmarkUseCase.NUM_TASK_GROUPS)
-            for (taskNum in 0 until BackgroundTasksMemoryBenchmarkUseCase.NUM_TASK_GROUPS) {
+    private fun preAllocatedDataStructures(sortedDbEntities: List<BackgroundTasksMemoryDb>): MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>> {
+        val numIterations = sortedDbEntities.maxOf { it.iterationNum + 1 }
+        val numTasks = sortedDbEntities.maxOf { it.taskNum + 1}
+
+        val data = ConcurrentHashMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>(numIterations)
+
+        for (iterationNum in 0 until numIterations) {
+            val iterationData = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(numTasks)
+            for (taskNum in 0 until numTasks) {
                 iterationData[taskNum] = BackgroundTaskMemoryData.NULL_OBJECT
             }
             data[iterationNum] = iterationData
@@ -42,41 +46,24 @@ class FetchBackgroundTaskMemoryDataUseCase @Inject constructor(
         return data
     }
 
-    private fun computeAverage(tasksData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>): Map<Int, BackgroundTaskMemoryData> {
-        val numTaskGroups = tasksData[0]!!.size
-        val averageTasksMemoryConsumptions = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(
-            numTaskGroups
-        )
-        for (taskNum in 0 until numTaskGroups) {
+    private fun computeAverageOfIterations(tasksData: MutableMap<Int, MutableMap<Int, BackgroundTaskMemoryData>>): Map<Int, BackgroundTaskMemoryData> {
+        val numIterations = tasksData.size
+        val numTasks = tasksData[0]!!.size
+        val averageTasksMemoryConsumptions = ConcurrentHashMap<Int, BackgroundTaskMemoryData>(numTasks)
+        for (taskNum in 0 until numTasks) {
             var sumTaskMemoryConsumption = 0f
-            for (iterationNum in 0 until tasksData.size) {
+            for (iterationNum in 0 until numIterations) {
                 sumTaskMemoryConsumption += tasksData[iterationNum]!![taskNum]!!.consumedMemory
             }
-            val averageTaskMemoryConsumption = sumTaskMemoryConsumption / numTaskGroups
+            val averageTaskMemoryConsumption = sumTaskMemoryConsumption / numIterations
             averageTasksMemoryConsumptions[taskNum] = BackgroundTaskMemoryData(averageTaskMemoryConsumption)
         }
         return averageTasksMemoryConsumptions
     }
 
-    private fun computeLinearFitCoefficients(tasksData: Map<Int, BackgroundTaskMemoryData>): Pair<Float, Float> {
-        val n = tasksData.size
-        var sumX = 0f
-        var sumY = 0f
-        var sumXY = 0f
-        var sumXX = 0f
 
-        for (i in 0 until n) {
-            sumX += i
-            sumY += tasksData[i]!!.consumedMemory
-            sumXY += i * tasksData[i]!!.consumedMemory
-            sumXX += i * i
-        }
-
-        val slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX)
-        val intercept = (sumY - slope * sumX) / n
-
-        return Pair(slope, intercept)
+    private fun calculateLinearFit(data: Map<Int, BackgroundTaskMemoryData>): LinearFitCoefficients {
+        val inputData = data.map { entry -> Pair(entry.key.toDouble(), entry.value.consumedMemory.toDouble()) }
+        return linearFitCalculator.calculateLinearFit(inputData)
     }
-
-
 }

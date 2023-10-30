@@ -11,14 +11,14 @@ class SaveBackgroundTaskMemoryDataUseCase @Inject constructor(
 ) {
 
     suspend fun saveData(label: String, iteration: Int, data: MutableMap<Int, BackgroundTaskMemoryData>) {
-        for (tasksGroup in data.keys) {
-            val consumedMemory = data.values.toList()[tasksGroup].consumedMemory
+        for (task in data.keys) {
+            val consumedMemory = data.values.toList()[task].consumedMemory
             backgroundTasksMemoryDao.upsert(
                 BackgroundTasksMemoryDb(
                     0,
                     label,
                     iteration,
-                    tasksGroup,
+                    task,
                     AppMemoryInfoDb(0, consumedMemory)
                 )
             )

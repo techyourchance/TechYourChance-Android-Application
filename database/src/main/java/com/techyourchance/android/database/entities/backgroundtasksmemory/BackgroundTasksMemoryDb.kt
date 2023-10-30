@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class BackgroundTasksMemoryDb(
     @field:ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Long,
     @field:ColumnInfo(name = "label") val label: String,
-    @field:ColumnInfo(name = "iteration") val iteration: Int,
-    @field:ColumnInfo(name = "tasksGroup") val tasksGroup: Int,
+    @field:ColumnInfo(name = "iterationNumber") val iterationNum: Int,
+    @field:ColumnInfo(name = "taskNumber") val taskNum: Int,
     @field:ColumnInfo(name = "memoryInfo") val memoryInfo: AppMemoryInfoDb,
 )

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkPhase
 import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkUseCase
+import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.restart.RestartAppUseCase
 import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
@@ -82,12 +83,21 @@ class BackgroundTasksMemoryBenchmarkFragment : BaseFragment(), BackgroundTasksMe
             try {
                 viewMvc.showBenchmarkStarted()
                 val result = backgroundTasksMemoryBenchmarkUseCase.runBenchmark(startBenchmarkPhase, startBenchmarkIterationNum)
-                viewMvc.bindBenchmarkResults(
-                    result.numTasksInGroup,
-                    result.threadsResult,
-                    result.coroutinesResult,
-                    result.threadPoolResult,
-                )
+                if (result.isCompleteResult) {
+                    MyLogger.d(
+                        """
+                        Benchmark results:
+                        threads coefficients: ${result.threadsResult.averageLinearFitCoefficients}
+                        coroutines coefficients: ${result.coroutinesResult.averageLinearFitCoefficients}
+                        thread pool coefficients: ${result.threadPoolResult.averageLinearFitCoefficients}                           
+                        """.trimIndent()
+                    )
+                    viewMvc.bindBenchmarkResults(
+                        result.threadsResult,
+                        result.coroutinesResult,
+                        result.threadPoolResult,
+                    )
+                }
             } finally {
                 viewMvc.showBenchmarkStopped()
             }
