@@ -60,10 +60,6 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
                 }
             }
 
-            val isLastIteration =
-                benchmarkPhase == BackgroundTasksMemoryBenchmarkPhase.THREADS
-                        && benchmarkIterationNum == NUM_ITERATIONS - 1
-
             return@withContext if (isBenchmarkCompleted) {
                 Result(
                     true,
