@@ -1,8 +1,8 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.8.22'
-        ksp_version = '1.8.22-1.0.11'
+        kotlin_version = '1.9.10'
+        ksp_version = '1.9.10-1.0.13'
     }
 
     repositories {
@@ -27,7 +27,9 @@ allprojects {
         maven { url 'https://jitpack.io' }
         jcenter() // needed for FragNav library
     }
+
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

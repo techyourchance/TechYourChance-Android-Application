@@ -118,8 +118,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
 
     // Dependency injection
-    implementation "com.google.dagger:dagger:2.45"
-    kapt "com.google.dagger:dagger-compiler:2.45"
+    implementation "com.google.dagger:dagger:2.47"
+    kapt "com.google.dagger:dagger-compiler:2.47"
 
     // Fragment navigation
     implementation 'com.ncapdevi:frag-nav:3.3.0'
