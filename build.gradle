@@ -3,6 +3,7 @@ buildscript {
     ext {
         kotlin_version = '1.9.10'
         ksp_version = '1.9.10-1.0.13'
+        compose_ui_version = '1.5.4'
     }
 
     repositories {

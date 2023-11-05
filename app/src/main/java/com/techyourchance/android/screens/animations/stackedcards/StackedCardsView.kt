@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.animations.widgets
+package com.techyourchance.android.screens.animations.stackedcards
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.techyourchance.android.common.logs.MyLogger
+import com.techyourchance.android.screens.animations.widgets.CardView
 import kotlin.math.ceil
 import kotlin.math.sqrt
 

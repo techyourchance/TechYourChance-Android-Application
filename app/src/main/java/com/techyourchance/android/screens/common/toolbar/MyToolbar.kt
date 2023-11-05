@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import com.techyourchance.android.R
 
 class MyToolbar : FrameLayout {
 
-    interface NavigateUpListener {
-        fun onNavigationUpClicked()
-    }
-
     private var navigateUpListener: () -> Unit = {}
+    private var switchViewsComposeListener: () -> Unit = {}
 
     private lateinit var viewNavigateUp: View
     private lateinit var txtTitle: TextView
+    private lateinit var switchViewsCompose: SwitchCompat
 
 
     constructor(context: Context) : super(context) {
@@ -37,9 +36,11 @@ class MyToolbar : FrameLayout {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_my_toolbar, this, true).apply {
             viewNavigateUp = findViewById(R.id.navigate_up)
             txtTitle = findViewById(R.id.txtToolbarTitle)
+            switchViewsCompose = findViewById(R.id.switchViewsCompose)
         }
 
         viewNavigateUp.setOnClickListener { navigateUpListener.invoke() }
+        switchViewsCompose.setOnCheckedChangeListener { _, _ -> switchViewsComposeListener.invoke() }
     }
 
     fun setNavigateUpListener(navigateUpListener: () -> Unit) {
@@ -50,5 +51,14 @@ class MyToolbar : FrameLayout {
     fun setTitle(title: String) {
         txtTitle.text = title
         txtTitle.isVisible = true
+    }
+
+    fun setSwitchViewsComposeChecked(isChecked: Boolean) {
+        switchViewsCompose.isChecked = isChecked
+    }
+
+    fun setSwitchViewsComposeListener(switchViewsComposeListener: () -> Unit) {
+        this.switchViewsComposeListener = switchViewsComposeListener
+        switchViewsCompose.isVisible = true
     }
 }
