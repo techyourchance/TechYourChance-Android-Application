@@ -15,4 +15,6 @@ object Constants {
     const val DEFAULT_DIALOG_WIDTH_RATIO = 0.8f
     const val DEFAULT_DIALOG_HEIGHT_RATIO = 0.3f
 
+    const val CLICK_DELAY_FOR_ANIMATION_MS = 150L
+
 }

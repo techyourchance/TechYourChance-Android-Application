@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="buttonStyle">@style/ButtonStandard</item>
         <item name="android:textViewStyle">@style/TextViewStandard</item>
         <item name="editTextStyle">@style/EditTextStandard</item>

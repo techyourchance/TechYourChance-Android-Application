@@ -52,32 +52,39 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
     private fun getDestinations(): List<FromHomeDestination> {
         return listOf(
             FromHomeDestination(
-                getString(R.string.screen_stackoverflow_client),
-                ScreenSpec.StackOverflowQuestionsList
-            ),
-            FromHomeDestination(
-                getString(R.string.screen_biometric_auth),
-                ScreenSpec.BiometricLock
-            ),
-            FromHomeDestination(
-                getString(R.string.screen_ndk_basics),
-                ScreenSpec.NdkBasics
-            ),
-            FromHomeDestination(
-                getString(R.string.screen_foreground_service),
-                ScreenSpec.ForegroundService
-            ),
-            FromHomeDestination(
-                getString(R.string.screen_work_manager),
-                ScreenSpec.WorkManager
-            ),
-            FromHomeDestination(
                 getString(R.string.screen_user_interfaces),
-                ScreenSpec.UserInterfaces
+                ScreenSpec.UserInterfaces,
+                FromHomeDestinationType.LIST_OF_SCREENS
             ),
             FromHomeDestination(
                 getString(R.string.screen_benchmarks),
-                ScreenSpec.Benchmarks
+                ScreenSpec.Benchmarks,
+                FromHomeDestinationType.LIST_OF_SCREENS
+            ),
+            FromHomeDestination(
+                getString(R.string.screen_stackoverflow_client),
+                ScreenSpec.StackOverflowQuestionsList,
+                FromHomeDestinationType.GROUP_OF_SCREENS
+            ),
+            FromHomeDestination(
+                getString(R.string.screen_biometric_auth),
+                ScreenSpec.BiometricLock,
+                FromHomeDestinationType.SINGLE_SCREEN
+            ),
+            FromHomeDestination(
+                getString(R.string.screen_ndk_basics),
+                ScreenSpec.NdkBasics,
+                FromHomeDestinationType.SINGLE_SCREEN
+            ),
+            FromHomeDestination(
+                getString(R.string.screen_foreground_service),
+                ScreenSpec.ForegroundService,
+                FromHomeDestinationType.SINGLE_SCREEN
+            ),
+            FromHomeDestination(
+                getString(R.string.screen_work_manager),
+                ScreenSpec.WorkManager,
+                FromHomeDestinationType.SINGLE_SCREEN
             ),
         )
     }

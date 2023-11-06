@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/home_recycler_item_height"
+    android:layout_marginTop="15dp"
+    app:cardElevation="5dp"
+    android:background="@drawable/bg_destination_item"
     >
 
     <TextView
@@ -12,7 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         tools:text="Destination title"
         />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/imgMoreScreens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:src="@drawable/ic_more_screens"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        />
+
+</com.google.android.material.card.MaterialCardView>

@@ -4,11 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.techyourchance.android.R
+import com.techyourchance.android.common.Constants
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HomeViewMvcImpl(
         layoutInflater: LayoutInflater,
@@ -44,8 +50,6 @@ class HomeViewMvcImpl(
         private val context: Context,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val VIEW_TYPE_REGULAR = 0
-
         private val destinations = mutableListOf<FromHomeDestination>()
 
         fun bindDestinations(destinationDetails: List<FromHomeDestination>) {
@@ -57,44 +61,30 @@ class HomeViewMvcImpl(
         override fun getItemCount(): Int {
             return destinations.size
         }
-
-        override fun getItemViewType(position: Int): Int {
-            return VIEW_TYPE_REGULAR
-        }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return when (viewType) {
-                VIEW_TYPE_REGULAR -> {
-                    val view = LayoutInflater.from(context).inflate(R.layout.layout_home_destination_item, parent, false)
-                    DestinationViewHolder(view)
-                }
-                else -> {
-                    throw RuntimeException("unsupported view type: $viewType")
-                }
-            }
+            val view = LayoutInflater.from(context).inflate(R.layout.layout_home_destination_item, parent, false)
+            return DestinationViewHolder(view)
         }
 
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            when (viewHolder.itemViewType) {
-                VIEW_TYPE_REGULAR -> {
-                    (viewHolder as DestinationViewHolder).apply {
-                        val destination = destinations[position]
-                        viewHolder.txtDestinationTitle.text = destination.title
-                        viewHolder.view.setOnClickListener {
-                            listeners.map { it.onDestinationClicked(destination) }
-                        }
+            (viewHolder as DestinationViewHolder).apply {
+                val destination = destinations[position]
+                viewHolder.txtDestinationTitle.text = destination.title
+                viewHolder.view.setOnClickListener {
+                    GlobalScope.launch {
+                        delay(Constants.CLICK_DELAY_FOR_ANIMATION_MS)
+                        listeners.map { it.onDestinationClicked(destination) }
                     }
                 }
-                else -> {
-                    throw RuntimeException("unsupported view type: ${viewHolder.itemViewType}")
-                }
+                viewHolder.imgMoreScreens.isVisible = destination.destinationType in listOf(
+                    FromHomeDestinationType.GROUP_OF_SCREENS, FromHomeDestinationType.LIST_OF_SCREENS
+                )
             }
-
         }
-
     }
 
     class DestinationViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val txtDestinationTitle: TextView = view.findViewById(R.id.txtDestinationTitle)
+        val imgMoreScreens: ImageView = view.findViewById(R.id.imgMoreScreens)
     }
 }

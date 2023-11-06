@@ -8,7 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.techyourchance.android.R
+import com.techyourchance.android.common.Constants
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class UserInterfacesViewMvcImpl(
         layoutInflater: LayoutInflater,
@@ -48,8 +52,6 @@ class UserInterfacesViewMvcImpl(
         private val context: Context,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val VIEW_TYPE_REGULAR = 0
-
         private val destinations = mutableListOf<FromUserInterfacesDestination>()
 
         fun bindDestinations(destinationDetails: List<FromUserInterfacesDestination>) {
@@ -62,38 +64,22 @@ class UserInterfacesViewMvcImpl(
             return destinations.size
         }
 
-        override fun getItemViewType(position: Int): Int {
-            return VIEW_TYPE_REGULAR
-        }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return when (viewType) {
-                VIEW_TYPE_REGULAR -> {
-                    val view = LayoutInflater.from(context).inflate(R.layout.layout_home_destination_item, parent, false)
-                    DestinationViewHolder(view)
-                }
-                else -> {
-                    throw RuntimeException("unsupported view type: $viewType")
-                }
-            }
+            val view = LayoutInflater.from(context).inflate(R.layout.layout_home_destination_item, parent, false)
+            return DestinationViewHolder(view)
         }
 
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            when (viewHolder.itemViewType) {
-                VIEW_TYPE_REGULAR -> {
-                    (viewHolder as DestinationViewHolder).apply {
-                        val destination = destinations[position]
-                        viewHolder.txtDestinationTitle.text = destination.title
-                        viewHolder.view.setOnClickListener {
-                            listeners.map { it.onDestinationClicked(destination) }
-                        }
+            (viewHolder as DestinationViewHolder).apply {
+                val destination = destinations[position]
+                viewHolder.txtDestinationTitle.text = destination.title
+                viewHolder.view.setOnClickListener {
+                    GlobalScope.launch {
+                        delay(Constants.CLICK_DELAY_FOR_ANIMATION_MS)
+                        listeners.map { it.onDestinationClicked(destination) }
                     }
                 }
-                else -> {
-                    throw RuntimeException("unsupported view type: ${viewHolder.itemViewType}")
-                }
             }
-
         }
 
     }
