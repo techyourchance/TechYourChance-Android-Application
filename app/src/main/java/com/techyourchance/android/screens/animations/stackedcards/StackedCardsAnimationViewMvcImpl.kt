@@ -3,6 +3,7 @@ package com.techyourchance.android.screens.animations.stackedcards
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.SwitchCompat
 import androidx.compose.ui.platform.ComposeView
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
@@ -15,31 +16,34 @@ class StackedCardsAnimationViewMvcImpl(
 
     private val toolbar: MyToolbar
     private val frameContent: FrameLayout
+    private val switchViewsCompose: SwitchCompat
 
     init {
         setRootView(layoutInflater.inflate(R.layout.layout_stacked_cards_animation, parent, false))
 
         toolbar = findViewById(R.id.toolbar)
         frameContent = findViewById(R.id.frameContent)
+        switchViewsCompose = findViewById(R.id.switchViewsCompose)
 
         toolbar.setNavigateUpListener {
             listeners.map { it.onBackClicked() }
         }
 
-        toolbar.setSwitchViewsComposeListener {
+        switchViewsCompose.setOnCheckedChangeListener { _, _ ->
             listeners.map { it.onToggleComposeClicked() }
         }
+
     }
 
     override fun setType(viewMvcType: ViewMvcType) {
         frameContent.removeAllViews()
         when(viewMvcType) {
             ViewMvcType.VIEW_BASED -> {
-                toolbar.setSwitchViewsComposeChecked(false)
+                switchViewsCompose.isChecked = false
                 frameContent.addView(StackedCardsView(context))
             }
             ViewMvcType.COMPOSE_BASED -> {
-                toolbar.setSwitchViewsComposeChecked(true)
+                switchViewsCompose.isChecked = true
                 frameContent.addView(ComposeView(context).apply {
                     setContent {
                         StackedCardsCompose()

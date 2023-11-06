@@ -33,4 +33,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchViewsCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/txtCompose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        app:thumbTint="@color/blue"
+        />
+
+    <TextView
+        android:id="@+id/txtCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/switchViewsCompose"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/compose"
+        android:textColor="@color/gray"
+        />
+
+    <TextView
+        android:id="@+id/txtViews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/switchViewsCompose"
+        app:layout_constraintEnd_toStartOf="@id/switchViewsCompose"
+        android:layout_marginEnd="20dp"
+        android:text="@string/views"
+        android:textColor="@color/gray"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
