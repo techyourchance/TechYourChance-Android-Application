@@ -18,7 +18,7 @@ class FetchBackgroundTaskMemoryDataUseCase @Inject constructor(
         val tasksData = preAllocatedDataStructures(sortedDbEntities)
         sortedDbEntities.forEach { dbEntity ->
             tasksData[dbEntity.iterationNum]!![dbEntity.taskNum] = BackgroundTaskMemoryData(
-                dbEntity.memoryInfo.consumedMemory
+                dbEntity.memoryInfo.timestamp, dbEntity.memoryInfo.consumedMemory
             )
         }
         val averagedTasksData = computeAverageOfIterations(tasksData)
@@ -56,7 +56,7 @@ class FetchBackgroundTaskMemoryDataUseCase @Inject constructor(
                 sumTaskMemoryConsumption += tasksData[iterationNum]!![taskNum]!!.consumedMemory
             }
             val averageTaskMemoryConsumption = sumTaskMemoryConsumption / numIterations
-            averageTasksMemoryConsumptions[taskNum] = BackgroundTaskMemoryData(averageTaskMemoryConsumption)
+            averageTasksMemoryConsumptions[taskNum] = BackgroundTaskMemoryData(0, averageTaskMemoryConsumption)
         }
         return averageTasksMemoryConsumptions
     }

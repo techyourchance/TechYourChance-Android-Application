@@ -2,6 +2,7 @@ package com.techyourchance.android.backgroundtasksbenchmark.memory
 
 import com.techyourchance.android.common.application.AppMemoryInfoProvider
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
+import com.techyourchance.android.common.datetime.DateTimeProvider
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.restart.RestartAppUseCase
 import com.techyourchance.android.screens.common.ScreenSpec
@@ -31,6 +32,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
     private val clearBackgroundTaskMemoryDataUseCase: ClearBackgroundTaskMemoryDataUseCase,
     private val fetchBackgroundTaskMemoryDataUseCase: FetchBackgroundTaskMemoryDataUseCase,
     private val restartAppUseCase: RestartAppUseCase,
+    private val dateTimeProvider: DateTimeProvider,
 ) {
 
     data class Result(
@@ -115,7 +117,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         return suspendCoroutine { continuation ->
             val thread = Thread {
                 MyLogger.d("Thread started; iteration: $iterationNum; task $taskNum")
-                threadsData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                threadsData[taskNum] = getBackgroundTaskMemoryData()
                 continuation.resume(Thread.currentThread())
                 threadBarrier.await()
                 MyLogger.d("Thread terminates; iteration: $iterationNum; task $taskNum")
@@ -164,7 +166,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         suspendCoroutine { continuation ->
             coroutinesScope.launch {
                 MyLogger.d("Coroutine launched; iteration: $iterationNum; task $taskNum")
-                iterationData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                iterationData[taskNum] = getBackgroundTaskMemoryData()
                 continuation.resume(Unit)
                 try {
                     awaitFlow.collect {
@@ -216,7 +218,7 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         suspendCoroutine { continuation ->
             threadPool.execute {
                 MyLogger.d("Thread pool started; iteration: $iterationNum; task $taskNum")
-                iterationData[taskNum] = BackgroundTaskMemoryData(getAppMemoryConsumption())
+                iterationData[taskNum] = getBackgroundTaskMemoryData()
                 continuation.resume(Unit)
                 threadsBarrier.await()
                 MyLogger.d("Thread pool terminates; iteration: $iterationNum; task $taskNum")
@@ -224,9 +226,12 @@ class BackgroundTasksMemoryBenchmarkUseCase @Inject constructor(
         }
     }
 
-    private fun getAppMemoryConsumption(): Float {
-        val appMemoryConsumption = appMemoryInfoProvider.getAppMemoryConsumption()
-        return appMemoryConsumption.heapMemoryKb + appMemoryConsumption.nativeMemoryKb + appMemoryConsumption.stackMemoryKb
+    private fun getBackgroundTaskMemoryData(): BackgroundTaskMemoryData {
+        val timestamp = dateTimeProvider.getTimestampUtc()
+        val consumedMemory =  appMemoryInfoProvider.getAppMemoryConsumption().run {
+            heapMemoryKb + nativeMemoryKb + stackMemoryKb
+        }
+        return BackgroundTaskMemoryData(timestamp, consumedMemory)
     }
 
     private fun restartAppForNextIteration(

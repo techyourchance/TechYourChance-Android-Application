@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "appMemoryInfo")
 data class AppMemoryInfoDb(
     @field:ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Long,
+    @field:ColumnInfo(name = "timestamp") val timestamp: Long,
     @field:ColumnInfo(name = "consumedMemory") val consumedMemory: Float,
 )

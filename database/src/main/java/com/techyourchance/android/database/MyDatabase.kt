@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.techyourchance.android.database.converters.AppMemoryInfoConverter
 import com.techyourchance.android.database.converters.BackgroundTasksMemoryConverter
+import com.techyourchance.android.database.migrations.Migration_1_2
 
 /**
  * The function of this wrapper class is to encapsulate [MyRoomDatabase] dependency, such
@@ -20,6 +21,7 @@ class MyDatabase(context: Context, gson: Gson) {
             MyRoomDatabase::class.java,
             DatabaseConstants.DATABASE_NAME
         ).apply {
+            addMigrations(Migration_1_2())
 //            addTypeConverter(AppMemoryInfoConverter(gson))
 //            addTypeConverter(BackgroundTasksMemoryConverter(gson))
         }.build()

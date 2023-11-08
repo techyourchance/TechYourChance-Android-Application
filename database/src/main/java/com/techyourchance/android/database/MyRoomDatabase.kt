@@ -14,7 +14,7 @@ import com.techyourchance.android.database.entities.backgroundtasksmemory.Backgr
         AppMemoryInfoDb::class,
         BackgroundTasksMemoryDb::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(
     value = [
