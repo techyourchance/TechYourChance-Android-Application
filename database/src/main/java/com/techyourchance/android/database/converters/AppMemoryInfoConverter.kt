@@ -1,12 +1,12 @@
 package com.techyourchance.android.database.converters
 
+import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.techyourchance.android.database.entities.backgroundtasksmemory.AppMemoryInfoDb
 
-class AppMemoryInfoConverter {
-
-    private val gson = Gson()
+@ProvidedTypeConverter
+class AppMemoryInfoConverter(private val gson: Gson) {
 
     @TypeConverter
     fun fromString(serialized: String): AppMemoryInfoDb {
