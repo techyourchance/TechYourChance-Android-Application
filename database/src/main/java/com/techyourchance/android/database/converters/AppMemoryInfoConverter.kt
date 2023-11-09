@@ -1,6 +1,5 @@
 package com.techyourchance.android.database.converters
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.techyourchance.android.database.entities.backgroundtasksmemory.AppMemoryInfoDb

@@ -3,8 +3,6 @@ package com.techyourchance.android.database
 import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
-import com.techyourchance.android.database.converters.AppMemoryInfoConverter
-import com.techyourchance.android.database.converters.BackgroundTasksMemoryConverter
 import com.techyourchance.android.database.migrations.Migration_1_2
 
 /**
@@ -23,7 +21,6 @@ class MyDatabase(context: Context, gson: Gson) {
         ).apply {
             addMigrations(Migration_1_2())
 //            addTypeConverter(AppMemoryInfoConverter(gson))
-//            addTypeConverter(BackgroundTasksMemoryConverter(gson))
         }.build()
     }
 
