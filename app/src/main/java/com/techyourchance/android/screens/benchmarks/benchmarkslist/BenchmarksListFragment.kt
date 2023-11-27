@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.benchmarks
+package com.techyourchance.android.screens.benchmarks.benchmarkslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +11,12 @@ import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
 import javax.inject.Inject
 
-class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
+class BenchmarksListFragment : BaseFragment(), BenchmarksListViewMvc.Listener {
 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var screensNavigator: ScreensNavigator
 
-    private lateinit var viewMvc: BenchmarksViewMvc
+    private lateinit var viewMvc: BenchmarksListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
@@ -31,13 +31,13 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
         return viewMvc.getRootView()
     }
 
-    private fun getDestinations(): List<FromBenchmarksDestination> {
+    private fun getDestinations(): List<FromBenchmarksListDestination> {
         return listOf(
-            FromBenchmarksDestination(
+            FromBenchmarksListDestination(
                 getString(R.string.screen_background_tasks_startup_benchmark),
                 ScreenSpec.BackgroundTasksStartupBenchmark
             ),
-            FromBenchmarksDestination(
+            FromBenchmarksListDestination(
                 getString(R.string.screen_background_tasks_memory_benchmark),
                 ScreenSpec.BackgroundTasksMemoryBenchmark()
             ),
@@ -54,7 +54,7 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
         viewMvc.unregisterListener(this)
     }
 
-    override fun onDestinationClicked(destination: FromBenchmarksDestination) {
+    override fun onDestinationClicked(destination: FromBenchmarksListDestination) {
         screensNavigator.toScreen(destination.screenSpec)
     }
 
@@ -63,8 +63,8 @@ class BenchmarksFragment : BaseFragment(), BenchmarksViewMvc.Listener {
     }
 
     companion object {
-        fun newInstance(): BenchmarksFragment {
-            return BenchmarksFragment()
+        fun newInstance(): BenchmarksListFragment {
+            return BenchmarksListFragment()
         }
     }
 }

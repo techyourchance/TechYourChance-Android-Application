@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.backgroundtasksstartupbenchmark
+package com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
-import com.techyourchance.android.backgroundtasksbenchmark.BackgroundTasksStartupBenchmarkUseCase
+import com.techyourchance.android.backgroundtasksbenchmark.startup.BackgroundTasksStartupBenchmarkUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject

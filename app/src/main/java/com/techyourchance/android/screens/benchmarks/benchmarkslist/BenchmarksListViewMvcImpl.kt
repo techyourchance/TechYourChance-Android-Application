@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.benchmarks
+package com.techyourchance.android.screens.benchmarks.benchmarkslist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class BenchmarksViewMvcImpl(
+class BenchmarksListViewMvcImpl(
         layoutInflater: LayoutInflater,
         parent: ViewGroup?
-): BenchmarksViewMvc() {
+): BenchmarksListViewMvc() {
 
     private val toolbar: MyToolbar
     private val destinationsRecycler: RecyclerView
@@ -40,7 +40,7 @@ class BenchmarksViewMvcImpl(
         }
     }
 
-    override fun bindDestinations(destinations: List<FromBenchmarksDestination>) {
+    override fun bindDestinations(destinations: List<FromBenchmarksListDestination>) {
         destinationsAdapter.bindDestinations(destinations)
     }
 
@@ -52,9 +52,9 @@ class BenchmarksViewMvcImpl(
         private val context: Context,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val destinations = mutableListOf<FromBenchmarksDestination>()
+        private val destinations = mutableListOf<FromBenchmarksListDestination>()
 
-        fun bindDestinations(destinationDetails: List<FromBenchmarksDestination>) {
+        fun bindDestinations(destinationDetails: List<FromBenchmarksListDestination>) {
             this.destinations.clear()
             this.destinations.addAll(destinationDetails)
             notifyDataSetChanged()

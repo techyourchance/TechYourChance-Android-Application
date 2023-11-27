@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.backgroundtasksmemorybenchmark
+package com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark
 
 import android.os.Bundle
 import android.view.LayoutInflater

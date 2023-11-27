@@ -7,12 +7,12 @@ import com.techyourchance.android.screens.animations.AnimationsViewMvc
 import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvc
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvcImpl
-import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvc
-import com.techyourchance.android.screens.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvcImpl
-import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvc
-import com.techyourchance.android.screens.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvcImpl
-import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvc
-import com.techyourchance.android.screens.benchmarks.BenchmarksViewMvcImpl
+import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvc
+import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvcImpl
+import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvc
+import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvcImpl
+import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListViewMvc
+import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
@@ -81,8 +81,8 @@ class ViewMvcFactory @Inject constructor(
         return StackedCardsAnimationViewMvcImpl(inflater, container)
     }
 
-    fun newBenchmarksViewMvc(container: ViewGroup?): BenchmarksViewMvc {
-        return BenchmarksViewMvcImpl(inflater, container)
+    fun newBenchmarksViewMvc(container: ViewGroup?): BenchmarksListViewMvc {
+        return BenchmarksListViewMvcImpl(inflater, container)
     }
 
     fun newBackgroundTasksStartupBenchmarkViewMvc(container: ViewGroup?): BackgroundTasksStartupBenchmarkViewMvc {

@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundtasksbenchmark
+package com.techyourchance.android.backgroundtasksbenchmark.startup
 
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.common.datetime.DateTimeProvider
@@ -64,7 +64,9 @@ class BackgroundTasksStartupBenchmarkUseCase @Inject constructor(
     }
 
     private suspend fun benchmarkCoroutines(): BackgroundTasksStartupResult {
-        val coroutinesTimings: ConcurrentHashMap<Int, BackgroundTaskStartupData> = ConcurrentHashMap<Int, BackgroundTaskStartupData>(NUM_TASKS)
+        val coroutinesTimings: ConcurrentHashMap<Int, BackgroundTaskStartupData> = ConcurrentHashMap<Int, BackgroundTaskStartupData>(
+            NUM_TASKS
+        )
         for (i in 0 until NUM_TASKS) {
             coroutineContext.ensureActive()
             benchmarkSingleCoroutine(i, coroutinesTimings)
@@ -85,7 +87,9 @@ class BackgroundTasksStartupBenchmarkUseCase @Inject constructor(
     }
 
     private suspend fun benchmarkThreadPool(): BackgroundTasksStartupResult {
-        val threadPoolTimings: ConcurrentHashMap<Int, BackgroundTaskStartupData> = ConcurrentHashMap<Int, BackgroundTaskStartupData>(NUM_TASKS)
+        val threadPoolTimings: ConcurrentHashMap<Int, BackgroundTaskStartupData> = ConcurrentHashMap<Int, BackgroundTaskStartupData>(
+            NUM_TASKS
+        )
         for (i in 0 until NUM_TASKS) {
             coroutineContext.ensureActive()
             benchmarkSingleThreadPoolTask(i, threadPoolTimings)

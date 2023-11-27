@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.backgroundtasksmemorybenchmark
+package com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark
 
 import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryResult
 import com.techyourchance.android.screens.common.mvcviews.BaseObservableViewMvc
