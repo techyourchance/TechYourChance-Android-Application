@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import com.techyourchance.android.common.imageloader.ImageLoader
 import com.techyourchance.android.screens.animations.AnimationsViewMvc
 import com.techyourchance.android.screens.animations.AnimationsViewMvcImpl
+import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAnimationViewMvc
+import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAnimationViewMvcImpl
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvc
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationViewMvcImpl
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkViewMvc
@@ -79,6 +81,10 @@ class ViewMvcFactory @Inject constructor(
 
     fun newStackedCardsAnimationViewMvc(container: ViewGroup?): StackedCardsAnimationViewMvc {
         return StackedCardsAnimationViewMvcImpl(inflater, container)
+    }
+
+    fun newDotsProgressAnimationViewMvc(container: ViewGroup?): DotsProgressAnimationViewMvc {
+        return DotsProgressAnimationViewMvcImpl(inflater, container)
     }
 
     fun newBenchmarksViewMvc(container: ViewGroup?): BenchmarksListViewMvc {

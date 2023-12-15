@@ -41,6 +41,10 @@ class UserInterfacesFragment : BaseFragment(), UserInterfacesViewMvc.Listener {
                 getString(R.string.screen_stacked_cards_animation),
                 ScreenSpec.StackedCardsAnimation
             ),
+            FromUserInterfacesDestination(
+                getString(R.string.screen_dots_progress_animation),
+                ScreenSpec.DotsProgressAnimation
+            ),
         )
     }
 

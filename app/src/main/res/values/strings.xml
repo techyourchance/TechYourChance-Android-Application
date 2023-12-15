@@ -18,6 +18,7 @@
     <string name="screen_user_interfaces">User interfaces</string>
     <string name="screen_animations">Animations</string>
     <string name="screen_stacked_cards_animation">Stacked cards animation</string>
+    <string name="screen_dots_progress_animation">Dots progress animation</string>
     <string name="screen_benchmarks">Benchmarks</string>
     <string name="screen_background_tasks_startup_benchmark">Background tasks startup benchmark</string>
     <string name="screen_background_tasks_memory_benchmark">Background tasks memory benchmark</string>
