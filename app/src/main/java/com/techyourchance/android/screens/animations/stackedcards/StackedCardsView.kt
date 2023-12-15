@@ -2,6 +2,7 @@ package com.techyourchance.android.screens.animations.stackedcards
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.RectF
@@ -37,7 +38,17 @@ class StackedCardsView: FrameLayout {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        topCardWidth = width * CARD_WIDTH_TO_TOTAL_WIDTH_RATIO
+        topCardWidth = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                width * CARD_WIDTH_TO_TOTAL_WIDTH_RATIO_LANDSCAPE
+            }
+            Configuration.ORIENTATION_PORTRAIT -> {
+                width * CARD_WIDTH_TO_TOTAL_WIDTH_RATIO_PORTRAIT
+            }
+            else -> {
+                throw RuntimeException("unexpected orientation value: ${resources.configuration.orientation}")
+            }
+        }
         topCardHeight = topCardWidth * CARD_WIDTH_TO_HEIGHT_RATIO
         val topCardBottomMargin = height * TOP_CARD_BOTTOM_MARGIN_TO_HEIGHT_RATIO
         val topCardLeftMargin = (width - topCardWidth) / 2 // Center horizontally
@@ -176,7 +187,8 @@ class StackedCardsView: FrameLayout {
         private const val NUM_CARDS_DEFAULT = 4
         private const val CARD_SHIFT_TO_HEIGHT_RATIO = 0.2f
         private const val TOP_CARD_BOTTOM_MARGIN_TO_HEIGHT_RATIO = 0.1f
-        private const val CARD_WIDTH_TO_TOTAL_WIDTH_RATIO = 0.7f
+        private const val CARD_WIDTH_TO_TOTAL_WIDTH_RATIO_PORTRAIT = 0.7f
+        private const val CARD_WIDTH_TO_TOTAL_WIDTH_RATIO_LANDSCAPE = 0.25f
         private const val CARD_WIDTH_TO_HEIGHT_RATIO = 0.6f
 
         private val CARD_COLORS = linkedMapOf(
