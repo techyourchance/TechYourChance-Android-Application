@@ -46,7 +46,7 @@ class DotsProgressAnimationViewMvcImpl(
         when(viewMvcType) {
             ViewMvcType.VIEW_BASED -> {
                 switchViewsCompose.isChecked = false
-                // frameContent.addView(StackedCardsView(context)) // TODO: implement View based version
+                frameContent.addView(DotsProgressView(context))
             }
             ViewMvcType.COMPOSE_BASED -> {
                 switchViewsCompose.isChecked = true
