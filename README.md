@@ -13,6 +13,20 @@ The application includes auto-update feature. It uses a special Android API that
 
 Alternatively, you can download the latest APK from here and update the application manually, or even build the update from the source code.
 
+## Blog posts' tutorials
+
+Parts of the source code in this app correspond to the articles I published on my blog:
+
+| **Blog Post** | **Source Code** |
+|---------------|-----------------|
+| [Foreground Service in Android](https://www.techyourchance.com/foreground-service-in-android/) | [Screen](app/src/main/java/com/techyourchance/android/screens/foregroundservice) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundwork/foregroundservice) |
+| [WorkManager in Android](https://www.techyourchance.com/work-manager-android-tutorial/) | [Screen](app/src/main/java/com/techyourchance/android/screens/workmanager) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundwork/workmanager) |
+| [Android NDK Tutorial](https://www.techyourchance.com/android-ndk-tutorial/) | [Screen](app/src/main/java/com/techyourchance/android/screens/ndkbasics) <br> [Logic](app/src/main/java/com/techyourchance/android/ndk) |
+| [Biometric Authentication in Android](https://www.techyourchance.com/biometric-authentication-in-android/) | [Screen](app/src/main/java/com/techyourchance/android/screens/biometricauth) <br> [Logic](app/src/main/java/com/techyourchance/android/biometric) |
+| [Kotlin Coroutines vs Threads Performance Benchmark](https://www.techyourchance.com/kotlin-coroutines-vs-threads-performance-benchmark/) | [Screen](app/src/main/java/com/techyourchance/android/screens/benchmarks/backgroundtasksstartupbenchmark) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundtasksbenchmark/startup) |
+| [Kotlin Coroutines vs Threads Memory Benchmark](https://www.techyourchance.com/kotlin-coroutines-vs-threads-memory-benchmark/) | [Screen](app/src/main/java/com/techyourchance/android/screens/benchmarks/backgroundtasksmemorybenchmark) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundtasksbenchmark/memory) |
+
+
 ## Architecture
 
 The project is written in Kotlin, using the "classical" Andorid UI framework (XMLs + Views). \[Jetpack Compose will be added in the future\]
