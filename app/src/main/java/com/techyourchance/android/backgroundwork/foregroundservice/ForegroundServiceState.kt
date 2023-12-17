@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundwork
+package com.techyourchance.android.backgroundwork.foregroundservice
 
 sealed class ForegroundServiceState {
     object Idle: ForegroundServiceState()

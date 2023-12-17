@@ -1,6 +1,6 @@
 package com.techyourchance.android.common.dependencyinjection.service
 
-import com.techyourchance.android.backgroundwork.ForegroundService
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundService
 import dagger.Subcomponent
 
 @Subcomponent(modules = [ServiceModule::class])

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundwork.ForegroundService
-import com.techyourchance.android.backgroundwork.ForegroundServiceState
-import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundService
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundServiceState
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundServiceStateManager
 import com.techyourchance.android.common.device.DeviceOsInfoProvider
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.permissions.MyPermission

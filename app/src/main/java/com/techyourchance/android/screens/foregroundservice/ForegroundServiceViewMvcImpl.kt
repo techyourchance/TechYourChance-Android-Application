@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.techyourchance.android.R
-import com.techyourchance.android.backgroundwork.ForegroundServiceState
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundServiceState
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
 

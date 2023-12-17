@@ -9,7 +9,7 @@ import androidx.biometric.BiometricManager
 import androidx.work.WorkManager
 import com.google.gson.Gson
 import com.ncapdevi.fragnav.BuildConfig
-import com.techyourchance.android.backgroundwork.ForegroundServiceStateManager
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundServiceStateManager
 import com.techyourchance.android.backgroundwork.workmanager.MyWorkerManager
 import com.techyourchance.android.common.Constants
 import com.techyourchance.android.common.datetime.DateTimeChangeNotifier
@@ -19,7 +19,6 @@ import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.toasts.ToastsHelper
-import com.techyourchance.android.database.MyDatabase
 import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
 import com.techyourchance.android.networking.TechYourChanceApi

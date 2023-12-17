@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.techyourchance.android.backgroundwork.ForegroundServiceState
+import com.techyourchance.android.backgroundwork.foregroundservice.ForegroundServiceState
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory

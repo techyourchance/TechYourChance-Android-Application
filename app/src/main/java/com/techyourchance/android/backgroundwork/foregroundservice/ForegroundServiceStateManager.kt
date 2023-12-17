@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundwork
+package com.techyourchance.android.backgroundwork.foregroundservice
 
 import androidx.annotation.UiThread
 import com.techyourchance.android.common.Observable

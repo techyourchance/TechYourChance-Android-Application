@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundwork
+package com.techyourchance.android.backgroundwork.foregroundservice
 
 import android.app.Notification
 import android.app.NotificationChannel
