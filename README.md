@@ -29,7 +29,7 @@ Parts of the source code in this app correspond to the articles I published on m
 
 ## Architecture
 
-The project is written in Kotlin, using the "classical" Andorid UI framework (XMLs + Views). \[Jetpack Compose will be added in the future\]
+The project is written in Kotlin, using the "classical" Android UI framework (XMLs + Views). \[Jetpack Compose will be added in the future\]
 
 Packages structure of the application follows [package by feature](https://www.techyourchance.com/popular-package-structures/) approach.
 
@@ -37,7 +37,7 @@ Dependency injection architectural pattern is implemented using [Dagger 2 framew
 
 Presentation layer logic is organized according to [MVC architectural pattern](https://www.techyourchance.com/mvc-android-1/).
 
-Funcitonal flows in the app are encapsulated into [Use Case](https://www.techyourchance.com/how-to-use-case-interactor-kotlin/) classes.
+Functional flows in the app are encapsulated into [Use Case](https://www.techyourchance.com/how-to-use-case-interactor-kotlin/) classes.
 
 The logic responsible for [navigation between screens](https://www.techyourchance.com/navigation-between-screens-android/) is encapsulated in `ScreensNavigator` class.
 
