@@ -81,7 +81,6 @@ class UserInterfacesViewMvcImpl(
                 }
             }
         }
-
     }
 
     class DestinationViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

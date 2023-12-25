@@ -25,6 +25,7 @@ import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAn
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
+import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
@@ -100,6 +101,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.Benchmarks -> BenchmarksListFragment.newInstance()
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
                 is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
+                is ScreenSpec.ComposeOverlay -> ComposeOverlayFragment.newInstance()
             }
             toFragment(nextFragment)
         }

@@ -86,6 +86,11 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 ScreenSpec.WorkManager,
                 FromHomeDestinationType.SINGLE_SCREEN
             ),
+            FromHomeDestination(
+                getString(R.string.screen_compose_overlay),
+                ScreenSpec.ComposeOverlay,
+                FromHomeDestinationType.SINGLE_SCREEN
+            ),
         )
     }
 

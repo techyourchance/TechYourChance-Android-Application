@@ -22,6 +22,7 @@ import com.techyourchance.android.common.toasts.ToastsHelper
 import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
 import com.techyourchance.android.networking.TechYourChanceApi
+import com.techyourchance.android.overlay.OverlayManager
 import com.techyourchance.android.settings.SettingsManager
 import dagger.Binds
 import dagger.Module
@@ -183,6 +184,12 @@ class ApplicationModule(private val application: Application) {
     @ApplicationScope
     fun dateTimeProviderImpl(): DateTimeProviderImpl {
         return DateTimeProviderImpl()
+    }
+
+    @Provides
+    @ApplicationScope
+    fun overlayManager(application: Application): OverlayManager {
+        return OverlayManager(application)
     }
 
     @Module

@@ -17,6 +17,8 @@ import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksLi
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
+import com.techyourchance.android.screens.composeoverlay.ComposeOverlayViewMvc
+import com.techyourchance.android.screens.composeoverlay.ComposeOverlayViewMvcImpl
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvc
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceViewMvcImpl
 import com.techyourchance.android.screens.home.HomeViewMvc
@@ -41,6 +43,7 @@ class ViewMvcFactory @Inject constructor(
 
     private val inflater get() = layoutInflaterProvider.get()
     private val imageLoader get() = imageLoaderProvider.get()
+    private val context get() = inflater.context
 
 
     fun newHomeViewMvc(container: ViewGroup?): HomeViewMvc {
@@ -97,5 +100,9 @@ class ViewMvcFactory @Inject constructor(
 
     fun newBackgroundTasksMemoryBenchmarkViewMvc(container: ViewGroup?): BackgroundTasksMemoryBenchmarkViewMvc {
         return BackgroundTasksMemoryBenchmarkViewMvcImpl(inflater, container)
+    }
+
+    fun newComposeOverlayViewMvc(): ComposeOverlayViewMvc {
+        return ComposeOverlayViewMvcImpl(context)
     }
 }
