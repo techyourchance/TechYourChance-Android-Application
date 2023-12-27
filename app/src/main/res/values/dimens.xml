@@ -25,6 +25,13 @@
     <dimen name="corner_size_12">12dp</dimen>
     <dimen name="corner_size_16">16dp</dimen>
     <dimen name="corner_size_24">24dp</dimen>
+
+    <dimen name="elevation_size_4">4dp</dimen>
+    <dimen name="elevation_size_8">8dp</dimen>
+    <dimen name="elevation_size_12">12dp</dimen>
+    <dimen name="elevation_size_16">16dp</dimen>
+    <dimen name="elevation_size_24">24dp</dimen>
+
     <dimen name="padding_size_4">4dp</dimen>
     <dimen name="padding_size_8">8dp</dimen>
     <dimen name="padding_size_12">12dp</dimen>
