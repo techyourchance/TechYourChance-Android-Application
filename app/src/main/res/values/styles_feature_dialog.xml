@@ -13,4 +13,8 @@
         <item name="android:textAppearance">@style/BodyMedium.Default</item>
     </style>
 
+    <style name="Dialog.ProgressBar" parent="ProgressBar.Default">
+        <item name="indicatorSize">@dimen/dialog_progress_bar_circular_size</item>
+    </style>
+
 </resources>
