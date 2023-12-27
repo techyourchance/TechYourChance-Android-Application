@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/progress-indicators/overview -->
+
+    <style name="ProgressBar.Default" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">?attr/colorPrimary</item>
+    </style>
+
+</resources>

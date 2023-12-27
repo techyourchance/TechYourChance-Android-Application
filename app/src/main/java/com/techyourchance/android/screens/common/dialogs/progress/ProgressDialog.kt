@@ -3,20 +3,19 @@ package com.techyourchance.android.screens.common.dialogs.progress
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.techyourchance.android.R
 import com.techyourchance.android.common.eventbus.EventBusPoster
 import com.techyourchance.android.screens.common.dialogs.BaseDialog
-import com.techyourchance.android.screens.common.widgets.ViewExtensions.colorize
 import javax.inject.Inject
 
 class ProgressDialog : BaseDialog() {
 
     @Inject lateinit var eventBusPoster: EventBusPoster
 
-    private lateinit var progress: ProgressBar
+    private lateinit var progress: CircularProgressIndicator
     private lateinit var txtTitle: TextView
     private lateinit var txtMessage: TextView
 
