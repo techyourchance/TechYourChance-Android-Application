@@ -9,7 +9,7 @@
     android:paddingHorizontal="@dimen/dialog_content_padding_horizontal"
     android:background="@drawable/bg_dialog">
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="@dimen/dialog_progress_bar_circular_size"
         android:layout_height="@dimen/dialog_progress_bar_circular_size"
@@ -17,9 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="30dp"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/circular_progress_drawable"
-        style="@android:style/Widget.ProgressBar.Large"
         />
 
     <com.google.android.material.textview.MaterialTextView
