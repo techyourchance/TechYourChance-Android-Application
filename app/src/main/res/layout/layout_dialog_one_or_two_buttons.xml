@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/imgDialog"
         android:layout_marginTop="30dp"
         app:layout_goneMarginTop="50dp"
-        style="@style/TextViewDialogMessage"
+        style="@style/Dialog.Message"
         tools:text="Dialog message very very very very very very very very very very very very long"/>
 
     <com.techyourchance.android.screens.common.widgets.MyButton
