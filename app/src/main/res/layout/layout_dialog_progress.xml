@@ -23,6 +23,7 @@
         />
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/Dialog.Title"
         android:id="@+id/txtDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,12 +31,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         android:layout_marginTop="20dp"
-        style="@style/TextViewDialogTitle"
         android:textStyle="bold"
         android:text="@string/progress_dialog_title_default"
         />
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/Dialog.Message"
         android:id="@+id/txtDialogMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +44,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtDialogTitle"
         android:layout_marginTop="10dp"
-        style="@style/TextViewDialogMessage"
         android:visibility="gone"
         tools:text="doing something..."
         />
