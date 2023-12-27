@@ -25,7 +25,7 @@
         android:buttonTint="@color/main"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@id/checkNetworkConstrained"
@@ -44,7 +44,7 @@
         android:buttonTint="@color/main"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@id/checkExpedited"
@@ -65,7 +65,7 @@
         tools:text="@string/foreground_service_start"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtWorkState"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

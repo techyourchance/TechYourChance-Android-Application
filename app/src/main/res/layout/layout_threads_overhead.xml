@@ -36,7 +36,7 @@
         android:layout_marginHorizontal="20dp"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtAverageStartupTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

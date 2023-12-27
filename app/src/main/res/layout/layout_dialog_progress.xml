@@ -22,7 +22,7 @@
         style="@android:style/Widget.ProgressBar.Large"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:text="@string/progress_dialog_title_default"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtDialogMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
