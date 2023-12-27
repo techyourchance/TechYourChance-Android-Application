@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/checkbox/overview -->
+
+    <style name="CheckBox.Default"  parent="Widget.Material3.CompoundButton.CheckBox"/>
+
+</resources>

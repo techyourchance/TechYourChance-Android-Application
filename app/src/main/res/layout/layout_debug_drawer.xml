@@ -29,7 +29,8 @@
                 android:layout_marginEnd="5dp"
                 android:textSize="16sp"
                 android:text="Example checkbox"/>
-            <CheckBox
+
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkExample"
                 android:layout_width="@dimen/checkbox_size_standard"
                 android:layout_height="@dimen/checkbox_size_standard"
