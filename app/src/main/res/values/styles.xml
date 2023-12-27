@@ -1,10 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-        <item name="buttonStyle">@style/ButtonStandard</item>
         <item name="editTextStyle">@style/EditTextStandard</item>
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- Default styles -->
+        <item name="materialButtonStyle">@style/Button.Default</item>
         <item name="android:textViewStyle">@style/BodyLarge.Default</item>
 
         <!--  Material 3 theme attributes -->
@@ -45,15 +45,4 @@
         <!--  Override theme default textColor color. -->
         <!--  <item name="android:textColorPrimary">@color/text_default</item>  -->
     </style>
-
-    <style name="ButtonStandard" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@drawable/bg_button_standard</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
 </resources>
