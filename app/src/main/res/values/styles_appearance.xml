@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BodyMedium.Default"/>
+    <style name="TitleMedium.Default" />
+
+    <style name="BodyLarge.Default">
+        <!--  Override textSize or use different TextAppearance. -->
+        <item name="android:textSize">@dimen/text_size_16</item>
+
+        <!--  Override textColor color. -->
+        <item name="android:textColor">@color/text_default</item>
+
+        <!--  If we want to globally override the default textColor, we can do so in the app theme. -->
+        <!--  <item name="android:textColorPrimary">@color/text_default</item>  -->
+
+        <item name="android:gravity">start</item>
+    </style>
+
+</resources>
