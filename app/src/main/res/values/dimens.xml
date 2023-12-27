@@ -7,10 +7,6 @@
 
     <dimen name="padding_screen_horizontal_standard">50dp</dimen>
 
-    <dimen name="edit_text_height_standard">50dp</dimen>
-    <dimen name="edit_text_padding">15dp</dimen>
-    <dimen name="edit_text_corner_radius">5dp</dimen>
-
     <dimen name="dialog_content_padding_top_no_image">50dp</dimen>
     <dimen name="dialog_content_padding_top_with_image">30dp</dimen>
     <dimen name="dialog_content_padding_bottom">40dp</dimen>
@@ -23,6 +19,12 @@
 
     <dimen name="dialog_progress_bar_circular_size">65dp</dimen>
 
+
+    <dimen name="corner_size_4">4dp</dimen>
+    <dimen name="corner_size_8">8dp</dimen>
+    <dimen name="corner_size_12">12dp</dimen>
+    <dimen name="corner_size_16">16dp</dimen>
+    <dimen name="corner_size_24">24dp</dimen>
     <dimen name="padding_size_4">4dp</dimen>
     <dimen name="padding_size_8">8dp</dimen>
     <dimen name="padding_size_12">12dp</dimen>

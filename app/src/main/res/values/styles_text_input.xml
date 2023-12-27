@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/text-fields/overview -->
+
+    <style name="TextInputLayout.Default" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">@dimen/stroke_width_1</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Small</item>
+        <item name="materialThemeOverlay">@style/MaterialThemeOverlay</item>
+    </style>
+
+    <style name="MaterialThemeOverlay">
+        <item name="editTextStyle">@style/TextInputEditText.Default</item>
+    </style>
+
+    <style name="TextInputEditText.Default" parent="Widget.Material3.TextInputEditText.FilledBox">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:padding">@dimen/padding_size_16</item>
+        <item name="android:inputType">text</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>
