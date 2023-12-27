@@ -17,8 +17,8 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkNetworkConstrained"
-        android:layout_width="@dimen/checkbox_size_standard"
-        android:layout_height="@dimen/checkbox_size_standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/checkExpedited"
         app:layout_constraintStart_toStartOf="@id/checkExpedited"
         android:layout_marginBottom="20dp"
@@ -36,8 +36,8 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkExpedited"
-        android:layout_width="@dimen/checkbox_size_standard"
-        android:layout_height="@dimen/checkbox_size_standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/btnToggleWork"
         app:layout_constraintStart_toStartOf="@id/btnToggleWork"
         android:layout_marginBottom="20dp"
