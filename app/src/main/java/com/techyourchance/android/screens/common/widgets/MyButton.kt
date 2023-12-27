@@ -3,8 +3,9 @@ package com.techyourchance.android.screens.common.widgets
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import com.google.android.material.button.MaterialButton
 
-class MyButton: AppCompatButton {
+class MyButton: MaterialButton {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
