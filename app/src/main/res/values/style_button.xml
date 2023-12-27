@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/all-buttons -->
+
+    <style name="Button.Default" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:padding">@dimen/padding_size_8</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
+    </style>
+
+</resources>

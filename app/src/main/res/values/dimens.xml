@@ -19,12 +19,15 @@
 
     <dimen name="checkbox_size_standard">26dp</dimen>
 
-    <dimen name="button_corner_radius">10dp</dimen>
-
     <dimen name="home_recycler_item_height">80dp</dimen>
 
     <dimen name="dialog_progress_bar_circular_size">65dp</dimen>
 
+    <dimen name="padding_size_4">4dp</dimen>
+    <dimen name="padding_size_8">8dp</dimen>
+    <dimen name="padding_size_12">12dp</dimen>
+    <dimen name="padding_size_16">16dp</dimen>
+    <dimen name="padding_size_24">24dp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
