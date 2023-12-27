@@ -3,12 +3,15 @@ package com.techyourchance.android.screens.animations.widgets
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import com.google.android.material.color.MaterialColors
 import kotlin.math.abs
+import com.google.android.material.R
 
 class AnimatedCounter: View {
 
@@ -20,6 +23,7 @@ class AnimatedCounter: View {
         style = Paint.Style.FILL
         textSize = 60f
         textAlign = Paint.Align.CENTER
+        color = MaterialColors.getColor(context, R.attr.colorOnBackground, Color.BLACK)
     }
 
     private var topY = 0f
