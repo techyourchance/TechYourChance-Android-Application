@@ -1,43 +1,69 @@
 <resources>
+    <!--  region Toolbar -->
     <dimen name="toolbar_height">54dp</dimen>
     <dimen name="toolbar_button_size">54dp</dimen>
     <dimen name="toolbar_icon_size">24dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Debug -->
     <dimen name="debug_drawer_width">280dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Screen -->
     <dimen name="padding_screen_horizontal_standard">50dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Dialog -->
     <dimen name="dialog_content_padding_top_no_image">50dp</dimen>
     <dimen name="dialog_content_padding_top_with_image">30dp</dimen>
     <dimen name="dialog_content_padding_bottom">40dp</dimen>
     <dimen name="dialog_content_padding_horizontal">30dp</dimen>
     <dimen name="dialog_image_size">80dp</dimen>
-
-    <dimen name="home_recycler_item_height">80dp</dimen>
-
     <dimen name="dialog_progress_bar_circular_size">65dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Item -->
+    <dimen name="home_recycler_item_height">80dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Corner size -->
     <dimen name="corner_size_4">4dp</dimen>
     <dimen name="corner_size_8">8dp</dimen>
     <dimen name="corner_size_12">12dp</dimen>
     <dimen name="corner_size_16">16dp</dimen>
     <dimen name="corner_size_24">24dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Elevation size -->
     <dimen name="elevation_size_4">4dp</dimen>
     <dimen name="elevation_size_8">8dp</dimen>
     <dimen name="elevation_size_12">12dp</dimen>
     <dimen name="elevation_size_16">16dp</dimen>
     <dimen name="elevation_size_24">24dp</dimen>
+    <!-- endregion -->
 
+    <!--  region Padding size -->
     <dimen name="padding_size_4">4dp</dimen>
     <dimen name="padding_size_8">8dp</dimen>
     <dimen name="padding_size_12">12dp</dimen>
     <dimen name="padding_size_16">16dp</dimen>
     <dimen name="padding_size_24">24dp</dimen>
+    <!-- endregion -->
+
+    <!--  region Text size -->
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_24">24sp</dimen>
+    <!-- endregion -->
+
+    <!--  region Stroke width -->
+    <dimen name="stroke_width_0.5">0.5dp</dimen>
+    <dimen name="stroke_width_1">1dp</dimen>
+    <dimen name="stroke_width_2">2dp</dimen>
+    <dimen name="stroke_width_3">3dp</dimen>
+    <dimen name="stroke_width_4">4dp</dimen>
+    <!-- endregion -->
+
 </resources>
