@@ -4,6 +4,7 @@
 
         <!-- Default styles -->
         <item name="materialButtonStyle">@style/Button.Default</item>
+        <item name="materialCardViewStyle">@style/MaterialCardView.Default</item>
         <item name="android:textViewStyle">@style/BodyLarge.Default</item>
         <item name="textInputStyle">@style/TextInputLayout.Default</item>
         <item name="editTextStyle">@style/TextInputEditText.Default</item>

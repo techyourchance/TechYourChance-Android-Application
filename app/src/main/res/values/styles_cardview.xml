@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/cards/overview -->
+
+    <style name="MaterialCardView.Default" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">@dimen/elevation_size_4</item>
+        <item name="cardCornerRadius">@dimen/corner_size_4</item>
+    </style>
+
+</resources>
