@@ -1,5 +1,6 @@
 <resources>
-
+    <!--  region Screen -->
     <dimen name="padding_screen_horizontal_standard">150dp</dimen>
+    <!-- endregion -->
 
 </resources>
