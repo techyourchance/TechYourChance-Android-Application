@@ -2,7 +2,7 @@ package com.techyourchance.android.screens.ndkbasics
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
@@ -13,7 +13,7 @@ class NdkBasicsViewMvcImpl(
 ): NdkBasicsViewMvc() {
 
     private val toolbar: MyToolbar
-    private val edtArgument: EditText
+    private val edtArgument: TextInputEditText
     private val btnCompute: MyButton
 
     init {

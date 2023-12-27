@@ -1,11 +1,12 @@
 <resources>
     <!-- Base application theme. -->
-        <item name="editTextStyle">@style/EditTextStandard</item>
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- Default styles -->
         <item name="materialButtonStyle">@style/Button.Default</item>
         <item name="android:textViewStyle">@style/BodyLarge.Default</item>
+        <item name="textInputStyle">@style/TextInputLayout.Default</item>
+        <item name="editTextStyle">@style/TextInputEditText.Default</item>
 
         <!--  Material 3 theme attributes -->
         <item name="colorPrimary">@color/md_theme_light_primary</item>
@@ -35,13 +36,6 @@
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
 
-
-    <style name="EditTextStandard" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@drawable/bg_edit_text</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:layout_height">@dimen/edit_text_height_standard</item>
-        <item name="android:padding">@dimen/edit_text_padding</item>
-        <item name="android:inputType">text</item>
         <!--  Override theme default textColor color. -->
         <!--  <item name="android:textColorPrimary">@color/text_default</item>  -->
     </style>

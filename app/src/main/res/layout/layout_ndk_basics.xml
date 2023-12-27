@@ -15,8 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <EditText
-        android:id="@+id/edtArgument"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +23,14 @@
         app:layout_constraintBottom_toTopOf="@id/btnCompute"
         android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
         android:layout_marginBottom="15dp"
-        android:gravity="center"
-        android:inputType="number"
-        />
+        android:inputType="number">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtArgument"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.techyourchance.android.screens.common.widgets.MyButton
         android:id="@+id/btnCompute"
