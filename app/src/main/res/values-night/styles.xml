@@ -7,6 +7,7 @@
         <item name="android:textViewStyle">@style/BodyLarge.Default</item>
         <item name="textInputStyle">@style/TextInputLayout.Default</item>
         <item name="editTextStyle">@style/TextInputEditText.Default</item>
+        <item name="checkboxStyle">@style/CheckBox.Default</item>
         <item name="circularProgressIndicatorStyle">@style/ProgressBar.Default</item>
 
         <!--  Material 3 theme attributes -->
