@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Documentation: https://m3.material.io/styles/typography/overview -->
 
-    <style name="BodyMedium.Default"/>
-    <style name="TitleMedium.Default" />
+    <style name="TitleMedium.Default"  parent="TextAppearance.Material3.TitleMedium"/>
+    <style name="BodyMedium.Default" parent="TextAppearance.Material3.BodyMedium"/>
 
-    <style name="BodyLarge.Default">
+    <style name="BodyLarge.Default" parent ="TextAppearance.Material3.BodyLarge">
         <!--  Override textSize or use different TextAppearance. -->
         <item name="android:textSize">@dimen/text_size_16</item>
 
