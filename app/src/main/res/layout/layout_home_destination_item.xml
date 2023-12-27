@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/home_recycler_item_height"
     android:layout_marginTop="15dp"
-    app:cardElevation="5dp"
-    android:background="@drawable/bg_destination_item"
     >
 
     <com.google.android.material.textview.MaterialTextView
