@@ -10,9 +10,10 @@
     android:background="@drawable/bg_dialog">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
+        style="@style/Dialog.ProgressBar"
         android:id="@+id/progressBar"
-        android:layout_width="@dimen/dialog_progress_bar_circular_size"
-        android:layout_height="@dimen/dialog_progress_bar_circular_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
