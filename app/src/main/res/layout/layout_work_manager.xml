@@ -22,15 +22,6 @@
         app:layout_constraintBottom_toTopOf="@id/checkExpedited"
         app:layout_constraintStart_toStartOf="@id/checkExpedited"
         android:layout_marginBottom="20dp"
-        android:buttonTint="@color/main"
-        />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@id/checkNetworkConstrained"
-        app:layout_constraintStart_toEndOf="@id/checkNetworkConstrained"
-        android:layout_marginStart="5dp"
         android:text="@string/work_manager_network_constrained"
         />
 
@@ -41,15 +32,6 @@
         app:layout_constraintBottom_toTopOf="@id/btnToggleWork"
         app:layout_constraintStart_toStartOf="@id/btnToggleWork"
         android:layout_marginBottom="20dp"
-        android:buttonTint="@color/main"
-        />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@id/checkExpedited"
-        app:layout_constraintStart_toEndOf="@id/checkExpedited"
-        android:layout_marginStart="5dp"
         android:text="@string/work_manager_expedited"
         />
 
