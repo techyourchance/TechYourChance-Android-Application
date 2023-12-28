@@ -2,6 +2,11 @@
 <resources>
     <!-- Documentation: https://m3.material.io/components/checkbox/overview -->
 
-    <style name="CheckBox.Default"  parent="Widget.Material3.CompoundButton.CheckBox"/>
+    <style name="CheckBox.Default" parent="Widget.Material3.CompoundButton.CheckBox">
+        <!--  Override buttonTint color. -->
+        <!-- <item name="buttonTint">@color/main</item> -->
+        <item name="android:textAppearance">@style/TitleMedium.Default</item>
+        <item name="android:padding">@dimen/padding_size_8</item>
+    </style>
 
 </resources>
