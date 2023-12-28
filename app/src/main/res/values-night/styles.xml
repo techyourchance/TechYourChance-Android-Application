@@ -13,6 +13,7 @@
         <item name="switchStyle">@style/MaterialSwitch.Default</item>
 
         <!--  Material 3 theme attributes -->
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
