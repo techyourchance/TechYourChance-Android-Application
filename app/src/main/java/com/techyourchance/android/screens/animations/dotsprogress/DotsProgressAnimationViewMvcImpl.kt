@@ -5,15 +5,16 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.techyourchance.android.R
+import com.techyourchance.android.screens.common.context.getAttrColor
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
+import com.google.android.material.R as MaterialR
 
 class DotsProgressAnimationViewMvcImpl(
         layoutInflater: LayoutInflater,
@@ -57,7 +58,7 @@ class DotsProgressAnimationViewMvcImpl(
                         ) {
                             DotsProgressCompose(
                                 modifier = Modifier.fillMaxWidth(0.2f),
-                                color = colorResource(id = R.color.main),
+                                color = LocalContext.current.getAttrColor(MaterialR.attr.colorPrimary)
                             )
                         }
                     }
