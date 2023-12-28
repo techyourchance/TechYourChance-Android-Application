@@ -22,13 +22,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnCompute"
         android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
-        android:layout_marginBottom="15dp"
-        android:inputType="number">
+        android:layout_marginBottom="15dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtArgument"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
