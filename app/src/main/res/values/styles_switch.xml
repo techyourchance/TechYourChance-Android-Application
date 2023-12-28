@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Documentation: https://m3.material.io/components/switch/overview -->
+
+    <style name="MaterialSwitch.Default" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <!--  Override trackTint color. -->
+        <!-- <item name="trackTint">@color/gray</item> -->
+
+        <!--  Override thumbTint color. -->
+        <!-- <item name="thumbTint">@color/main</item> -->
+    </style>
+
+</resources>

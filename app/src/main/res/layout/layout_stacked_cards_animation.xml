@@ -34,14 +34,13 @@
         />
 
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchViewsCompose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/txtCompose"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
-        app:thumbTint="@color/blue"
+        android:layout_margin="20dp"
         />
 
     <com.google.android.material.textview.MaterialTextView
