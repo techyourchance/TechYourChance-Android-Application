@@ -3,8 +3,8 @@ package com.techyourchance.android.screens.animations.stackedcards
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.widget.SwitchCompat
 import androidx.compose.ui.platform.ComposeView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
@@ -16,7 +16,7 @@ class StackedCardsAnimationViewMvcImpl(
 
     private val toolbar: MyToolbar
     private val frameContent: FrameLayout
-    private val switchViewsCompose: SwitchCompat
+    private val switchViewsCompose: SwitchMaterial
 
     init {
         setRootView(layoutInflater.inflate(R.layout.layout_stacked_cards_animation, parent, false))

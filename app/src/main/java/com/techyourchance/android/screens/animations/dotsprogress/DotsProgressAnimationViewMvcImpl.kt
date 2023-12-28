@@ -3,7 +3,6 @@ package com.techyourchance.android.screens.animations.dotsprogress
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.widget.SwitchCompat
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
@@ -22,7 +22,7 @@ class DotsProgressAnimationViewMvcImpl(
 
     private val toolbar: MyToolbar
     private val frameContent: FrameLayout
-    private val switchViewsCompose: SwitchCompat
+    private val switchViewsCompose: SwitchMaterial
 
     init {
         setRootView(layoutInflater.inflate(R.layout.layout_stacked_cards_animation, parent, false))
