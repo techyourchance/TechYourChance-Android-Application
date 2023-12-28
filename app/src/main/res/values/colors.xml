@@ -16,8 +16,6 @@
     <color name="inactive" type="color">#666666</color>
     <color name="transparent" type="color">#00FFFFFF</color>
 
-    <color name="main" type="color">@color/blue</color>
-
     <color name="text_default" type="color">@color/gray_dark</color>
 
     <color name="edit_text_border" type="color">@color/gray_dark</color>

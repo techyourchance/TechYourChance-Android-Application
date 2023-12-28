@@ -10,7 +10,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import com.techyourchance.android.R
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.R
 
 class DotsProgressView: View {
 
@@ -19,7 +20,7 @@ class DotsProgressView: View {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = context.getColor(R.color.main)
+        color = MaterialColors.getColor(rootView, R.attr.colorPrimary)
     }
 
     private var dotRadius = 0f
