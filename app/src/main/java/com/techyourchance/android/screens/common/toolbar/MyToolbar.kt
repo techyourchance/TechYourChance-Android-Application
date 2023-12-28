@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import com.techyourchance.android.R
 
