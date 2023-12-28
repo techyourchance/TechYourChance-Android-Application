@@ -5,6 +5,7 @@
     <style name="Button.Default" parent="Widget.Material3.Button.ElevatedButton">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:backgroundTint">@color/button</item>
         <item name="android:padding">@dimen/padding_size_8</item>
         <item name="android:textSize">@dimen/text_size_18</item>
     </style>
