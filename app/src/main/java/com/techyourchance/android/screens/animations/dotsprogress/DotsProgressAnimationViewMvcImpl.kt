@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.techyourchance.android.R
-import com.techyourchance.android.screens.common.context.getAttrColor
+import com.techyourchance.android.screens.common.composables.getAttrColor
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.google.android.material.R as MaterialR
