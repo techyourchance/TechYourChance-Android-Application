@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.common.context
+package com.techyourchance.android.screens.common.composables
 
 import android.content.Context
 import android.util.TypedValue

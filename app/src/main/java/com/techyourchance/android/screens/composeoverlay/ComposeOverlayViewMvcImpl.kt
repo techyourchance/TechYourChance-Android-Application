@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import com.techyourchance.android.R
-import com.techyourchance.android.screens.common.widgets.Buttons
+import com.techyourchance.android.screens.common.composables.MyButton
 
 class ComposeOverlayViewMvcImpl(
     context: Context,
@@ -26,7 +26,7 @@ class ComposeOverlayViewMvcImpl(
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        Buttons.DefaultButton(
+                        MyButton(
                             modifier = Modifier.align(Alignment.Center),
                             onClick = { listeners.forEach { it.onToggleOverlayClicked() } }
                         ) {
