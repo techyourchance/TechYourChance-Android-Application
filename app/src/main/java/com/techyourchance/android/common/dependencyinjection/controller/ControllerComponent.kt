@@ -15,6 +15,7 @@ import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.animations.animatedmessages.AnimatedMessagesFragment
 import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAnimationFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
@@ -48,6 +49,7 @@ interface ControllerComponent {
     fun inject(fragment: BackgroundTasksStartupBenchmarkFragment)
     fun inject(fragment: BackgroundTasksMemoryBenchmarkFragment)
     fun inject(fragment: ComposeOverlayFragment)
+    fun inject(fragment: AnimatedMessagesFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

@@ -21,6 +21,7 @@ import com.techyourchance.android.screens.ndkbasics.NdkBasicsFragment
 import com.techyourchance.android.screens.questiondetails.QuestionDetailsFragment
 import com.techyourchance.android.screens.questionslist.QuestionsListFragment
 import com.techyourchance.android.screens.UserInterfacesActivity
+import com.techyourchance.android.screens.animations.animatedmessages.AnimatedMessagesFragment
 import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAnimationFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
@@ -73,7 +74,7 @@ class ScreensNavigator constructor(
         fragNavController.onSaveInstanceState(saveInstanceState)
     }
 
-    fun toScreen(screenSpec: ScreenSpec) {
+    fun toScreen(screenSpec: ScreenSpec, clearBackStack: Boolean = false) {
         if (getCurrentActivityName() != screenSpec.activityName) {
             // change Activity
             when(screenSpec.activityName) {
@@ -102,8 +103,9 @@ class ScreensNavigator constructor(
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
                 is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
                 is ScreenSpec.ComposeOverlay -> ComposeOverlayFragment.newInstance()
+                is ScreenSpec.AnimatedMessages -> AnimatedMessagesFragment.newInstance()
             }
-            toFragment(nextFragment)
+            toFragment(nextFragment, clearBackStack)
         }
     }
 
@@ -122,8 +124,8 @@ class ScreensNavigator constructor(
         }
     }
 
-    private fun toFragment(fragment: Fragment) {
-        if (shouldClearFragmentsStack(fragment)) {
+    private fun toFragment(fragment: Fragment, clearBackStack: Boolean) {
+        if (clearBackStack || isFragmentMustBeRoot(fragment)) {
             fragNavController.clearStack()
             fragNavController.replaceFragment(fragment)
         } else if (shouldReplaceCurrentFragment(fragment)) {
@@ -133,7 +135,7 @@ class ScreensNavigator constructor(
         }
     }
 
-    private fun shouldClearFragmentsStack(nextFragment: Fragment): Boolean {
+    private fun isFragmentMustBeRoot(nextFragment: Fragment): Boolean {
         val currentFragment = fragNavController.currentFrag ?: return false
         return currentFragment is DummyRootFragment
                 || nextFragment is HomeFragment

@@ -23,10 +23,12 @@
     <color name="button" type="color">@color/gray_light</color>
     <color name="button_border" type="color">@color/gray_dark</color>
 
+    <color name="tyc" type="color">#118ACE</color>
+
     <!--  region Theme colors -->
     <!-- Generated using M3 theme builder: https://m3.material.io/theme-builder#/custom -->
     <color name="seed">#303F9F</color>
-    <color name="md_theme_light_primary">#4755B6</color>
+    <color name="md_theme_light_primary">@color/tyc</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#DFE0FF</color>
     <color name="md_theme_light_onPrimaryContainer">#000D5F</color>

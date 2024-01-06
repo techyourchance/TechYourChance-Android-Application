@@ -23,6 +23,7 @@
     <string name="screen_background_tasks_startup_benchmark">Background tasks startup benchmark</string>
     <string name="screen_background_tasks_memory_benchmark">Background tasks memory benchmark</string>
     <string name="screen_compose_overlay">Compose overlay</string>
+    <string name="screen_animated_messages">Animated messages</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>
@@ -84,5 +85,8 @@
 
     <string name="compose_overlay_show">Show overlay</string>
     <string name="compose_overlay_hide">Hide overlay</string>
+
+    <string name="animated_message_send_message">Send message</string>
+    <string name="animated_message_message">Message %1$d</string>
 
 </resources>

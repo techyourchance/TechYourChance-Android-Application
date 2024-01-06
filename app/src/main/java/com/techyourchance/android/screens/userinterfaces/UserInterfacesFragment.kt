@@ -45,6 +45,10 @@ class UserInterfacesFragment : BaseFragment(), UserInterfacesViewMvc.Listener {
                 getString(R.string.screen_dots_progress_animation),
                 ScreenSpec.DotsProgressAnimation
             ),
+            FromUserInterfacesDestination(
+                getString(R.string.screen_animated_messages),
+                ScreenSpec.AnimatedMessages
+            ),
         )
     }
 

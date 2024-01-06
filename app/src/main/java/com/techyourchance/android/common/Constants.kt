@@ -17,4 +17,5 @@ object Constants {
 
     const val CLICK_DELAY_FOR_ANIMATION_MS = 150L
 
+
 }
