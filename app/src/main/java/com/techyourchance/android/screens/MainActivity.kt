@@ -37,4 +37,24 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onStart() {
+        MyLogger.i("onStart()")
+        super.onStart()
+    }
+
+    override fun onStop() {
+        MyLogger.i("onStop()")
+        super.onStop()
+    }
+
+    override fun onResume() {
+        MyLogger.i("onResume()")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        MyLogger.i("onPause()")
+        super.onPause()
+    }
+
 }

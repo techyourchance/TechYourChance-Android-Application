@@ -69,15 +69,17 @@ class DialogsNavigator(
         id: String?,
         payload: Serializable?,
     ) {
-        dialogHelper.showDialog(
-            PromptDialog.newInstance(
-                message,
-                positiveButtonCaption,
-                negativeButtonCaption,
-                payload
-            ),
-            id
-        )
+        uiHandler.post {
+            dialogHelper.showDialog(
+                PromptDialog.newInstance(
+                    message,
+                    positiveButtonCaption,
+                    negativeButtonCaption,
+                    payload
+                ),
+                id
+            )
+        }
     }
 
     private fun showInfoDialog(

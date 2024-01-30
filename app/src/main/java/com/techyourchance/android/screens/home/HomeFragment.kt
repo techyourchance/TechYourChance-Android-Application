@@ -9,6 +9,7 @@ import com.techyourchance.android.apkupdate.ApkInfo
 import com.techyourchance.android.apkupdate.FetchLatestApkInfoUseCase
 import com.techyourchance.android.apkupdate.UpdateApkUseCase
 import com.techyourchance.android.common.eventbus.EventBusSubscriber
+import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.usecases.UseCaseResult
 import com.techyourchance.android.screens.common.ScreenSpec
 import com.techyourchance.android.screens.common.ScreensNavigator
@@ -95,6 +96,7 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
     }
 
     override fun onStart() {
+        MyLogger.i("onStart()")
         super.onStart()
         viewMvc.registerListener(this)
 
@@ -109,6 +111,7 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
     }
 
     override fun onStop() {
+        MyLogger.i("onStop()")
         super.onStop()
         viewMvc.unregisterListener(this)
         eventBusSubscriber.unregister(this)

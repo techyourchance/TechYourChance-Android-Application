@@ -1,8 +1,12 @@
 package com.techyourchance.android.screens.common.dialogs.prompt
 
 import android.os.Bundle
+import com.techyourchance.android.apkupdate.ApkInfo
 import com.techyourchance.android.common.eventbus.EventBusPoster
+import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.screens.common.dialogs.BaseOneOrTwoButtonDialog
+import com.techyourchance.android.screens.home.HomeFragment
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -14,6 +18,27 @@ class PromptDialog : BaseOneOrTwoButtonDialog() {
         buttonsConfig = ButtonsConfig.TWO_BUTTONS
         super.onCreate(savedInstanceState)
         controllerComponent.inject(this)
+    }
+
+
+    override fun onStart() {
+        MyLogger.i("onStart()")
+        super.onStart()
+    }
+
+    override fun onStop() {
+        MyLogger.i("onStop()")
+        super.onStop()
+    }
+
+    override fun onResume() {
+        MyLogger.i("onResume()")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        MyLogger.i("onPause()")
+        super.onPause()
     }
 
     override fun getDialogImageUri(): String? {
