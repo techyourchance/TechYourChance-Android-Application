@@ -49,9 +49,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'gson.pro', 'retrofit2.pro'
             signingConfig signingConfigs.release
 
-            def sentryProperties = new Properties()
-            sentryProperties.load(new FileInputStream(rootProject.file("sentry.properties")))
-            buildConfigField("String", "SENTRY_DSN", sentryProperties['dsn'])
+            // Attempt to get the DSN from the environment variable first
+            def sentryDsn = System.getenv("SENTRY_DSN") ?: ""
+
+            // If the DSN is not found in the environment variable, load it from sentry.properties
+            if (sentryDsn.isEmpty()) {
+                def sentryProperties = new Properties()
+                def fileInputStream = new FileInputStream(rootProject.file("sentry.properties"))
+                try {
+                    sentryProperties.load(fileInputStream)
+                    sentryDsn = sentryProperties['dsn']
+                } finally {
+                    fileInputStream?.close()
+                }
+            }
+
+            buildConfigField "String", "SENTRY_DSN", "\"$sentryDsn\""
         }
         
         applicationVariants.all { variant ->
