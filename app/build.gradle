@@ -47,7 +47,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'gson.pro', 'retrofit2.pro'
-            signingConfig signingConfigs.release
+
+            // Bitrise uses their own "sign" step
+            if (System.getenv("BITRISE_APP_TITLE") != null) {
+                signingConfig null
+            } else {
+                signingConfig signingConfigs.release
+            }
 
             // Attempt to get the DSN from the environment variable first
             def sentryDsn = System.getenv("SENTRY_DSN") ?: ""
