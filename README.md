@@ -1,7 +1,15 @@
 # TechYourChance Android Application
-This app demonstrates the best practices for Android development and contains a repository of useful features that you can learn from. It shows what I consider to be "clean and pragmatic Android code".
+This app demonstrates the best practices for Android development and contains a repository of useful features that you can learn from and use in your projects. It shows what I consider to be a "clean and pragmatic Android code".
 
 The architecture, implementation details, tests, etc. in this application follow the practices and guidelines that I teach in my [Android development courses](https://www.techyourchance.com/courses/).
+
+## Sponsors
+<p>
+    Huge thanks to Bitrise for sponsoring the Continuous Integration infrastructure in this project!<br><br>
+    <a href="https://bitrise.io/?utm_source=twitter&utm_medium=social&utm_campaign=vasiliy-zukanov&utm_content=sponsored-post" target="_blank">
+        <img src="https://github.com/techyourchance/TechYourChance-Android-Application/assets/12713429/e5c83f31-6caf-416c-93cf-cef713d0bd3d" width="25%" height="25%">
+    </a>
+</p>
 
 ## Installation
 
@@ -31,7 +39,9 @@ Parts of the source code in this app correspond to the articles I published on m
 
 ## Architecture
 
-The project is written in Kotlin, using the "classical" Android UI framework (XMLs + Views). \[Jetpack Compose will be added in the future\]
+The project is written in Kotlin. 
+
+Some parts of the UI use the "classical" Android UI framework (XMLs + Views), while others use Jetpack Compose. There are also screens that demonstrate alternative implementations of UI components using Views and Compose (i.e. you can switch between different implementations of the same UI component). 
 
 Packages structure of the application follows [package by feature](https://www.techyourchance.com/popular-package-structures/) approach.
 
