@@ -1,6 +1,9 @@
 package com.techyourchance.android.backgroundtasksbenchmark.memory
 
+import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.database.entities.backgroundtasksmemory.BackgroundTasksMemoryDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ClearBackgroundTaskMemoryDataUseCase @Inject constructor(
@@ -9,6 +12,8 @@ class ClearBackgroundTaskMemoryDataUseCase @Inject constructor(
 ) {
 
     suspend fun clearData() {
-        backgroundTasksMemoryDao.deleteAll()
+        withContext(Dispatchers.Background) {
+            backgroundTasksMemoryDao.deleteAll()
+        }
     }
 }
