@@ -82,14 +82,12 @@ abstract class BaseViewsActivity: BaseActivity() {
         defaultOnBackPressedCallback.remove()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         MyLogger.i("onNewIntent()")
         super.onNewIntent(intent)
-        if (intent != null) {
-            val startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
-            if (startingScreen != null) {
-                screensNavigator.toScreen(startingScreen)
-            }
+        val startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
+        if (startingScreen != null) {
+            screensNavigator.toScreen(startingScreen)
         }
     }
 
