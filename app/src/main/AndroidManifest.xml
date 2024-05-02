@@ -40,6 +40,11 @@
             android:launchMode="singleTop"
             />
 
+        <activity
+            android:name="com.techyourchance.android.screens.composeui.ComposeActivity"
+            android:exported="false"
+            />
+
         <service
             android:name=".overlay.ComposeOverlayService"
             android:enabled="true"

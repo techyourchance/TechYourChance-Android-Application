@@ -58,6 +58,11 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 FromHomeDestinationType.LIST_OF_SCREENS
             ),
             FromHomeDestination(
+                getString(R.string.screen_compose_ui),
+                ScreenSpec.ComposeUi,
+                FromHomeDestinationType.LIST_OF_SCREENS
+            ),
+            FromHomeDestination(
                 getString(R.string.screen_benchmarks),
                 ScreenSpec.Benchmarks,
                 FromHomeDestinationType.LIST_OF_SCREENS

@@ -6,10 +6,10 @@ import android.os.Bundle
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.screens.common.ActivityName
 import com.techyourchance.android.screens.common.ScreenSpec
-import com.techyourchance.android.screens.common.activities.BaseActivity
+import com.techyourchance.android.screens.common.activities.BaseViewsActivity
 import java.io.Serializable
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseViewsActivity() {
 
     override fun getActivityName() = ActivityName.MAIN
 

@@ -21,6 +21,7 @@ import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchm
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
+import com.techyourchance.android.screens.composeui.ComposeActivity
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import dagger.Subcomponent
@@ -31,6 +32,7 @@ interface ControllerComponent {
     // Activities
     fun inject(activity: MainActivity)
     fun inject(activity: UserInterfacesActivity)
+    fun inject(activity: ComposeActivity)
 
     // Fragments
     fun inject(fragment: HomeFragment)

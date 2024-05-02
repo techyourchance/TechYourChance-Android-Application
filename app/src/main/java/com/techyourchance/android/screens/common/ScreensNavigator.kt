@@ -12,7 +12,7 @@ import com.techyourchance.android.common.Observable
 import com.techyourchance.android.screens.animations.AnimationsFragment
 import com.techyourchance.android.screens.animations.stackedcards.StackedCardsAnimationFragment
 import com.techyourchance.android.screens.biometricauth.BiometricAuthFragment
-import com.techyourchance.android.screens.common.activities.BaseActivity
+import com.techyourchance.android.screens.common.activities.BaseViewsActivity
 import com.techyourchance.android.screens.common.fragments.DummyRootFragment
 import com.techyourchance.android.screens.foregroundservice.ForegroundServiceFragment
 import com.techyourchance.android.screens.home.HomeFragment
@@ -27,6 +27,7 @@ import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchm
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
+import com.techyourchance.android.screens.composeui.ComposeActivity
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
@@ -84,6 +85,9 @@ class ScreensNavigator constructor(
                 ActivityName.USER_INTERFACES -> {
                     UserInterfacesActivity.start(activity, screenSpec)
                 }
+                ActivityName.COMPOSE -> {
+                    ComposeActivity.start(activity, screenSpec)
+                }
             }
         } else {
             // change just Fragment
@@ -104,6 +108,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
                 is ScreenSpec.ComposeOverlay -> ComposeOverlayFragment.newInstance()
                 is ScreenSpec.AnimatedMessages -> AnimatedMessagesFragment.newInstance()
+                is ScreenSpec.ComposeUi -> throw RuntimeException("compose navigation is not handled here (currently)")
             }
             toFragment(nextFragment, clearBackStack)
         }
@@ -148,7 +153,7 @@ class ScreensNavigator constructor(
     }
 
     private fun getCurrentActivityName(): ActivityName {
-        return (activity as BaseActivity).getActivityName()
+        return (activity as BaseViewsActivity).getActivityName()
     }
 
 

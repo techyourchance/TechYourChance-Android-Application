@@ -2,7 +2,6 @@ package com.techyourchance.android.screens.common.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -27,28 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {
-
-    @Inject lateinit var screensNavigator: ScreensNavigator
-    @Inject lateinit var dialogsNavigator: DialogsNavigator
-    @Inject lateinit var permissionsHelperDelegate: PermissionsHelperDelegate
-
-    protected val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
-
-    private val defaultOnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (dialogsNavigator.getCurrentlyShownDialog() != null) {
-                return // let dialogs handle the back presses when shown
-            }
-            if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.closeDrawer(GravityCompat.END)
-                return
-            }
-            screensNavigator.navigateBack()
-        }
-    }
-
-    private lateinit var drawerLayout: DrawerLayout
-
     val activityComponent: ActivityComponent by lazy {
         (application as MyApplication)
             .applicationComponent
@@ -67,63 +44,5 @@ abstract class BaseActivity: AppCompatActivity() {
 
     abstract fun getActivityName(): ActivityName
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.layout_base_activity)
-
-        drawerLayout = findViewById(R.id.drawerLayout)
-
-        addDebugDrawerIfNeeded()
-
-        screensNavigator.init(savedInstanceState)
-
-        if (savedInstanceState == null) {
-            var startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
-            if (startingScreen == null) {
-                startingScreen = ScreenSpec.Home
-            }
-            screensNavigator.toScreen(startingScreen)
-        }
-
-        onBackPressedDispatcher.addCallback(defaultOnBackPressedCallback)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        defaultOnBackPressedCallback.remove()
-    }
-
-    private fun addDebugDrawerIfNeeded() {
-        if (BuildConfig.DEBUG) {
-            supportFragmentManager.beginTransaction().add(
-                R.id.fragmentContainerViewDebugDrawer,
-                DebugDrawerFragment.newInstance()
-            ).commit()
-        }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        MyLogger.i("onNewIntent()")
-        super.onNewIntent(intent)
-        if (intent != null) {
-            val startingScreen = intent.getSerializableExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC) as ScreenSpec?
-            if (startingScreen != null) {
-                screensNavigator.toScreen(startingScreen)
-            }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        screensNavigator.onSaveInstanceState(outState)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // must delegate to PermissionsHelper because this object functions as a central "hub"
-        // for permissions management in the scope of this Activity
-        permissionsHelperDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 
 }

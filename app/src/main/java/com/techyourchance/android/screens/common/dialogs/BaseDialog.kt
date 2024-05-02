@@ -11,7 +11,7 @@ import com.techyourchance.android.common.dependencyinjection.controller.Controll
 import com.techyourchance.android.common.dependencyinjection.controller.ControllerModule
 import com.techyourchance.android.common.dependencyinjection.controller.ViewMvcModule
 import com.techyourchance.android.common.device.DeviceScreenMetricsProvider
-import com.techyourchance.android.screens.common.activities.BaseActivity
+import com.techyourchance.android.screens.common.activities.BaseViewsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import java.lang.IllegalStateException
@@ -33,7 +33,7 @@ abstract class BaseDialog : DialogFragment() {
     private var customTargetHeight = false
 
     protected val controllerComponent: ControllerComponent by lazy {
-        (activity as BaseActivity).activityComponent
+        (activity as BaseViewsActivity).activityComponent
             .newControllerComponent(ControllerModule(this, this), ViewMvcModule())
     }
 

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import com.techyourchance.android.common.dependencyinjection.controller.ControllerComponent
 import com.techyourchance.android.common.dependencyinjection.controller.ControllerModule
 import com.techyourchance.android.common.dependencyinjection.controller.ViewMvcModule
-import com.techyourchance.android.screens.common.activities.BaseActivity
+import com.techyourchance.android.screens.common.activities.BaseViewsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -18,7 +18,7 @@ abstract class BaseFragment: Fragment() {
         get() {
             check(isFirstAccessToControllerComponent) { "must not use ControllerComponent more than once" }
             isFirstAccessToControllerComponent = false
-            return (activity as BaseActivity)
+            return (activity as BaseViewsActivity)
                 .activityComponent
                 .newControllerComponent(ControllerModule(this, this), ViewMvcModule())
         }
