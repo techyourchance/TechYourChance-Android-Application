@@ -27,6 +27,7 @@ Parts of the source code in this app correspond to the articles I published on m
 
 | **Blog Post** | **Source Code** |
 |---------------|-----------------|
+| [Bottom Bar Navigation in Android with Compose Navigation](https://www.techyourchance.com/bottom-bar-navigation-android-compose-navigation/) | [Screen](https://github.com/techyourchance/TechYourChance-Android-Application/tree/master/app/src/main/java/com/techyourchance/android/screens/composenavbottombar)|
 | [Foreground Service in Android](https://www.techyourchance.com/foreground-service-in-android/) | [Screen](app/src/main/java/com/techyourchance/android/screens/foregroundservice) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundwork/foregroundservice) |
 | [WorkManager in Android](https://www.techyourchance.com/work-manager-android-tutorial/) | [Screen](app/src/main/java/com/techyourchance/android/screens/workmanager) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundwork/workmanager) |
 | [Android Room Tutorial Part 2 – The Architecture](https://www.techyourchance.com/android-room-tutorial-architecture/) | [Logic](https://github.com/techyourchance/TechYourChance-Android-Application/tree/master/database/src/main/java/com/techyourchance/android/database) |
