@@ -29,7 +29,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -82,7 +81,7 @@ class ComposeActivity : BaseActivity() {
         val navController = rememberNavController()
 
         val isRootRoute = navController.currentBackStackEntryFlow.map { backStackEntry ->
-            val isHomeRoute = backStackEntry.destination.route == BottomTab.Home.route
+            val isHomeRoute = backStackEntry.destination.route == Route.HomeRoot.route
             val isRootInTab = listOf("0", null).contains(backStackEntry.arguments?.getString("num"))
             isHomeRoute && isRootInTab
         }.collectAsState(initial = true)
@@ -161,7 +160,7 @@ class ComposeActivity : BaseActivity() {
     ) {
         val currentRoute = navController.currentBackStackEntryFlow.map { backStackEntry ->
             backStackEntry.destination.route
-        }.collectAsState(initial = BottomTab.Home.route)
+        }.collectAsState(initial = Route.HomeRoot.route)
 
         val items = listOf(
             BottomTab.Home,
@@ -171,7 +170,7 @@ class ComposeActivity : BaseActivity() {
         var selectedItem by remember { mutableIntStateOf(0) }
 
         items.forEachIndexed { index, navigationItem ->
-            if (navigationItem.route == currentRoute.value) {
+            if (navigationItem.rootRoute.route == currentRoute.value) {
                 selectedItem = index
             }
         }
@@ -185,7 +184,7 @@ class ComposeActivity : BaseActivity() {
                     selected = selectedItem == index,
                     onClick = {
                         selectedItem = index
-                        navController.navigate(item.route.replace("{num}", "0")) {
+                        navController.navigate(item.rootRoute.route) {
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) {
                                     saveState = true
@@ -207,19 +206,31 @@ class ComposeActivity : BaseActivity() {
             val nextScreenNum = currentScreenNum.toInt() + 1
             navController.navigate(destinationRoute.replace("{num}", "$nextScreenNum"))
         }
-        NavHost(navController, startDestination = BottomTab.Home.route) {
-            composable(BottomTab.Home.route) { backStackEntry ->
-                val screenNum = backStackEntry.arguments?.getString("num") ?: "0"
+        NavHost(navController, startDestination = Route.HomeRoot.route) {
+            composable(Route.HomeRoot.route) {
                 SimpleScreen(
-                    title = "${BottomTab.Home.title} $screenNum",
-                    onNavigateToNextScreenClicked = { navigateToNextScreen(BottomTab.Home.route) }
+                    title = Route.HomeRoot.title,
+                    onNavigateToNextScreenClicked = { navigateToNextScreen(Route.HomeChild.route) }
                 )
             }
-            composable(BottomTab.Settings.route) { backStackEntry ->
+            composable(Route.HomeChild.route) { backStackEntry ->
                 val screenNum = backStackEntry.arguments?.getString("num") ?: "0"
                 SimpleScreen(
-                    title = "${BottomTab.Settings.title} $screenNum",
-                    onNavigateToNextScreenClicked = { navigateToNextScreen(BottomTab.Settings.route) }
+                    title = "${Route.HomeChild.title} $screenNum",
+                    onNavigateToNextScreenClicked = { navigateToNextScreen(Route.HomeChild.route) }
+                )
+            }
+            composable(Route.SettingsRoot.route) {
+                SimpleScreen(
+                    title = Route.SettingsRoot.title,
+                    onNavigateToNextScreenClicked = { navigateToNextScreen(Route.SettingsChild.route) }
+                )
+            }
+            composable(Route.SettingsChild.route) { backStackEntry ->
+                val screenNum = backStackEntry.arguments?.getString("num") ?: "0"
+                SimpleScreen(
+                    title = "${Route.SettingsChild.title} $screenNum",
+                    onNavigateToNextScreenClicked = { navigateToNextScreen(Route.SettingsChild.route) }
                 )
             }
         }
@@ -235,7 +246,7 @@ class ComposeActivity : BaseActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = title, fontSize = 32.sp)
+            Text(text = title, fontSize = 26.sp)
             Spacer(modifier = Modifier.height(20.dp))
             Button(onClick = onNavigateToNextScreenClicked) {
                 Text(
@@ -245,6 +256,7 @@ class ComposeActivity : BaseActivity() {
             }
         }
     }
+
     companion object {
         private const val TAG = "ComposeActivity"
 
