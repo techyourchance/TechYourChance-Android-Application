@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.composeui
+package com.techyourchance.android.screens.composenavbottombar
 
 import android.content.Context
 import android.content.Intent
@@ -54,9 +54,9 @@ import com.techyourchance.android.screens.common.composables.MyTheme
 import kotlinx.coroutines.flow.map
 import java.io.Serializable
 
-class ComposeActivity : BaseActivity() {
+class ComposeNavBottomBarActivity : BaseActivity() {
 
-    override fun getActivityName() = ActivityName.COMPOSE
+    override fun getActivityName() = ActivityName.COMPOSE_NAV_BOTTOM_BAR
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
@@ -262,7 +262,7 @@ class ComposeActivity : BaseActivity() {
 
         fun start(context: Context, screenSpec: ScreenSpec) {
             MyLogger.i(TAG, "start() $screenSpec")
-            val intent = Intent(context, ComposeActivity::class.java)
+            val intent = Intent(context, ComposeNavBottomBarActivity::class.java)
             intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
             context.startActivity(intent)
         }

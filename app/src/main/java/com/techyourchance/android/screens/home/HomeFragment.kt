@@ -58,9 +58,9 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 FromHomeDestinationType.LIST_OF_SCREENS
             ),
             FromHomeDestination(
-                getString(R.string.screen_compose_ui),
-                ScreenSpec.ComposeUi,
-                FromHomeDestinationType.LIST_OF_SCREENS
+                getString(R.string.screen_compose_nav_bottom_bar),
+                ScreenSpec.ComposeNavBottomBar,
+                FromHomeDestinationType.GROUP_OF_SCREENS
             ),
             FromHomeDestination(
                 getString(R.string.screen_benchmarks),

@@ -1,4 +1,4 @@
-package com.techyourchance.android.screens.composeui
+package com.techyourchance.android.screens.composenavbottombar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home

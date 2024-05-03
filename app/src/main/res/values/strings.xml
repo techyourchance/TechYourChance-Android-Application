@@ -16,7 +16,7 @@
     <string name="screen_foreground_service">Foreground service</string>
     <string name="screen_work_manager">WorkManager</string>
     <string name="screen_user_interfaces">User interfaces</string>
-    <string name="screen_compose_ui">Jetpack Compose UI</string>
+    <string name="screen_compose_nav_bottom_bar">Compose Nav Bottom Bar</string>
     <string name="screen_animations">Animations</string>
     <string name="screen_stacked_cards_animation">Stacked cards animation</string>
     <string name="screen_dots_progress_animation">Dots progress animation</string>

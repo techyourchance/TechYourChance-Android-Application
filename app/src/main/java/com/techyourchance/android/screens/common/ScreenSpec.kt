@@ -25,7 +25,7 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
     ): ScreenSpec(ActivityName.MAIN)
     object ComposeOverlay: ScreenSpec(ActivityName.MAIN)
     object AnimatedMessages: ScreenSpec(ActivityName.USER_INTERFACES)
-    object ComposeUi: ScreenSpec(ActivityName.COMPOSE)
+    object ComposeNavBottomBar: ScreenSpec(ActivityName.COMPOSE_NAV_BOTTOM_BAR)
 
     companion object {
         /**

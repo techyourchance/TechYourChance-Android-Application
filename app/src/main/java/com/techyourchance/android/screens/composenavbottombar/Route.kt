@@ -1,9 +1,4 @@
-package com.techyourchance.android.screens.composeui
-
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.ui.graphics.vector.ImageVector
+package com.techyourchance.android.screens.composenavbottombar
 
 sealed class Route(var route: String, var title: String) {
     data object HomeRoot : Route("home", "Home root screen")
