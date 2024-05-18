@@ -61,10 +61,13 @@ android {
             // If the DSN is not found in the environment variable, load it from sentry.properties
             if (sentryDsn.isEmpty()) {
                 def sentryProperties = new Properties()
-                def fileInputStream = new FileInputStream(rootProject.file("sentry.properties"))
+                def fileInputStream = null
                 try {
+                    fileInputStream = new FileInputStream(rootProject.file("sentry.properties"))
                     sentryProperties.load(fileInputStream)
                     sentryDsn = sentryProperties['dsn']
+                } catch(FileNotFoundException e) {
+                    logger.error("no sentry.properties file for release builds")
                 } finally {
                     fileInputStream?.close()
                 }
