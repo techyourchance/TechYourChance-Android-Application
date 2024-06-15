@@ -73,6 +73,11 @@ class HomeFragment : BaseFragment(), HomeViewMvc.Listener {
                 FromHomeDestinationType.GROUP_OF_SCREENS
             ),
             FromHomeDestination(
+                getString(R.string.screen_handler_looper),
+                ScreenSpec.HandlerLooper,
+                FromHomeDestinationType.SINGLE_SCREEN
+            ),
+            FromHomeDestination(
                 getString(R.string.screen_biometric_auth),
                 ScreenSpec.BiometricLock,
                 FromHomeDestinationType.SINGLE_SCREEN

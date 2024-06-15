@@ -25,6 +25,7 @@
     <string name="screen_background_tasks_memory_benchmark">Background tasks memory benchmark</string>
     <string name="screen_compose_overlay">Compose overlay</string>
     <string name="screen_animated_messages">Animated messages</string>
+    <string name="screen_handler_looper">Handler &amp; Looper</string>
 
     <string name="server_error_dialog_message">Communication with the server failed</string>
     <string name="server_error_dialog_button_caption">OK</string>

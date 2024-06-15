@@ -28,6 +28,7 @@ import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksLi
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
 import com.techyourchance.android.screens.composenavbottombar.ComposeNavBottomBarActivity
+import com.techyourchance.android.screens.handlerlooper.HandlerLooperFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import timber.log.Timber
@@ -107,6 +108,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
                 is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
                 is ScreenSpec.ComposeOverlay -> ComposeOverlayFragment.newInstance()
+                is ScreenSpec.HandlerLooper -> HandlerLooperFragment.newInstance()
                 is ScreenSpec.AnimatedMessages -> AnimatedMessagesFragment.newInstance()
                 is ScreenSpec.ComposeNavBottomBar -> throw RuntimeException("compose navigation is not handled here (currently)")
             }

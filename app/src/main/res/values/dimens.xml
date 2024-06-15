@@ -3,6 +3,7 @@
     <dimen name="toolbar_height">54dp</dimen>
     <dimen name="toolbar_button_size">54dp</dimen>
     <dimen name="toolbar_icon_size">24dp</dimen>
+    <dimen name="toolbar_title_text_size">20sp</dimen>
     <!-- endregion -->
 
     <!--  region Debug -->

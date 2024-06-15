@@ -22,6 +22,7 @@ import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksLi
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
 import com.techyourchance.android.screens.composenavbottombar.ComposeNavBottomBarActivity
+import com.techyourchance.android.screens.handlerlooper.HandlerLooperFragment
 import com.techyourchance.android.screens.userinterfaces.UserInterfacesFragment
 import com.techyourchance.android.screens.workmanager.WorkManagerFragment
 import dagger.Subcomponent
@@ -52,6 +53,7 @@ interface ControllerComponent {
     fun inject(fragment: BackgroundTasksMemoryBenchmarkFragment)
     fun inject(fragment: ComposeOverlayFragment)
     fun inject(fragment: AnimatedMessagesFragment)
+    fun inject(fragment: HandlerLooperFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)

@@ -30,7 +30,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:textColor="?attr/colorOnPrimary"
-        android:textSize="20sp"
+        android:textSize="@dimen/toolbar_title_text_size"
         android:visibility="gone"
         />
 

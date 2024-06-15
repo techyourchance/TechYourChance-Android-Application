@@ -18,25 +18,6 @@ class MainActivity : BaseViewsActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    companion object {
-        private const val TAG = "MainActivity"
-
-        fun start(context: Context, screenSpec: ScreenSpec) {
-            MyLogger.i(TAG, "start() $screenSpec")
-            val intent = Intent(context, MainActivity::class.java)
-            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
-            context.startActivity(intent)
-        }
-
-        fun startClearTask(context: Context, screenSpec: ScreenSpec) {
-            MyLogger.i(TAG, "start() $screenSpec")
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
-            context.startActivity(intent)
-        }
-    }
-
     override fun onStart() {
         MyLogger.i("onStart()")
         super.onStart()
@@ -55,6 +36,26 @@ class MainActivity : BaseViewsActivity() {
     override fun onPause() {
         MyLogger.i("onPause()")
         super.onPause()
+    }
+
+
+    companion object {
+        private const val TAG = "MainActivity"
+
+        fun start(context: Context, screenSpec: ScreenSpec) {
+            MyLogger.i(TAG, "start() $screenSpec")
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
+            context.startActivity(intent)
+        }
+
+        fun startClearTask(context: Context, screenSpec: ScreenSpec) {
+            MyLogger.i(TAG, "start() $screenSpec")
+            val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra(ScreenSpec.INTENT_EXTRA_SCREEN_SPEC, screenSpec as Serializable)
+            context.startActivity(intent)
+        }
     }
 
 }
