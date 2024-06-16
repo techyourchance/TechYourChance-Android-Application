@@ -25,6 +25,8 @@ import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.composables.MyTheme
 import com.techyourchance.android.screens.common.composables.MyTopAppBar
 import com.techyourchance.android.screens.common.fragments.BaseFragment
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.LinkedBlockingQueue
 import javax.inject.Inject
 
 class HandlerLooperFragment : BaseFragment() {
@@ -32,6 +34,9 @@ class HandlerLooperFragment : BaseFragment() {
     @Inject lateinit var screensNavigator: ScreensNavigator
 
     private var numOfTasks = 0
+
+    private var looperThread: Thread? = null
+    private val looperQueue: BlockingQueue<Runnable> = LinkedBlockingQueue(20)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +113,27 @@ class HandlerLooperFragment : BaseFragment() {
     }
 
     private fun executeTaskInLooperThread(taskNum: Int) {
-
+        if (looperThread == null) {
+            looperThread = Thread {
+                while (true) {
+                    val currentMessage = looperQueue.take()
+                    currentMessage.run()
+                }
+            }.apply {
+                start()
+            }
+        }
+        looperQueue.put(
+            Runnable {
+                MyLogger.i("task started: $taskNum")
+                val taskNumPadded = taskNum.toString().padEnd(3)
+                for (count in 1..3) {
+                    Thread.sleep(1000)
+                    MyLogger.i("task $taskNumPadded count: $count")
+                }
+                MyLogger.i("task completed: $taskNum")
+            }
+        )
     }
 
     private fun onBackClicked() {
