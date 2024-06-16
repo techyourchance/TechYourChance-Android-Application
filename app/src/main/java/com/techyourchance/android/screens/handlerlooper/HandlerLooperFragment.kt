@@ -35,9 +35,7 @@ class HandlerLooperFragment : BaseFragment() {
 
     private var numOfTasks = 0
 
-    private var looperThread: Thread? = null
-    private val looperQueue: BlockingQueue<Runnable> = LinkedBlockingQueue(20)
-
+    private var myLooper: MyLooper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
@@ -113,17 +111,7 @@ class HandlerLooperFragment : BaseFragment() {
     }
 
     private fun executeTaskInLooperThread(taskNum: Int) {
-        if (looperThread == null) {
-            looperThread = Thread {
-                while (true) {
-                    val currentMessage = looperQueue.take()
-                    currentMessage.run()
-                }
-            }.apply {
-                start()
-            }
-        }
-        looperQueue.put(
+        myLooper?.enqueueMessage(
             Runnable {
                 MyLogger.i("task started: $taskNum")
                 val taskNumPadded = taskNum.toString().padEnd(3)
@@ -136,6 +124,17 @@ class HandlerLooperFragment : BaseFragment() {
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        myLooper = MyLooper()
+        myLooper!!.prepare()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        myLooper?.quit()
+    }
+
     private fun onBackClicked() {
         screensNavigator.navigateBack()
     }
@@ -143,6 +142,39 @@ class HandlerLooperFragment : BaseFragment() {
     companion object {
         fun newInstance(): HandlerLooperFragment {
             return HandlerLooperFragment()
+        }
+    }
+
+    private class MyLooper {
+
+        private var looperThread: Thread? = null
+        private val looperQueue: BlockingQueue<Runnable> = LinkedBlockingQueue(20)
+        private val poison = Runnable {}
+
+
+        fun prepare() {
+            if (looperThread != null) {
+                throw RuntimeException("shouldn't be called more than once")
+            }
+            looperThread = Thread {
+                while (true) {
+                    val currentMessage = looperQueue.take()
+                    if (currentMessage == poison) {
+                        break
+                    }
+                    currentMessage.run()
+                }
+            }.apply {
+                start()
+            }
+        }
+
+        fun quit() {
+            looperQueue.put(poison)
+        }
+
+        fun enqueueMessage(runnable: Runnable) {
+            looperQueue.put(runnable)
         }
     }
 }
