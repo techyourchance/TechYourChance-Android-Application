@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -30,6 +33,7 @@ class HandlerLooperFragment : BaseFragment() {
 
     private var numOfTasks = 0
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -50,7 +54,7 @@ class HandlerLooperFragment : BaseFragment() {
                             )
                         },
                     ) { innerPadding ->
-                        Box(
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(
@@ -60,14 +64,26 @@ class HandlerLooperFragment : BaseFragment() {
                                         0.dp,
                                         innerPadding.calculateBottomPadding()
                                     )
-                                )
+                                ),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
                         ) {
+
                             Button(
-                                modifier = Modifier.align(Alignment.Center),
                                 onClick = { executeTaskInNewThread(numOfTasks++) }
                             ) {
                                 Text(
                                     text = "Execute task in a new thread"
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Button(
+                                onClick = { executeTaskInLooperThread(numOfTasks++) }
+                            ) {
+                                Text(
+                                    text = "Execute task in a looper thread"
                                 )
                             }
                         }
@@ -77,6 +93,7 @@ class HandlerLooperFragment : BaseFragment() {
             }
         }
     }
+
 
     private fun executeTaskInNewThread(taskNum: Int) {
         Thread {
@@ -88,6 +105,10 @@ class HandlerLooperFragment : BaseFragment() {
             }
             MyLogger.i("task completed: $taskNum")
         }.start()
+    }
+
+    private fun executeTaskInLooperThread(taskNum: Int) {
+
     }
 
     private fun onBackClicked() {
