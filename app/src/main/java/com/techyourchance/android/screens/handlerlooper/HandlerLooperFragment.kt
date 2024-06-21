@@ -35,7 +35,7 @@ class HandlerLooperFragment : BaseFragment() {
 
     private var numOfTasks = 0
 
-    private var myLooper: MyLooper? = null
+    private var myHandler: MyHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controllerComponent.inject(this)
@@ -111,7 +111,7 @@ class HandlerLooperFragment : BaseFragment() {
     }
 
     private fun executeTaskInLooperThread(taskNum: Int) {
-        myLooper?.enqueueMessage(
+        myHandler?.post(
             Runnable {
                 MyLogger.i("task started: $taskNum")
                 val taskNumPadded = taskNum.toString().padEnd(3)
@@ -126,13 +126,12 @@ class HandlerLooperFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        myLooper = MyLooper()
-        myLooper!!.prepare()
+        myHandler = MyHandler(MyLooper())
     }
 
     override fun onStop() {
         super.onStop()
-        myLooper?.quit()
+        myHandler?.quitLooper()
     }
 
     private fun onBackClicked() {
@@ -145,10 +144,24 @@ class HandlerLooperFragment : BaseFragment() {
         }
     }
 
+    private class MyHandler(private val looper: MyLooper) {
+        init {
+            looper.prepare()
+        }
+        fun post(runnable: Runnable) {
+            looper.looperQueue.put(runnable)
+        }
+
+        fun quitLooper() {
+            looper.quit()
+        }
+
+    }
+
     private class MyLooper {
 
         private var looperThread: Thread? = null
-        private val looperQueue: BlockingQueue<Runnable> = LinkedBlockingQueue(20)
+        val looperQueue: BlockingQueue<Runnable> = LinkedBlockingQueue(20)
         private val poison = Runnable {}
 
 
@@ -164,6 +177,7 @@ class HandlerLooperFragment : BaseFragment() {
                     }
                     currentMessage.run()
                 }
+                MyLogger.i("looper thread terminates")
             }.apply {
                 start()
             }
@@ -173,8 +187,5 @@ class HandlerLooperFragment : BaseFragment() {
             looperQueue.put(poison)
         }
 
-        fun enqueueMessage(runnable: Runnable) {
-            looperQueue.put(runnable)
-        }
     }
 }
