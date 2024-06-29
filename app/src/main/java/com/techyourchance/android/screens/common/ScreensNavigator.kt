@@ -26,6 +26,7 @@ import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAn
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
+import com.techyourchance.android.screens.benchmarks.sharedprefs.SharedPrefsBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
 import com.techyourchance.android.screens.composenavbottombar.ComposeNavBottomBarActivity
 import com.techyourchance.android.screens.handlerlooper.HandlerLooperFragment
@@ -107,6 +108,7 @@ class ScreensNavigator constructor(
                 is ScreenSpec.Benchmarks -> BenchmarksListFragment.newInstance()
                 is ScreenSpec.BackgroundTasksStartupBenchmark -> BackgroundTasksStartupBenchmarkFragment.newInstance()
                 is ScreenSpec.BackgroundTasksMemoryBenchmark -> BackgroundTasksMemoryBenchmarkFragment.newInstance(screenSpec)
+                is ScreenSpec.SharedPrefsBenchmark -> SharedPrefsBenchmarkFragment.newInstance()
                 is ScreenSpec.ComposeOverlay -> ComposeOverlayFragment.newInstance()
                 is ScreenSpec.HandlerLooper -> HandlerLooperFragment.newInstance()
                 is ScreenSpec.AnimatedMessages -> AnimatedMessagesFragment.newInstance()

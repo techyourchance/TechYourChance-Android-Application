@@ -15,6 +15,8 @@ import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbench
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkViewMvcImpl
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListViewMvc
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListViewMvcImpl
+import com.techyourchance.android.screens.benchmarks.sharedprefs.SharedPrefsBenchmarkViewMvc
+import com.techyourchance.android.screens.benchmarks.sharedprefs.SharedPrefsBenchmarkViewMvcImpl
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvc
 import com.techyourchance.android.screens.biometricauth.BiometricAuthViewMvcImpl
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayViewMvc
@@ -100,6 +102,10 @@ class ViewMvcFactory @Inject constructor(
 
     fun newBackgroundTasksMemoryBenchmarkViewMvc(container: ViewGroup?): BackgroundTasksMemoryBenchmarkViewMvc {
         return BackgroundTasksMemoryBenchmarkViewMvcImpl(inflater, container)
+    }
+
+    fun newSharedPrefsBenchmarkViewMvc(container: ViewGroup?): SharedPrefsBenchmarkViewMvc {
+        return SharedPrefsBenchmarkViewMvcImpl(inflater, container)
     }
 
     fun newComposeOverlayViewMvc(): ComposeOverlayViewMvc {

@@ -20,6 +20,7 @@ import com.techyourchance.android.screens.animations.dotsprogress.DotsProgressAn
 import com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark.BackgroundTasksMemoryBenchmarkFragment
 import com.techyourchance.android.screens.benchmarks.benchmarkslist.BenchmarksListFragment
 import com.techyourchance.android.screens.benchmarks.backgroundtasksstartupbenchmark.BackgroundTasksStartupBenchmarkFragment
+import com.techyourchance.android.screens.benchmarks.sharedprefs.SharedPrefsBenchmarkFragment
 import com.techyourchance.android.screens.composeoverlay.ComposeOverlayFragment
 import com.techyourchance.android.screens.composenavbottombar.ComposeNavBottomBarActivity
 import com.techyourchance.android.screens.handlerlooper.HandlerLooperFragment
@@ -54,6 +55,7 @@ interface ControllerComponent {
     fun inject(fragment: ComposeOverlayFragment)
     fun inject(fragment: AnimatedMessagesFragment)
     fun inject(fragment: HandlerLooperFragment)
+    fun inject(fragment: SharedPrefsBenchmarkFragment)
 
     // Dialogs
     fun inject(dialog: PromptDialog)
