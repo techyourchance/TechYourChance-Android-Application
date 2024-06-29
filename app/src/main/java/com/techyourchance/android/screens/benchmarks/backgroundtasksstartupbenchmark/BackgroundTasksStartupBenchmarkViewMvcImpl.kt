@@ -11,7 +11,7 @@ import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
-import com.techyourchance.android.backgroundtasksbenchmark.startup.BackgroundTasksStartupResult
+import com.techyourchance.android.benchmarks.backgroundtasks.startup.BackgroundTasksStartupResult
 
 
 class BackgroundTasksStartupBenchmarkViewMvcImpl(

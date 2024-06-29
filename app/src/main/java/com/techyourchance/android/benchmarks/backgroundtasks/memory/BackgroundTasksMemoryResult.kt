@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundtasksbenchmark.memory
+package com.techyourchance.android.benchmarks.backgroundtasks.memory
 
 import com.techyourchance.android.common.maths.LinearFitCoefficients
 

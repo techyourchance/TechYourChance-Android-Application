@@ -8,7 +8,7 @@ import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
-import com.techyourchance.android.backgroundtasksbenchmark.startup.BackgroundTasksStartupBenchmarkUseCase
+import com.techyourchance.android.benchmarks.backgroundtasks.startup.BackgroundTasksStartupBenchmarkUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject

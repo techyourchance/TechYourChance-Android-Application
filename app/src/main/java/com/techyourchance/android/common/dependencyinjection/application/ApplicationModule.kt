@@ -23,7 +23,7 @@ import com.techyourchance.android.ndk.NdkManager
 import com.techyourchance.android.networking.StackoverflowApi
 import com.techyourchance.android.networking.TechYourChanceApi
 import com.techyourchance.android.overlay.OverlayManager
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

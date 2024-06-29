@@ -1,6 +1,6 @@
 package com.techyourchance.android.screens.common
 
-import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkPhase
+import com.techyourchance.android.benchmarks.backgroundtasks.memory.BackgroundTasksMemoryBenchmarkPhase
 import java.io.Serializable
 
 @Suppress("ClassName")

@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkPhase
-import com.techyourchance.android.backgroundtasksbenchmark.memory.BackgroundTasksMemoryBenchmarkUseCase
+import com.techyourchance.android.benchmarks.backgroundtasks.memory.BackgroundTasksMemoryBenchmarkPhase
+import com.techyourchance.android.benchmarks.backgroundtasks.memory.BackgroundTasksMemoryBenchmarkUseCase
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.restart.RestartAppUseCase
 import com.techyourchance.android.screens.common.ScreenSpec

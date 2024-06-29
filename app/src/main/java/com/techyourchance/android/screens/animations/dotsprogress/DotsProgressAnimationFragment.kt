@@ -9,7 +9,7 @@ import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.fragments.BaseFragment
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcFactory
 import com.techyourchance.android.screens.common.mvcviews.ViewMvcType
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import com.techyourchance.settingshelper.SettingEntryListener
 import javax.inject.Inject
 

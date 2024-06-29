@@ -3,7 +3,7 @@ package com.techyourchance.android.backgroundwork.workmanager
 import androidx.work.*
 import com.techyourchance.android.common.Observable
 import com.techyourchance.android.common.logs.MyLogger
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

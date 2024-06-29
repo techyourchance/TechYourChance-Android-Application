@@ -1,4 +1,4 @@
-package com.techyourchance.android.backgroundtasksbenchmark.startup
+package com.techyourchance.android.benchmarks.backgroundtasks.startup
 
 import com.techyourchance.android.common.coroutines.BackgroundDispatcher.Background
 import com.techyourchance.android.common.datetime.DateTimeProvider

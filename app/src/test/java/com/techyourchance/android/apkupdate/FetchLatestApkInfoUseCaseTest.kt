@@ -7,7 +7,7 @@ import com.techyourchance.android.common.application.AppVersionInfoProvider
 import com.techyourchance.android.common.usecases.UseCaseResult
 import com.techyourchance.android.networking.LatestApkInfoResponseSchema
 import com.techyourchance.android.networking.TechYourChanceApi
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import com.techyourchance.android.testdoubles.DateTimeProviderImplTd
 import com.techyourchance.android.testdoubles.SettingsEntriesFactoryTd
 import io.kotest.matchers.shouldBe

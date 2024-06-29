@@ -8,7 +8,7 @@ import com.techyourchance.android.common.datetime.DateTimeProvider
 import com.techyourchance.android.common.logs.MyLogger
 import com.techyourchance.android.common.usecases.UseCaseResult
 import com.techyourchance.android.networking.TechYourChanceApi
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

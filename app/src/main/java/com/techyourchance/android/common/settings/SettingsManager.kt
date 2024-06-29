@@ -1,4 +1,4 @@
-package com.techyourchance.android.settings
+package com.techyourchance.android.common.settings
 
 import com.google.gson.Gson
 import com.techyourchance.android.backgroundwork.workmanager.MyWorkerConfig

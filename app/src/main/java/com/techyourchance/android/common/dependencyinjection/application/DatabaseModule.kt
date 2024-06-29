@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import com.techyourchance.android.common.Constants
 import com.techyourchance.android.database.MyDatabase
 import com.techyourchance.android.database.entities.backgroundtasksmemory.BackgroundTasksMemoryDao
-import com.techyourchance.android.settings.SettingsManager
+import com.techyourchance.android.common.settings.SettingsManager
 import com.techyourchance.settingshelper.sharedpreferences.SharedPrefsSettingEntriesFactory
 import dagger.Module
 import dagger.Provides
