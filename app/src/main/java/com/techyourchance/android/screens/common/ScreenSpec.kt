@@ -23,6 +23,7 @@ sealed class ScreenSpec(val activityName: ActivityName): Serializable {
         val startBenchmarkPhase: BackgroundTasksMemoryBenchmarkPhase = BackgroundTasksMemoryBenchmarkPhase.THREADS,
         val startBenchmarkIteration: Int = 0,
     ): ScreenSpec(ActivityName.MAIN)
+    object SharedPrefsBenchmark: ScreenSpec(ActivityName.MAIN)
     object HandlerLooper: ScreenSpec(ActivityName.MAIN)
     object ComposeOverlay: ScreenSpec(ActivityName.MAIN)
     object AnimatedMessages: ScreenSpec(ActivityName.USER_INTERFACES)

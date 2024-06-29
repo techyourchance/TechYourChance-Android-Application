@@ -23,6 +23,7 @@
     <string name="screen_benchmarks">Benchmarks</string>
     <string name="screen_background_tasks_startup_benchmark">Background tasks startup benchmark</string>
     <string name="screen_background_tasks_memory_benchmark">Background tasks memory benchmark</string>
+    <string name="screen_shared_prefs_benchmark">Shared preferences benchmark</string>
     <string name="screen_compose_overlay">Compose overlay</string>
     <string name="screen_animated_messages">Animated messages</string>
     <string name="screen_handler_looper">Handler &amp; Looper</string>
@@ -84,6 +85,9 @@
     <string name="background_tasks_memory_benchmark_thread_memory">Single thread: %1$.2f kB</string>
     <string name="background_tasks_memory_benchmark_coroutine_memory">Single coroutine: %1$.2f kB</string>
     <string name="background_tasks_memory_benchmark_thread_in_thread_pool_memory">Single thread in thread pool: %1$.2f kB</string>
+
+    <string name="shared_prefs_edit_benchmark_commit_chart_label">Commit duration [ms]</string>
+    <string name="shared_prefs_edit_benchmark_apply_chart_label">Apply duration [ms]</string>
 
     <string name="compose_overlay_show">Show overlay</string>
     <string name="compose_overlay_hide">Hide overlay</string>
