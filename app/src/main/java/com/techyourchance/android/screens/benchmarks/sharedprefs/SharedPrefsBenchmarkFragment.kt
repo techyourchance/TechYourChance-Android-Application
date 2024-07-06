@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.techyourchance.android.benchmarks.shared_prefs_write.SharedPrefsWriteBenchmarkUseCase
+import com.techyourchance.android.benchmarks.shared_prefs.SharedPrefsWriteBenchmarkUseCase
 import com.techyourchance.android.common.random.RandomStringsGenerator
 import com.techyourchance.android.screens.common.ScreensNavigator
 import com.techyourchance.android.screens.common.dialogs.DialogsNavigator

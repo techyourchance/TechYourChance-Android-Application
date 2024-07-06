@@ -1,4 +1,4 @@
-package com.techyourchance.android.benchmarks.shared_prefs_write
+package com.techyourchance.android.benchmarks.shared_prefs
 
 import android.content.Context
 import android.content.SharedPreferences

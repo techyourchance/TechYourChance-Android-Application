@@ -1,6 +1,6 @@
 package com.techyourchance.android.screens.benchmarks.backgroundtasksmemorybenchmark
 
-import com.techyourchance.android.benchmarks.backgroundtasks.memory.BackgroundTasksMemoryResult
+import com.techyourchance.android.benchmarks.background_tasks.memory.BackgroundTasksMemoryResult
 import com.techyourchance.android.screens.common.mvcviews.BaseObservableViewMvc
 
 abstract class BackgroundTasksMemoryBenchmarkViewMvc: BaseObservableViewMvc<BackgroundTasksMemoryBenchmarkViewMvc.Listener>() {

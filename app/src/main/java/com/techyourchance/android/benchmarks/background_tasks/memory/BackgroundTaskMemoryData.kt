@@ -1,4 +1,4 @@
-package com.techyourchance.android.benchmarks.backgroundtasks.memory
+package com.techyourchance.android.benchmarks.background_tasks.memory
 
 data class BackgroundTaskMemoryData(
     val timestamp: Long,

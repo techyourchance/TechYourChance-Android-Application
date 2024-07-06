@@ -10,7 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
 import com.techyourchance.android.R
-import com.techyourchance.android.benchmarks.shared_prefs_write.SharedPrefsWriteResult
+import com.techyourchance.android.benchmarks.shared_prefs.SharedPrefsWriteResult
 import com.techyourchance.android.screens.common.toolbar.MyToolbar
 import com.techyourchance.android.screens.common.widgets.MyButton
 

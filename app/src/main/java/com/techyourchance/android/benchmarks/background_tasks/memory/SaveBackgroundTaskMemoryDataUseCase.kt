@@ -1,4 +1,4 @@
-package com.techyourchance.android.benchmarks.backgroundtasks.memory
+package com.techyourchance.android.benchmarks.background_tasks.memory
 
 import com.techyourchance.android.common.datetime.DateTimeProvider
 import com.techyourchance.android.database.entities.backgroundtasksmemory.AppMemoryInfoDb
