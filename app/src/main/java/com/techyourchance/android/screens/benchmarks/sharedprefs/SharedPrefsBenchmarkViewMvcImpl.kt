@@ -62,7 +62,7 @@ class SharedPrefsBenchmarkViewMvcImpl(
         resultWithApply: SharedPrefsWriteResult,
     ) {
         bindChartResults(resultWithCommit, resultWithApply)
-        bindLinearCoefficients(prefValueLength, resultWithCommit, resultWithApply)
+        bindOtherResults(prefValueLength, resultWithCommit, resultWithApply)
     }
 
     private fun bindChartResults(
@@ -89,7 +89,7 @@ class SharedPrefsBenchmarkViewMvcImpl(
         scatterChart.invalidate()
     }
 
-    private fun bindLinearCoefficients(
+    private fun bindOtherResults(
         prefValueLength: Int,
         resultWithCommit: SharedPrefsWriteResult,
         resultWithApply: SharedPrefsWriteResult
@@ -100,10 +100,14 @@ class SharedPrefsBenchmarkViewMvcImpl(
         sb.appendLine("Committed write constant time : ${String.format("%.2f", commitConstantOverheadMs)} [ms]").appendLine()
         val commitIncrementPerEntry = resultWithCommit.linearFitCoefficients.slope
         sb.appendLine("Commit time increment per extra entry: $commitIncrementPerEntry [ns]").appendLine()
+        val commitMaxDuration = resultWithCommit.maxEditDurationNano.toDouble() / 1_000_000
+        sb.appendLine("Commit max duration: ${String.format("%.2f", commitMaxDuration)} [ms]").appendLine()
         val applyConstantOverheadMs = resultWithApply.linearFitCoefficients.intercept / 1_000_000
         sb.appendLine("Applied write constant time : ${String.format("%.2f", applyConstantOverheadMs)} [ms]").appendLine()
         val applyIncrementPerEntry = resultWithApply.linearFitCoefficients.slope
-        sb.appendLine("Apply time increment per extra entry: $applyIncrementPerEntry [ns]")
+        sb.appendLine("Apply time increment per extra entry: $applyIncrementPerEntry [ns]").appendLine()
+        val applyMaxDuration = resultWithApply.maxEditDurationNano.toDouble() / 1_000_000
+        sb.appendLine("Apply max duration: ${String.format("%.2f", applyMaxDuration)} [ms]").appendLine()
         txtResult.text = sb.toString()
     }
 

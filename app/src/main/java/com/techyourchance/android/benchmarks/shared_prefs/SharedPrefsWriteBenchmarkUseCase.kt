@@ -79,13 +79,19 @@ class SharedPrefsWriteBenchmarkUseCase @Inject constructor(
 
 
     private fun computeResult(rawTimingsNano: Map<Int, MutableMap<Int, Long>>): SharedPrefsWriteResult {
-        val averageWriteDurationsWithCommit = computeAverageWriteDurationsNano(rawTimingsNano)
+        val averageWriteDurationsNano = computeAverageWriteDurationsNano(rawTimingsNano)
+        val maxDurationNano = computeMaxWriteDurationNano(rawTimingsNano)
         return SharedPrefsWriteResult(
-            averageWriteDurationsWithCommit,
+            averageWriteDurationsNano,
+            maxDurationNano,
             linearFitCalculator.calculateLinearFit(
-                averageWriteDurationsWithCommit.map { entry -> Pair(entry.key.toDouble(), entry.value.toDouble()) }
+                averageWriteDurationsNano.map { entry -> Pair(entry.key.toDouble(), entry.value.toDouble()) }
             )
         )
+    }
+
+    private fun computeMaxWriteDurationNano(rawTimingsNano: Map<Int, MutableMap<Int, Long>>): Long {
+        return rawTimingsNano.values.flatMap { it.values }.max()
     }
 
     private fun computeAverageWriteDurationsNano(sharedPrefsWriteTimings: Map<Int, Map<Int, Long>>): Map<Int, Long> {

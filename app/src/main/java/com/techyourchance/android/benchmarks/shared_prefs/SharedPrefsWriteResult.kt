@@ -4,5 +4,6 @@ import com.techyourchance.android.common.maths.LinearFitCoefficients
 
 data class SharedPrefsWriteResult(
     val entryIndexToAverageEditDurationsNano: Map<Int, Long>,
+    val maxEditDurationNano: Long,
     val linearFitCoefficients: LinearFitCoefficients,
 )
