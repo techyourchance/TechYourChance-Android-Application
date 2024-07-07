@@ -36,7 +36,7 @@ Parts of the source code in this app correspond to the articles I published on m
 | [How to Use Jetpack Compose Inside Android Service](https://www.techyourchance.com/jetpack-compose-inside-android-service/) | [Screen](https://github.com/techyourchance/TechYourChance-Android-Application/tree/master/app/src/main/java/com/techyourchance/android/screens/composeoverlay) <br> [Logic](https://github.com/techyourchance/TechYourChance-Android-Application/tree/master/app/src/main/java/com/techyourchance/android/overlay) |
 | [Kotlin Coroutines vs Threads Performance Benchmark](https://www.techyourchance.com/kotlin-coroutines-vs-threads-performance-benchmark/) | [Screen](app/src/main/java/com/techyourchance/android/screens/benchmarks/backgroundtasksstartupbenchmark) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundtasksbenchmark/startup) |
 | [Kotlin Coroutines vs Threads Memory Benchmark](https://www.techyourchance.com/kotlin-coroutines-vs-threads-memory-benchmark/) | [Screen](app/src/main/java/com/techyourchance/android/screens/benchmarks/backgroundtasksmemorybenchmark) <br> [Logic](app/src/main/java/com/techyourchance/android/backgroundtasksbenchmark/memory) |
-
+| [Android SharedPreferences Performance: Commit vs Apply](https://www.techyourchance.com/android-sharedpreferences-performance-commit-vs-apply/) | [Screen](app/src/main/java/com/techyourchance/android/screens/benchmarks/sharedprefs) <br> [Logic](app/src/main/java/com/techyourchance/android/benchmarks/shared_prefs) |
 
 ## Architecture
 
